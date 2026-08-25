@@ -9,3 +9,6 @@ Thumbs.db
 node_modules/
 dist/
 .env
+
+# Lokal förhandsgranskning av temat (deployas ej)
+_preview/

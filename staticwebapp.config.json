@@ -1,6 +1,10 @@
 {
+  "routes": [
+    { "route": "/ledskarmar", "rewrite": "/ledskarmar.html" }
+  ],
   "navigationFallback": {
-    "rewrite": "/index.html"
+    "rewrite": "/index.html",
+    "exclude": ["/ledskarmar.html", "/*.png", "/*.svg", "/*.css", "/*.js"]
   },
   "responseOverrides": {
     "404": {
