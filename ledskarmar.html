@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Digitala LED-skärmar för mässor — CX Design</title>
-<meta name="description" content="Fristående LED-postrar för mässor och event — vi tar med skärmarna och producerar innehållet. 640×1920 mm, P1.86, flightcase på hjul, 4G. CX Design, Laholm.">
+<meta name="description" content="Fristående LED-postrar för event, mässor, scener och butik — vi tar med skärmarna och producerar innehållet. 640×1920 mm, P1.86, flightcase på hjul, 4G. CX Design, Laholm.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -27,12 +27,13 @@
   .reveal.in{opacity:1;transform:none}
 
   /* Header */
-  header{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(6,6,7,.72);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
-  .nav{display:flex;align-items:center;justify-content:space-between;height:62px}
-  .nav img{height:24px;width:auto}
-  .nav-links{display:flex;gap:24px;align-items:center;font-size:.85rem;font-weight:600}
-  .nav-links a{color:var(--muted);transition:color .2s}
-  .nav-links a:hover{color:var(--text)}
+  .site-header{position:fixed;top:0;left:0;right:0;z-index:100;background:linear-gradient(180deg,rgba(0,0,0,.8),rgba(0,0,0,0));backdrop-filter:blur(3px);transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+  .site-header.scrolled{background:rgba(0,0,0,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .nav img{height:26px;width:auto}
+  .nav-links{display:flex;gap:24px;align-items:center;font-size:.86rem;font-weight:600}
+  .nav-links a{color:rgba(244,237,226,.82);transition:color .2s}
+  .nav-links a:hover{color:#fff}
   .btn{display:inline-block;background:var(--gold);color:#1a1206;font-weight:700;padding:10px 20px;border-radius:999px;font-size:.85rem;transition:transform .15s,box-shadow .2s;cursor:pointer;border:0}
   .btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(224,160,64,.35)}
   .btn-lg{padding:15px 32px;font-size:1rem}
@@ -130,7 +131,7 @@
 </head>
 <body>
 
-<header>
+<header class="site-header">
   <div class="wrap nav">
     <a href="/"><img src="cxd-logo.png" alt="CX Design"></a>
     <nav class="nav-links">
@@ -138,7 +139,7 @@
       <a href="#skarmarna">Skärmarna</a>
       <a href="#innehall">Innehållet</a>
       <a href="#process">Så funkar det</a>
-      <a href="#massor">Mässor</a>
+      <a href="#massor">Event</a>
       <a href="mailto:joaquim@cxdesign.se?subject=Bokning%20LED-skärmar" class="btn">Boka</a>
     </nav>
   </div>
@@ -148,9 +149,9 @@
 <header class="hero" id="top">
   <div class="hero-glow"></div>
   <div class="hero-copy reveal">
-    <div class="eyebrow">LED-skärmar + innehåll för mässor &amp; event</div>
-    <h1>Er monter.<br><span class="grad">I rörelse.</span></h1>
-    <p class="lead">Vi producerar filmen som får er monter att synas — och tar med skärmarna den ska visas på. Levereras i flightcase, uppriggat på minuter, klart när ni kommer.</p>
+    <div class="eyebrow">LED-skärmar + innehåll för event &amp; mässor</div>
+    <h1>Ert budskap.<br><span class="grad">I rörelse.</span></h1>
+    <p class="lead">Vi producerar filmen som får er att synas — och tar med skärmarna den ska visas på. På eventet, scenen, mässan eller i butiken. Levereras i flightcase, uppriggat på minuter, klart när ni kommer.</p>
     <div class="hero-cta">
       <a class="btn btn-lg" href="mailto:joaquim@cxdesign.se?subject=Bokning%20LED-skärmar">Boka inför hösten 2026</a>
       <a class="btn-ghost" href="#process">Se hur det funkar</a>
@@ -172,10 +173,10 @@
   <div class="wrap">
     <span class="kicker reveal">Utrustningen</span>
     <h2 class="reveal">Tre skärmar.<br>Ett grepp. Noll krångel.</h2>
-    <p class="sub reveal">Tre fristående LED-postrar som rullar in på hjul och står klara på minuter — inga verktyg, inga tekniker, ingen rigg-dag. Kombinera dem som montern kräver.</p>
+    <p class="sub reveal">Tre fristående LED-postrar som rullar in på hjul och står klara på minuter — inga verktyg, inga tekniker, ingen rigg-dag. Kombinera dem som eventet kräver.</p>
     <div class="trio reveal">
-      <div class="cell"><h3>Tre punkter</h3><p>Fristående skärmar utplacerade i montern — entré, disk och demo-yta. Rörligt ljus som syns tvärs över hallen.</p></div>
-      <div class="cell"><h3>En bred vägg</h3><p>Kaskadkopplade sida vid sida till en sömlös yta på nästan två gånger två meter — er monters fondvägg.</p></div>
+      <div class="cell"><h3>Tre punkter</h3><p>Fristående skärmar utplacerade där folk rör sig — entré, monter, scen eller disk. Rörligt ljus som syns tvärs över rummet.</p></div>
+      <div class="cell"><h3>En bred vägg</h3><p>Kaskadkopplade sida vid sida till en sömlös yta på nästan två gånger två meter — en fondvägg för scen, monter eller butik.</p></div>
       <div class="cell"><h3>Er idé</h3><p>Portal, triptyk, synkade budskap i sekvens — skärmarna styrs som en enhet eller var för sig, på plats eller på distans.</p></div>
     </div>
     <div class="spec-strip mono reveal">
@@ -206,7 +207,7 @@
       <h2>Alla kan hyra ut en skärm. Vi gör filmen den förtjänar.</h2>
       <p class="sub">En skärm utan rätt innehåll är en dyr lampa. Bakom skärmarna står CX Design — filmproduktion med många års erfarenhet av innehåll åt stora företag. Det är därför ni hyr av oss.</p>
       <ul>
-        <li>Innehåll producerat för er monter — i skärmens exakta format</li>
+        <li>Innehåll producerat för ert event — i skärmens exakta format</li>
         <li>Animerat, filmat eller båda — anpassat efter ert budskap</li>
         <li>Uppdateringar under mässan, på distans via 4G</li>
         <li>Vill ni mer? Vi livesänder och filmar från montern</li>
@@ -222,9 +223,9 @@
     <span class="kicker reveal">Processen</span>
     <h2 class="reveal">Från bokning till mässgolv</h2>
     <div class="steps">
-      <div class="step reveal"><span class="mono">01 / BOKA</span><h3>Vi planerar montern</h3><p>Ett samtal om er monter, ert budskap och vad som ska hända på skärmarna. Ni får fast pris för hela paketet.</p></div>
-      <div class="step reveal"><span class="mono">02 / INNEHÅLL</span><h3>Vi producerar filmen</h3><p>Vi tar fram innehållet i skärmarnas format och stämmer av med er innan mässan. Ni behöver inte leverera något.</p></div>
-      <div class="step reveal"><span class="mono">03 / MÄSSA</span><h3>Uppriggat när ni kommer</h3><p>Skärmarna står klara med ert innehåll rullande när ni kliver in i montern. Efter mässan packar vi ner. Klart.</p></div>
+      <div class="step reveal"><span class="mono">01 / BOKA</span><h3>Vi planerar upplägget</h3><p>Ett samtal om ert event, ert budskap och vad som ska hända på skärmarna. Ni får fast pris för hela paketet.</p></div>
+      <div class="step reveal"><span class="mono">02 / INNEHÅLL</span><h3>Vi producerar filmen</h3><p>Vi tar fram innehållet i skärmarnas format och stämmer av med er innan eventet. Ni behöver inte leverera något.</p></div>
+      <div class="step reveal"><span class="mono">03 / PÅ PLATS</span><h3>Uppriggat när ni kommer</h3><p>Skärmarna står klara med ert innehåll rullande när ni kliver in. Efter eventet packar vi ner. Klart.</p></div>
     </div>
   </div>
 </section>
@@ -233,8 +234,8 @@
 <section id="massor">
   <div class="wrap">
     <span class="kicker reveal">Hösten 2026</span>
-    <h2 class="reveal">Ställer ni ut i höst?</h2>
-    <p class="sub reveal">Skärmarna är bokningsbara från slutet av september. Här är ett urval av höstens mässor i södra Sverige.</p>
+    <h2 class="reveal">Har ni ett event i höst?</h2>
+    <p class="sub reveal">Skärmarna passar mässor, konferenser, event och butik — bokningsbara från slutet av september. Här är ett urval av höstens mässor i södra Sverige som exempel.</p>
     <div class="fairs reveal">
       <div class="fair"><span class="date mono">30 SEP – 1 OKT</span><span class="name">Elmia Garden</span><span class="where">Elmia, Jönköping</span></div>
       <div class="fair"><span class="date mono">14 – 16 OKT</span><span class="name">Elmia Lantbruk</span><span class="where">Elmia, Jönköping</span></div>
@@ -268,8 +269,8 @@
   <div class="wrap">
     <div class="cta-inner reveal">
       <span class="kicker">Kontakt</span>
-      <h2>Låt er monter synas i höst.</h2>
-      <p class="sub" style="margin-left:auto;margin-right:auto">Berätta om er monter och mässa, så återkommer vi med ett fast pris för hela paketet.</p>
+      <h2>Låt er synas i höst.</h2>
+      <p class="sub" style="margin-left:auto;margin-right:auto">Berätta om ert event, så återkommer vi med ett fast pris för hela paketet.</p>
       <div class="foot-cta">
         <a class="btn btn-lg" href="mailto:joaquim@cxdesign.se?subject=Bokning%20LED-skärmar">joaquim@cxdesign.se</a>
         <a class="btn-ghost" href="tel:+46720787845">072-078 78 45</a>
@@ -289,6 +290,11 @@
 
 <script>
   document.getElementById('year').textContent=new Date().getFullYear();
+
+  // Toppbar: mörkna vid scroll så den alltid syns
+  const hdr=document.querySelector('.site-header');
+  const onScrollHdr=()=>hdr.classList.toggle('scrolled',window.scrollY>20);
+  window.addEventListener('scroll',onScrollHdr,{passive:true}); onScrollHdr();
 
   // Reveal + scroll-zoom
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');}})},{threshold:.18});
