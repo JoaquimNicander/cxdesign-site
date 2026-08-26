@@ -12,3 +12,7 @@ dist/
 
 # Lokal förhandsgranskning av temat (deployas ej)
 _preview/
+media/led/opt/*.png
+media/led/opt/*.jpg
+media/led/led-rotation.*
+CXD_LOGO.png
