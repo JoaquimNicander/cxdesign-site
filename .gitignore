@@ -16,3 +16,11 @@ media/led/opt/*.png
 media/led/opt/*.jpg
 media/led/led-rotation.*
 CXD_LOGO.png
+# gamla one-pager-undersidor (ersatta av Design-F-sidorna)
+/digitala-moten.html
+/hybridproduktioner.html
+/motion-grafik.html
+# lokal förhandsgranskning
+_preview-f/
+# källbilder (deployas ej)
+LED_DISPLAY x3.png
