@@ -1,0 +1,33 @@
+ALL STRINGS ATTACHED – statisk webbplats
+
+Innehåll
+  index.html    hela sidan (text, stil, struktur)
+  img/          alla bilder (jpg/webp/png)
+  favicon.png   flik-ikon
+  img/og.jpg    bild som visas när länken delas (Facebook, LinkedIn, iMessage)
+
+Publicera
+  Mappen är helt statisk – ingen server, ingen databas, inga byggsteg.
+  Ladda upp mappens innehåll som det är. index.html ska ligga i roten.
+
+  Alternativ 1 – Netlify Drop (enklast, gratis):
+    1. Gå till https://app.netlify.com/drop
+    2. Dra hela mappen "site" till rutan
+    3. Du får en adress direkt. Koppla allstrings.se under Domain settings.
+
+  Alternativ 2 – Vercel:
+    1. https://vercel.com/new  →  "Deploy without Git"  →  dra mappen
+    2. Koppla domänen under Settings → Domains.
+
+  Alternativ 3 – vanligt webbhotell (one.com, Loopia m.fl.):
+    Ladda upp index.html, favicon.png och mappen img via FTP/filhanteraren
+    till public_html (eller motsvarande).
+
+Domän
+  allstrings.se → peka domänen dit leverantören säger (CNAME/A-record).
+  HTTPS sköts automatiskt av Netlify/Vercel.
+
+Ändra text
+  Öppna index.html i en textredigerare. All text ligger i klartext.
+  Typsnitten (Amatic SC, Instrument Sans, IBM Plex Mono) hämtas från
+  Google Fonts – kräver internet men inga filer att ladda upp.

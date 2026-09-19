@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="All Strings Attached — designföremål av använda tennissträngar. Insamlade på tennisklubbar och turneringar, omsmälta och formade i Båstad.">
+<meta name="theme-color" content="#151412" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F4F3EE" media="(prefers-color-scheme: light)">
+<meta property="og:title" content="All Strings Attached">
+<meta property="og:description" content="Designföremål av använda tennissträngar. Varje föremål vet varifrån dess sträng kommer.">
+<meta property="og:image" content="img/og.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>All Strings Attached</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F4F3EE; --ink:#151412; --ink-2:#4A4640; --line:#C9C4B8; --line-soft:#E2DED4;
+  --clay:#B7552C; --court:#FFFFFF; --brass:#B8963A; --panel:#FFFFFF;
+  --display:'Amatic SC','Barlow Condensed',Impact,sans-serif; --dw:700; --dw2:700; --dls:.01em; --dlh:.98; --dsc:1.45; --dtt:none; --dvs:normal;
+  --body:'Instrument Sans',ui-sans-serif,system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#151412;--ink:#EDEAE2;--ink-2:#B3ADA2;--line:#3E3B36;--line-soft:#2A2825;--court:#F6EFE7;--panel:#1E1C19}}
+:root[data-theme="dark"]{--paper:#151412;--ink:#EDEAE2;--ink-2:#B3ADA2;--line:#3E3B36;--line-soft:#2A2825;--court:#F6EFE7;--panel:#1E1C19}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-family:var(--display);text-wrap:balance;line-height:var(--dlh);letter-spacing:var(--dls);font-weight:var(--dw);font-variation-settings:var(--dvs)}
+h3{font-weight:var(--dw2)}
+p{margin:0} a{color:inherit} figure{margin:0} img{display:block;max-width:100%}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:clamp(16px,4vw,48px)}
+.eyebrow{max-width:24ch;line-height:1.4;font-family:var(--body);font-size:13px;letter-spacing:.02em;color:var(--ink-2);font-weight:500}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.cap{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);margin-top:10px}
+section{padding-block:clamp(64px,10vw,140px)}
+.head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:32px;align-items:start;margin-bottom:clamp(28px,5vw,56px)}
+.head h2{font-size:calc(clamp(30px,3.8vw,50px) * var(--dsc));max-width:none}
+.head .lede{font-size:clamp(17px,1.5vw,20px);max-width:58ch;color:var(--ink-2)}
+@media (max-width:760px){.head{grid-template-columns:minmax(0,1fr);gap:12px}.head > div{min-width:0}}
+@media (max-width:480px){.head h2{font-size:calc(27px * var(--dsc))}}
+h1,h2,h3{overflow-wrap:anywhere}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line-soft)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{text-decoration:none}
+.bar nav{display:flex;gap:22px;min-width:0}
+.bar nav a{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--ink-2)}
+.bar nav a:hover,.bar nav a:focus-visible{color:var(--ink);outline:none;text-decoration:underline;text-underline-offset:4px}
+@media (max-width:760px){.bar .wrap{gap:14px}.bar nav{gap:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-block:4px;mask-image:linear-gradient(90deg,#000 85%,transparent)}.bar nav::-webkit-scrollbar{display:none}.bar nav a{white-space:nowrap;font-size:11px}}
+
+/* hero: grus + bild */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);background:var(--clay);color:var(--court);padding:0}
+.hero .txt{padding:clamp(40px,6vw,88px) clamp(16px,4vw,48px);display:flex;flex-direction:column;justify-content:space-between;gap:48px;position:relative;overflow:hidden}
+.hero .txt > *{position:relative}
+.hero h1 .logo{width:min(100%,215px);height:auto;display:block}
+.hero .sub{font-size:clamp(18px,1.8vw,24px);line-height:1.3;max-width:28ch;font-weight:500}
+.hero .meta{font-family:var(--mono);font-size:13px;line-height:1.7;opacity:.92}
+.hero .pic4{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:3px;background:var(--paper);min-height:560px}
+.hero .pic4 figure{position:relative;overflow:hidden;min-height:0}
+.hero .pic4 img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.hero .pic4 figcaption{position:absolute;left:12px;bottom:10px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#F6EFE7;background:rgba(0,0,0,.45);padding:5px 9px}
+.hero .pic{position:relative;min-height:420px}
+.hero .pic img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.hero .pic figcaption{position:absolute;left:16px;bottom:14px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:#F6EFE7;background:rgba(0,0,0,.45);padding:6px 10px}
+@media (max-width:820px){.hero{grid-template-columns:1fr}.hero .pic4{min-height:0;aspect-ratio:1}.hero .pic{min-height:0;aspect-ratio:3/4}.hero .pic img{position:static;height:auto;aspect-ratio:3/4}}
+
+/* siffror i rad */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--line)}
+.stats > div{padding:22px 22px 22px 0;border-right:1px solid var(--line-soft);margin-right:22px}
+.stats > div:last-child{border-right:0;margin-right:0}
+.stats b{font-family:var(--display);font-weight:var(--dw2);font-variation-settings:var(--dvs);font-size:calc(clamp(28px,3.2vw,44px) * var(--dsc));letter-spacing:-.02em;line-height:1;display:block;margin-bottom:10px;white-space:nowrap}
+.stats span{font-size:14.5px;color:var(--ink-2)}
+@media (max-width:820px){.stats{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.stats b{white-space:normal;font-size:clamp(26px,7vw,34px)}.stats > div{border-right:0;margin-right:0;border-bottom:1px solid var(--line-soft)}}
+
+/* tanken */
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.three > div{padding:28px 28px 28px 0;border-right:1px solid var(--line-soft);margin-right:28px}
+.three > div:last-child{border-right:0;margin-right:0}
+.three h3{font-size:calc(24px * var(--dsc));margin-bottom:12px}
+.three p{color:var(--ink-2);max-width:40ch}
+@media (max-width:820px){.three{grid-template-columns:1fr}.three > div{border-right:0;margin-right:0;border-bottom:1px solid var(--line-soft);padding-right:0}.three > div:last-child{border-bottom:0}}
+
+/* galleri */
+.gal{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
+.gal figure{position:relative;background:var(--panel);overflow:hidden}
+.gal img{width:100%;height:100%;object-fit:cover;aspect-ratio:3/4}
+.gal figcaption{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:#F6EFE7;background:linear-gradient(transparent,rgba(0,0,0,.55));text-transform:uppercase}
+.s4{grid-column:span 4}.s5{grid-column:span 5}.s7{grid-column:span 7}.s3{grid-column:span 3}.s6{grid-column:span 6}
+.gal-row{margin-top:14px}
+.rowlabel{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin:34px 0 12px;display:flex;align-items:center;gap:12px}
+.rowlabel::after{content:"";flex:1;height:1px;background:var(--line-soft)}
+@media (max-width:820px){.s4,.s5,.s3,.s6{grid-column:span 6}}
+@media (max-width:480px){.s4,.s5,.s3,.s6{grid-column:span 12}}
+
+/* objektkort */
+.objs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.obj{background:var(--panel);border:1px solid var(--line-soft);padding:20px;display:flex;flex-direction:column;gap:10px}
+.obj h3{font-size:calc(25px * var(--dsc))}
+.obj p{font-size:14.5px;color:var(--ink-2);flex:1}
+.obj .spec{font-family:var(--mono);font-size:12px;display:grid;grid-template-columns:1fr auto;row-gap:4px;column-gap:14px;border-top:1px solid var(--line-soft);padding-top:12px;color:var(--ink-2)}
+.obj .spec b{font-weight:500;color:var(--ink)}
+.obj .tag{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--line)}
+@media (max-width:1100px){.objs{grid-template-columns:1fr 1fr 1fr}}
+@media (max-width:800px){.objs{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.objs{grid-template-columns:1fr}}
+
+/* process */
+.proc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px;align-items:end;margin-bottom:clamp(28px,5vw,56px)}
+.proc img{width:100%;aspect-ratio:3/4;object-fit:cover}
+.proc h2{font-size:calc(clamp(30px,3.8vw,50px) * var(--dsc));margin:14px 0 16px}
+.proc .lede{font-size:clamp(17px,1.5vw,20px);max-width:50ch;color:var(--ink-2)}
+@media (max-width:760px){.proc{grid-template-columns:1fr}}
+.steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px;position:relative}
+.steps::before{content:"";position:absolute;left:0;right:0;top:9px;height:1px;background:var(--ink)}
+.step{position:relative;padding-top:28px}
+.step::before{content:"";position:absolute;top:5px;left:0;width:9px;height:9px;border-radius:50%;background:var(--ink)}
+.step .n{font-family:var(--mono);font-size:12px;color:var(--ink-2);letter-spacing:.1em}
+.step h3{font-size:calc(21px * var(--dsc));margin:6px 0 8px}
+.step p{font-size:14px;color:var(--ink-2);line-height:1.5}
+@media (max-width:1100px){.steps{grid-template-columns:repeat(3,minmax(0,1fr))}.steps::before{display:none}}
+@media (max-width:520px){.steps{grid-template-columns:1fr 1fr}}
+
+/* strängen: grus */
+.src{background:var(--clay);color:var(--court)}
+.src .eyebrow,.src .cap{color:var(--court);opacity:.85}
+.src .head .lede{color:var(--court);opacity:.92}
+.src-hero{position:relative;margin-bottom:clamp(28px,5vw,56px)}
+.src-hero img{width:100%;aspect-ratio:21/9;object-fit:cover;object-position:center 40%}
+.src-hero figcaption{position:absolute;left:0;bottom:0;padding:12px 16px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:#F6EFE7;background:rgba(0,0,0,.45)}
+@media (max-width:600px){.src-hero img{aspect-ratio:4/5}}
+.srcg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--court)}
+.srcg > div{padding:26px 26px 26px 0;border-right:1px solid rgba(255,255,255,.35);margin-right:26px}
+.srcg > div:last-child{border-right:0;margin-right:0}
+.srcg h3{font-size:calc(24px * var(--dsc));margin-bottom:10px}
+.srcg p{opacity:.92;font-size:15.5px;max-width:36ch}
+.srcg .mono{display:block;margin-top:14px;font-size:12.5px;opacity:.85}
+@media (max-width:820px){.srcg{grid-template-columns:1fr}.srcg > div{border-right:0;margin-right:0;border-bottom:1px solid rgba(255,255,255,.35);padding-right:0}.srcg > div:last-child{border-bottom:0}}
+
+/* spårbarhet */
+.trace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);gap:40px;align-items:center}
+.trace img{width:100%;aspect-ratio:3/4;object-fit:cover}
+.trace .copy p{color:var(--ink-2);max-width:44ch;margin-bottom:14px}
+.trace .copy p strong{color:var(--ink);font-weight:600}
+.trace .copy h3{font-size:calc(24px * var(--dsc))}
+.trace .copy h2{font-size:calc(clamp(26px,3.2vw,40px) * var(--dsc));margin:14px 0 20px}
+.label{background:var(--panel);border:1px solid var(--ink);padding:24px 26px;font-family:var(--mono);font-size:13px;line-height:1.75;position:relative}
+.label::after{content:"";position:absolute;inset:6px;border:1px solid var(--line-soft);pointer-events:none}
+.label .lot{font-family:var(--display);font-weight:var(--dw2);font-variation-settings:var(--dvs);font-size:calc(30px * var(--dsc));letter-spacing:-.02em;line-height:1;margin-bottom:12px}
+.label dl{display:grid;grid-template-columns:auto 1fr;column-gap:20px;row-gap:2px;margin:0}
+.label dt{color:var(--ink-2)} .label dd{margin:0}
+.label .grid{margin-top:16px;height:50px;background:repeating-linear-gradient(90deg,var(--ink) 0 1px,transparent 1px 11px),repeating-linear-gradient(0deg,var(--ink) 0 1px,transparent 1px 9px);opacity:.5}
+@media (max-width:1100px){.trace{grid-template-columns:1fr 1fr}.trace .copy{grid-column:span 2}}
+@media (max-width:600px){.trace{grid-template-columns:1fr}.trace .copy{grid-column:span 1}}
+
+/* siffror */
+.nums{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:clamp(40px,6vw,96px);align-items:start}
+.nums h3{font-size:calc(clamp(22px,2.2vw,28px) * var(--dsc));margin-bottom:22px;padding-bottom:14px;border-bottom:1px solid var(--ink)}
+table{border-collapse:collapse;width:100%;font-size:16px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:13px 0;border-bottom:1px solid var(--line-soft);vertical-align:baseline}
+th{font-family:var(--body);font-size:13px;font-weight:500;color:var(--ink-2);padding-top:0;border-bottom:1px solid var(--line)}
+td.n,th.n{text-align:right;padding-left:24px;white-space:nowrap}
+td.n{font-family:var(--body);font-weight:500;font-size:16px;letter-spacing:0}}
+tr.tot td{border-bottom:0;border-top:1px solid var(--ink);padding-top:16px;font-weight:500}
+tr.tot td.n{font-size:19px;font-weight:600}
+tbody tr:last-child td{border-bottom:0}
+.note{font-size:13.5px;color:var(--ink-2);margin-top:18px;max-width:52ch;line-height:1.5}
+.tw{overflow-x:auto}
+.cost{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,4vw,48px);margin-top:clamp(48px,7vw,88px);border-top:1px solid var(--ink);padding-top:26px}
+.cost b{font-family:var(--display);font-weight:var(--dw2);font-variation-settings:var(--dvs);font-size:calc(clamp(30px,3.4vw,46px) * var(--dsc));letter-spacing:-.02em;line-height:1;display:block;margin-bottom:14px}
+.cost span{font-size:14.5px;color:var(--ink-2);display:block;max-width:30ch;line-height:1.5}
+@media (max-width:820px){.nums{grid-template-columns:minmax(0,1fr)}.nums > div{min-width:0}table{font-size:14px}td.n,th.n{padding-left:12px}td.n{font-size:14.5px}.cost{grid-template-columns:1fr;gap:28px}.cost > div{border-bottom:1px solid var(--line-soft);padding-bottom:22px}.cost > div:last-child{border-bottom:0}}
+
+/* verkstaden */
+.mach{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,2.5vw,32px);margin-top:clamp(28px,4vw,48px)}
+.mach figure{display:flex;flex-direction:column}
+.mach .ph{background:#ECE8DF;background-image:radial-gradient(ellipse 70% 30% at 50% 88%,rgba(0,0,0,.07),transparent 70%);aspect-ratio:1;display:grid;place-items:center;padding:11%;overflow:hidden}
+.mach .ph img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 18px 22px rgba(0,0,0,.22))}
+.mach figcaption{padding-top:14px}
+.mach h3{font-size:calc(22px * var(--dsc));margin:0 0 4px}
+.mach .role{font-size:13px;color:var(--ink-2);margin-bottom:8px}
+.mach p{font-size:14.5px;color:var(--ink-2);line-height:1.5}
+.mach .price{font-family:var(--display);font-weight:var(--dw2);font-size:19px;margin-top:10px;font-variation-settings:var(--dvs)}
+.mach .price small{font-family:var(--body);font-size:12.5px;color:var(--ink-2);margin-left:6px}
+@media (max-width:1100px){.mach{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.mach{grid-template-columns:1fr}}
+
+/* omvärld */
+.cmp{display:grid;grid-template-columns:150px minmax(0,1fr) minmax(0,1fr);border-top:1px solid var(--ink)}
+.cmp > div{padding:16px 24px 16px 0;border-bottom:1px solid var(--line-soft);font-size:15px;line-height:1.5}
+.cmp .k{font-family:var(--body);font-size:13px;color:var(--ink-2);font-weight:500;padding-top:19px}
+.cmp .hd{font-family:var(--display);font-weight:var(--dw2);font-size:calc(22px * var(--dsc));line-height:1;padding:22px 24px 14px 0;border-bottom:1px solid var(--line)}
+.cmp .hd small{display:block;font-family:var(--body);font-size:13px;color:var(--ink-2);margin-top:6px}
+.cmp .us{color:var(--ink)}
+.omv-copy{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,64px);margin-top:clamp(36px,5vw,56px)}
+.omv-copy h3{font-size:calc(24px * var(--dsc));margin-bottom:10px}
+.omv-copy p{color:var(--ink-2);font-size:15.5px}
+.omv-copy p + p{margin-top:10px}
+@media (max-width:760px){.cmp{grid-template-columns:1fr}.cmp .k{padding-bottom:0;border-bottom:0}.cmp > div{padding-right:0}.omv-copy{grid-template-columns:1fr}}
+
+.let{margin-bottom:clamp(36px,5vw,56px)}
+.let3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.5vw,20px)}
+.let3 img{width:100%;height:auto;aspect-ratio:436/543;object-fit:cover}
+@media (max-width:560px){.let3{grid-template-columns:1fr 1fr}.let3 img:last-child{display:none}}
+
+/* dna-sträng */
+.strand{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;position:relative;padding-top:26px}
+.strand::before{content:"";position:absolute;left:0;right:0;top:8px;height:2px;background:repeating-linear-gradient(90deg,var(--brass) 0 14px,transparent 14px 20px);opacity:.9}
+.strand .node{position:relative;padding:0 18px 0 0;border-left:1px solid var(--line-soft);padding-left:14px}
+.strand .node::before{content:"";position:absolute;left:-6px;top:-24px;width:11px;height:11px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 3px var(--paper)}
+.strand .k{font-family:var(--body);font-size:12.5px;color:var(--ink-2);font-weight:500;margin-bottom:6px}
+.strand .v{font-family:var(--display);font-weight:var(--dw2);font-size:calc(20px * var(--dsc));line-height:1;margin-bottom:8px}
+.strand .d{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);line-height:1.5}
+.label .url{font-family:var(--mono);font-size:12px;color:var(--ink-2);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line-soft)}
+@media (max-width:1000px){.strand{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:34px}.strand::before{display:none}.strand .node::before{display:none}.strand{padding-top:0}}
+@media (max-width:520px){.strand{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.strand .d{overflow-wrap:anywhere}}
+
+.bleed{position:relative;margin:0}
+.bleed img{width:100%;height:auto;aspect-ratio:21/9;object-fit:cover;object-position:center 60%;display:block}
+.bleed figcaption{position:absolute;left:clamp(16px,4vw,48px);bottom:18px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:#F6EFE7;background:rgba(0,0,0,.45);padding:6px 10px}
+@media (max-width:700px){.bleed img{aspect-ratio:4/3}}
+@media (max-width:640px){.gal{gap:8px}.gal figure{grid-column:span 6 !important}.gal figure[style*="background:none"]{grid-column:span 12 !important}.gal figcaption{font-size:10px;padding:8px 10px}}
+
+/* tidslinje */
+.tl{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;border-top:1px solid var(--ink);padding-top:18px}
+.tl .when{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);display:flex;align-items:center;gap:8px}
+.tl .when i{width:8px;height:8px;border-radius:50%;background:var(--line);display:inline-block}
+.tl .now .when i{background:var(--brass);box-shadow:0 0 0 3px color-mix(in srgb,var(--brass) 30%,transparent)}
+.tl .now .when{color:var(--ink)}
+.tl h3{font-size:calc(21px * var(--dsc));margin:10px 0 6px}
+.tl p{font-size:14px;color:var(--ink-2)}
+@media (max-width:1100px){.tl{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.tl{grid-template-columns:1fr}}
+
+/* vem */
+.who{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px}
+.who h2{font-size:calc(clamp(26px,3.2vw,40px) * var(--dsc));margin:14px 0 20px}
+.who p{color:var(--ink-2);max-width:50ch}
+.partner{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:12px 0;border-top:1px solid var(--line-soft);font-size:15px}
+.partner b{font-family:var(--mono);font-weight:500;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+@media (max-width:760px){.who{grid-template-columns:1fr}}
+
+.bigline{font-family:var(--display);font-weight:var(--dw);font-variation-settings:var(--dvs);font-size:calc(clamp(30px,5vw,72px) * var(--dsc));letter-spacing:var(--dls);line-height:1.04;max-width:1100px}
+footer{border-top:1px solid var(--ink);padding-block:28px 40px}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--ink-2)}
+footer .brand{font-size:14px;color:var(--ink)}
+</style>
+</head>
+<body>
+
+
+<div class="bar"><div class="wrap">
+  <a class="brand" href="#top"><img src="img/logo_ink.png" alt="All Strings Attached" style="height:40px;width:auto;display:block"></a>
+  <nav><a href="#tanken">Tanken</a><a href="#kollektionen">Kollektionen</a><a href="#process">Processen</a><a href="#strangen">Strängen</a><a href="#dna">DNA</a><a href="#siffror">Siffrorna</a><a href="#omvarld">Omvärld</a><a href="#status">Status</a><a href="#verkstaden">Verkstaden</a></nav>
+</div></div>
+
+<header class="hero" id="top">
+  <div class="txt">
+    <div class="meta">allstrings.se · Båstad · 56.4° N</div>
+    <h1><img class="logo" src="img/logo_white.png" alt="All Strings Attached"></h1>
+    <div>
+      <p class="sub">Designföremål av använda tennissträngar. Insamlade på tennisklubbar och turneringar, omsmälta och formade i Båstad.</p>
+      <p class="meta" style="margin-top:22px">Grundat 2026 · Första kollektionen 2027</p>
+    </div>
+  </div>
+  <div class="pic4">
+    <figure><img src="img/nat_lok.jpg" alt="Naturfärgad vas med mässingsbricka"><figcaption>Lob · natur</figcaption></figure>
+    <figure><img loading="lazy" src="img/pelare.jpg" alt="Hög svart vas"><figcaption>Ace · svart</figcaption></figure>
+    <figure><img loading="lazy" src="img/krok_nat.jpg" alt="Naturfärgad krok med mässing i änden"><figcaption>Grip · natur</figcaption></figure>
+    <figure><img loading="lazy" src="img/skal.jpg" alt="Svart skål med mässingsbricka"><figcaption>Drop · svart</figcaption></figure>
+  </div>
+</header>
+
+<section id="tanken"><div class="wrap">
+  <div class="stats">
+    <div><b>~11 000 ton</b><span>polyestersträng hamnar på deponi varje år, enligt LET</span></div>
+    <div><b>1</b><span>aktör tar strängen vidare idag — LET, som gör tröjor av den. Ingen gör föremål.</span></div>
+    <div><b>20 g</b><span>sträng per racket</span></div>
+    <div><b>6 racketar</b><span>blir en vas</span></div>
+  </div>
+  <div class="head" style="margin-top:clamp(40px,6vw,80px)">
+    <div class="eyebrow">Tanken</div>
+    <h2>En sträng som spelat färdigt har inte slutat vara ett material.</h2>
+  </div>
+  <div class="three">
+    <div><h3>Problemet</h3><p>Varje omsträngning lämnar tolv meter polyester på golvet. Världen över blir det hundratals ton om året — utspritt på tiotusentals butiker, i bitar för små och för sega för industrin. Så det bränns. Ingen tillverkare tar tillbaka det; de tjänar på att sälja nytt.</p></div>
+    <div><h3>Idén</h3><p>Vi hämtar strängen där den klipps: i strängrummet på tennisklubben, i butiken, på turneringen. Vi sorterar vid källan, tvättar, mal, torkar och drar den till filament. Sedan printar vi föremål som människor vill ha hemma — och varje föremål vet varifrån dess sträng kommer.</p></div>
+    <div><h3>Varför det fungerar</h3><p>För en återvinnare är 16 kilo från en butik ingenting. För oss är det hundra vaser med samma historia. Priset sätts av formen och berättelsen, inte av vikten — det är därför det går i liten skala, och därför ingen stor har gjort det.</p></div>
+  </div>
+</div></section>
+
+<section id="kollektionen" style="padding-top:0"><div class="wrap">
+  <div class="head">
+    <div class="eyebrow">Kollektionen</div>
+    <h2>Svart är strängen som den är. Naturfärg är strängen som den blev.</h2>
+  </div>
+  <div class="rowlabel">Svart · 98 % sträng, 2 % pigment</div>
+  <div class="gal">
+    <figure class="s3"><img loading="lazy" src="img/pelare.jpg" alt="Hög svart vas med mässingsbricka"><figcaption>Nº 0002 · Ace · 32 cm</figcaption></figure>
+    <figure class="s5"><img loading="lazy" src="img/lok_svart.jpg" alt="Svart lökvas i närbild med mässingsbricka"><figcaption>Nº 0001 · Lob · 18 cm</figcaption></figure>
+    <figure class="s4"><img loading="lazy" src="img/skal.jpg" alt="Låg svart skål med mässingsbricka"><figcaption>Nº 0003 · Drop · 26 cm</figcaption></figure>
+  </div>
+  <div class="rowlabel">Utan pigment · olika i varje sats, med avsikt</div>
+  <div class="gal">
+    <figure class="s4"><img loading="lazy" src="img/nat_pelare.jpg" alt="Naturfärgad rökgrå hög vas"><figcaption>Nº 0002 · Ace · natur</figcaption></figure>
+    <figure class="s4"><img loading="lazy" src="img/nat_lok.jpg" alt="Naturfärgad lökvas i närbild"><figcaption>Nº 0001 · Lob · natur</figcaption></figure>
+    <figure class="s4"><img loading="lazy" src="img/nat_skal.jpg" alt="Naturfärgad rökgrå skål"><figcaption>Nº 0003 · Drop · natur</figcaption></figure>
+  </div>
+  <div class="rowlabel">Krokar · Grip, svart och natur</div>
+  <div class="gal">
+    <figure class="s4"><img loading="lazy" src="img/krok_sv1.jpg" alt="Svart krok med mässingsbricka nederst på plattan, graverad 0421"><figcaption>Nº 0421 · Grip · svart</figcaption></figure>
+    <figure class="s4"><img loading="lazy" src="img/krok_sv2.jpg" alt="Svart krok med rundad platta och mässingsbricka överst"><figcaption>Nº 0427 · Grip · svart</figcaption></figure>
+    <figure class="s4"><img loading="lazy" src="img/krok_nat.jpg" alt="Naturfärgad krok med mässingsbricka i änden av tappen"><figcaption>Nº 0004 · Grip · natur</figcaption></figure>
+  </div>
+  <div class="gal" style="margin-top:14px">
+    <figure class="s4"><img loading="lazy" src="img/krok_nat2.jpg" alt="Naturfärgad krok med platt arm och mässing i änden"><figcaption>Grip · natur · brickan i änden</figcaption></figure>
+    <figure class="s4"><img loading="lazy" src="img/krok_nat3.jpg" alt="Naturfärgad krok med mässingsbricka på plattan"><figcaption>Grip · natur · brickan på plattan</figcaption></figure>
+    <figure class="s4" style="background:none;display:flex;align-items:end"><p style="max-width:40ch;color:var(--ink-2);font-size:16px;padding:0 0 6px 8px">Kroken är föremålet som tar minst sträng och säljer flest. Två racketar, under två timmar i skrivaren, och den kan hänga i klubbens omklädningsrum innan den hänger hos någon hemma. Brickan sitter antingen på plattan eller i änden av tappen, där handen möter den — två varianter, samma form.</p></figure>
+  </div>
+  <div class="rowlabel">Gul · sömmen som enda dekor</div>
+  <div class="gal">
+    <figure class="s5"><img loading="lazy" src="img/par.jpg" alt="Två höga vaser, gul och svart, med söm i motsatt färg"><figcaption>Ace · paret</figcaption></figure>
+    <figure class="s3"><img loading="lazy" src="img/lok_gul.jpg" alt="Gul lökvas med vit söm"><figcaption>Lob · gul</figcaption></figure>
+    <figure class="s4"><img loading="lazy" src="img/lampa.jpg" alt="Bordslampa med halv tennisboll som skärm"><figcaption>Match · 2028</figcaption></figure>
+  </div>
+  <p class="cap" style="margin-top:22px">Visualiseringar. Första fysiska exemplaren printas när materialet är verifierat.</p>
+
+  <div class="objs" style="margin-top:clamp(40px,6vw,72px)">
+    <div class="obj"><h3>Lob</h3><p>18 cm, rund och tung i foten. Formen som sammanfattar allt.</p><div class="spec"><span>Sträng</span><b>130 g</b><span>Racketar</span><b>6–7</b><span>Printtid</span><b>5 h</b></div></div>
+    <div class="obj"><h3>Ace</h3><p>32 cm, rak och hög. Den som säljer på bild, och den som tar mest sträng.</p><div class="spec"><span>Sträng</span><b>220 g</b><span>Racketar</span><b>11</b><span>Printtid</span><b>8 h</b></div></div>
+    <div class="obj"><h3>Drop</h3><p>26 cm, låg och tung med tjock kant. Inte för mat — för nycklar, för ingenting.</p><div class="spec"><span>Sträng</span><b>215 g</b><span>Racketar</span><b>11</b><span>Printtid</span><b>8 h</b></div></div>
+    <div class="obj"><h3>Grip</h3><p>Krok, 9 cm. Rundad platta, rak tapp, mässing i änden. Den första man köper.</p><div class="spec"><span>Sträng</span><b>40 g</b><span>Racketar</span><b>2</b><span>Printtid</span><b>1,5 h</b></div></div>
+    <div class="obj"><span class="tag">Senare</span><h3>Match</h3><p>Skärmen först, elektriken sedan. En lampa med sladd är elutrustning och kräver CE — det gör vi rätt, inte fort.</p><div class="spec"><span>Sträng</span><b>150–250 g</b><span>Status</span><b>2028</b></div></div>
+  </div>
+</div></section>
+
+<section id="process"><div class="wrap">
+  <div class="proc">
+    <figure><img loading="lazy" src="img/klippet.jpg" alt="Händer klipper ur gamla strängar ur en racket, bitarna faller i en låda"><figcaption class="cap">Här börjar det. Tjugo gram per racket.</figcaption></figure>
+    <div>
+      <div class="eyebrow">Processen</div>
+      <h2>Sex steg från strängrum till hylla.</h2>
+      <p class="lede">Allt sker i vår egen verkstad i Båstad — ingenting skickas till en fabrik vi inte kan visa.</p>
+    </div>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="n">01</div><h3>Samla</h3><p>Tennisklubbar och butiker får en märkt låda med två fack. Strängaren lägger polyester i ena, allt annat i andra.</p></div>
+    <div class="step"><div class="n">02</div><h3>Sortera</h3><p>Bara styv polyestersträng går vidare. Nylon, naturtarm och dämpare plockas bort. Källan noteras på lådan.</p></div>
+    <div class="step"><div class="n">03</div><h3>Tvätta &amp; mal</h3><p>Ljummet vatten, milt diskmedel, noggrann sköljning. Sedan mals strängen till 3–4 mm korn.</p></div>
+    <div class="step"><div class="n">04</div><h3>Torka</h3><p>Polyester tål inte fukt i smältan. Kornen torkas i timmar direkt före nästa steg — aldrig dagen innan.</p></div>
+    <div class="step"><div class="n">05</div><h3>Extrudera</h3><p>Kornen smälts och dras till 1,75 mm tråd, spolas upp och märks med källa och sats. Svart får 2 % pigment. Natur får inget.</p></div>
+    <div class="step"><div class="n">06</div><h3>Printa</h3><p>Två väggar, tung fot, mässingsbricka i en fräst ficka. Tre till åtta timmar per föremål.</p></div>
+  </div>
+</div></section>
+
+<section id="strangen" class="src"><div class="wrap">
+  <figure class="src-hero"><img loading="lazy" src="img/strangare.jpg" alt="Strängare vid strängmaskin i en tennisbutik, racketar på väggen, låda med urklippta strängar på golvet"><figcaption>Butiken. Lådan står redan där.</figcaption></figure>
+  <div class="head">
+    <div class="eyebrow">Strängen</div>
+    <p class="lede">Vi betalar inte för sträng. Den som ger oss sin får något tillbaka som är värt mer: rätten att sälja föremålen som gjorts av den, och behålla marginalen.</p>
+  </div>
+  <div class="srcg">
+    <div><h3>Klubbar</h3><p>En låda i strängrummet, ett glasskåp i klubbhuset. Klubben säljer vaser och pokaler gjorda av sina egna medlemmars strängar och behåller marginalen.</p><span class="mono">Båstad först · sedan Stockholm, Göteborg, Köpenhamn, Oslo</span></div>
+    <div><h3>Turneringar</h3><p>En ATP-vecka ger lika mycket sträng som tio klubbar på ett halvår — och det är proffsens strängar, spårbara till veckan de spelades.</p><span class="mono">Stockholm Open · nov 2026<br>Nordea Open Båstad · juli 2027</span></div>
+    <div><h3>Butiker</h3><p>En strängbutik gör 30 racketar i veckan, mer på sommaren. Det räcker till fyra–fem vaser i veckan — en liten serie, från en person vi känner.</p><span class="mono">Båstad · ca 15–20 kg/år</span></div>
+  </div>
+</div></section>
+
+<section id="dna"><div class="wrap">
+  <div class="head">
+    <div class="eyebrow">DNA</div>
+    <div><h2>Varje föremål bär en sträng av data. Vi kallar den DNA.</h2>
+    <p class="lede" style="margin-top:14px">Numret på mässingsbrickan är nyckeln. Slå det på allstrings.se och hela kedjan rullas upp: vilken klubb, vilka veckor, hur många racketar, vilken sats tråd, vilken skrivare, vilken dag. Inte "återvunnet" — utan exakt varifrån, när och hur.</p></div>
+  </div>
+
+  <div class="strand" aria-label="Spårbarhetskedja för Nº 0001">
+    <div class="node"><div class="k">Källa</div><div class="v">Strängbutiken, Båstad</div><div class="d">Låda 7 · vecka 24–27 2027</div></div>
+    <div class="node"><div class="k">Sträng</div><div class="v">6 racketar · 130 g</div><div class="d">Polyester · 4 fabrikat · sorterad 3 juli</div></div>
+    <div class="node"><div class="k">Sats</div><div class="v">Spole B-2027-014</div><div class="d">Extruderad 9 juli · Ø 1,74 mm · natur</div></div>
+    <div class="node"><div class="k">Print</div><div class="v">Skrivare 2 · 5 h 10 min</div><div class="d">Startad 11 juli 06:40 · 2 väggar · sandfylld fot</div></div>
+    <div class="node"><div class="k">Bricka</div><div class="v">Nº 0001</div><div class="d">Graverad 12 juli · mässing 14 mm</div></div>
+    <div class="node"><div class="k">Såld</div><div class="v">Båstad TS, klubbhuset</div><div class="d">Juli 2027</div></div>
+  </div>
+
+  <div class="trace" style="margin-top:clamp(40px,6vw,72px)">
+    <div class="copy">
+      <h3 style="margin-bottom:12px">Så fungerar det</h3>
+      <p>Varje låda får ett nummer när den ställs ut. Varje spole får ett när den dras. Varje print loggas med spole, skrivare och tid. Brickan graveras sist och knyter ihop allt — <strong>ett nummer, hela vägen tillbaka till strängrummet</strong>.</p>
+      <p>Det är inte bara en berättelse. Det är också vår kvalitetskontroll: går något fel i en sats vet vi exakt vilka föremål som kom ur den.</p>
+    </div>
+    <figure><img loading="lazy" src="img/bricka.jpg" alt="Mässingsbricka infälld i svart vas, graverad Nº 0001"><figcaption class="cap">Nyckeln. 14 mm mässing, 0,5 mm under ytan.</figcaption></figure>
+    <div class="label" aria-label="Uppslag på allstrings.se">
+      <div class="url">allstrings.se/0001</div>
+      <div class="lot">Nº 0001</div>
+      <dl>
+        <dt>Föremål</dt><dd>Lob, 18 cm, natur</dd>
+        <dt>Sträng</dt><dd>98 % använd polyestersträng</dd>
+        <dt>Källa</dt><dd>Strängbutiken, Båstad</dd>
+        <dt>Period</dt><dd>Vecka 24–27, 2027</dd>
+        <dt>Racketar</dt><dd>6 st · 130 g</dd>
+        <dt>Spole</dt><dd>B-2027-014</dd>
+        <dt>Printad</dt><dd>11 juli 2027, Båstad</dd>
+      </dl>
+      <div class="grid" aria-hidden="true"></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="siffror"><div class="wrap">
+  <div class="head">
+    <div class="eyebrow">Siffrorna</div>
+    <h2>Liten investering. Begränsningen är sträng och försäljning, inte maskiner.</h2>
+  </div>
+  <div class="nums">
+    <div>
+      <h3>Investering, år 1</h3>
+      <div class="tw"><table>
+        <thead><tr><th>Post</th><th class="n">kr, ex moms</th></tr></thead>
+        <tbody>
+          <tr><td>Extruder och lindare</td><td class="n">56 000</td></tr>
+          <tr><td>Kvarn</td><td class="n">19 000</td></tr>
+          <tr><td>Torkskåp</td><td class="n">25 000</td></tr>
+          <tr><td>Tre 3D-skrivare</td><td class="n">45 000</td></tr>
+          <tr><td>Materialanalys och tester</td><td class="n">20 000</td></tr>
+          <tr><td>Lokal, inredning, el</td><td class="n">35 000</td></tr>
+          <tr class="tot"><td>Summa</td><td class="n">200 000</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Råvaran kostar ingenting. Pigmentet kostar 3 kr per kilo. Det som kostar är tid.</p>
+    </div>
+    <div>
+      <h3>Tre scenarier</h3>
+      <div class="tw"><table>
+        <thead><tr><th>Per år</th><th class="n">Pilot 2027</th><th class="n">Etablerad 2028</th><th class="n">Tak</th></tr></thead>
+        <tbody>
+          <tr><td>Sträng in, kg</td><td class="n">60</td><td class="n">250</td><td class="n">500</td></tr>
+          <tr><td>Källor</td><td class="n">3</td><td class="n">12</td><td class="n">25</td></tr>
+          <tr><td>Föremål sålda</td><td class="n">400</td><td class="n">1 500</td><td class="n">3 000</td></tr>
+          <tr><td>Snittpris, kr</td><td class="n">900</td><td class="n">950</td><td class="n">1 000</td></tr>
+          <tr class="tot"><td>Omsättning, kr</td><td class="n">360 000</td><td class="n">1,4 M</td><td class="n">3,0 M</td></tr>
+          <tr><td>Skrivare</td><td class="n">2</td><td class="n">4</td><td class="n">8</td></tr>
+          <tr><td>Personal</td><td class="n">1</td><td class="n">2</td><td class="n">3</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note"><em>Illustrativt.</em> 130–220 g per föremål, 6–11 racketar styck. Taket kräver Stockholm Open, Båstad och ett tjugotal klubbar — 500 kg är 25 000 omsträngningar.</p>
+    </div>
+  </div>
+  <div class="cost">
+    <div><b>≈ 100 kr</b><span>Självkostnad per Lob utan egen arbetstid: filament, el, bricka, sand, kartong.</span></div>
+    <div><b>≈ 215 kr</b><span>Med arbetstid räknad till 400 kr/h. Fortfarande 75 % bruttomarginal på 900.</span></div>
+    <div><b>4–5 / vecka</b><span>Vad en strängbutik på 30 racketar i veckan räcker till. En serie, inte en fabrik.</span></div>
+  </div>
+</div></section>
+
+<figure class="bleed"><img loading="lazy" src="img/butik.jpg" alt="Brun kraftlåda med All Strings Attached-logga, öppnad låda och två vaser på en hylla i en designbutik"><figcaption>Lådan. Obestruken kartong, svart tryck, inget mer. Visualisering.</figcaption></figure>
+
+<section id="omvarld"><div class="wrap">
+  <div class="head">
+    <div class="eyebrow">Omvärld — vem gör något liknande, och varför det inte är samma sak</div>
+    <div><h2>LET har visat att strängen går att samla in. Ingen har visat att den går att ställa fram.</h2>
+    <p class="lede" style="margin-top:14px">Finns det redan någon som gör det här? Nästan. Den enda aktör i världen som idag tar hand om använd tennissträng är LET i Boston — men de gör kläder av den, inte föremål. Det här avsnittet finns för att den frågan alltid kommer, och för att svaret stärker vår idé snarare än hotar den.</p>
+    <p class="lede" style="margin-top:14px">LET lanserade i juli 2026 den första tröjan gjord av använd tennissträng, med 5 000 insamlingsställen i fem länder och Winston-Salem Open som första turnering med en officiell strängåtervinningspartner. Det är den bästa nyheten vi kunde få: någon annan har redan bevisat att strängare packar lådor, att turneringar vill vara med och att det går att tjäna pengar på det. Vi gör något annat av samma sträng.</p></div>
+  </div>
+  <figure class="let"><div class="let3"><img loading="lazy" src="img/let1.jpg" alt="LET Core Tee, vit"><img loading="lazy" src="img/let2.jpg" alt="LET Core Tee, marinblå"><img loading="lazy" src="img/let3.jpg" alt="LET Core Tee, svart"></div><figcaption class="cap">LET Core Tee, 65 dollar. Cirka 15 racketar per tröja. Foto: let.tennis</figcaption></figure>
+  <div class="cmp">
+    <div class="k"></div><div class="hd">LET<small>Boston · grundat av två f.d. collegespelare</small></div><div class="hd us">All Strings Attached<small>Båstad · verkstad och design</small></div>
+    <div class="k">Produkt</div><div>Tenniskläder. Tröjor, sedan långärmat och shorts. Strängen blir garn, garnet blir tyg.</div><div class="us">Designföremål för hemmet. Vaser, skål, lampa. Strängen blir tråd, tråden blir form.</div>
+    <div class="k">Var strängen syns</div><div>Ingenstans. Tyget ser ut som vilket polyestertyg som helst — historien sitter i etiketten.</div><div class="us">Överallt. Lager för lager, med de svarta flagorna kvar. Historien sitter i ytan och på brickan.</div>
+    <div class="k">Process</div><div>Insamling → sortering → extern återvinningspartner (kemisk/mekanisk till garn) → väveri → sömnad. Flera led, flera länder.</div><div class="us">Insamling → tvätt och malning → egen extruder → egen skrivare. Allt i ett rum, i samma ort som strängen.</div>
+    <div class="k">Sträng per produkt</div><div>Cirka 15 racketar per tröja.</div><div class="us">6 racketar per Lob, 11 per Ace.</div>
+    <div class="k">Spårbarhet</div><div>"100 % spårbart" på materialnivå — batchen, inte klubben.</div><div class="us">Klubb, period och antal racketar graverat på varje föremål.</div>
+    <div class="k">Skala</div><div>Global. 5 000+ insamlingsställen, förbetalda fraktsedlar, centraliserad förädling.</div><div class="us">Skandinavisk. Ett tjugotal klubbar och två ATP-veckor räcker till taket i vår kalkyl.</div>
+    <div class="k">Pris</div><div>65 dollar per tröja.</div><div class="us">900–1 000 kr per föremål.</div>
+    <div class="k">Vem säljer</div><div>LET, via egen webbutik och turneringsmerch.</div><div class="us">Klubben själv, i klubbhuset, med egen marginal.</div>
+  </div>
+  <div class="omv-copy">
+    <div><h3>Vad LET bevisat åt oss</h3><p>Att strängare faktiskt sparar strängen om de får en låda och en anledning. Att en ATP-turnering vill ha en återvinningspartner på pressreleasen. Att marknaden köper "gjord av tennissträng" utan att se strängen — vi tror den betalar mer när den gör det.</p><p>LET uppger själva att råvaran är deras största logistiska och ekonomiska utmaning. Det är precis vad vi bygger bort med att vara lokala: strängen från Båstad går tvärs över gatan, inte över Atlanten.</p></div>
+    <div><h3>Risken, och svaret</h3><p>Om LET öppnar i Europa konkurrerar vi om samma lådor på samma turneringar. Svaret är att vi inte behöver alla lådor. LET behöver ton, vi behöver kilon — och en klubb som får sina egna vaser tillbaka ger inte bort sin sträng till en tröja i Boston.</p><p>Det andra svaret: vi gör inte kläder. Det finns ingen anledning att slåss om den delen. Samma sträng, två helt olika hyllor.</p></div>
+  </div>
+</div></section>
+
+<section id="status"><div class="wrap">
+  <div class="head">
+    <div class="eyebrow">Var vi står</div>
+    <p class="lede">Vi säger inte att det fungerar förrän det gjort det. Just nu mäter tre oberoende parter materialet.</p>
+  </div>
+  <div class="tl">
+    <div class="now"><div class="when"><i></i>Sep 2026</div><h3>Materialet verifieras</h3><p>RISE analyserar polymeren. Noztek och 3devo bedömer extrudering. Insamling i Båstad startar.</p></div>
+    <div><div class="when"><i></i>Okt 2026</div><h3>Första extrudern</h3><p>Extruder, kvarn och tork på plats i Båstad. Första spolen dras.</p></div>
+    <div><div class="when"><i></i>Nov 2026</div><h3>Stockholm Open</h3><p>Insamlingslåda i strängrummet under turneringsveckan. Första proffskällan.</p></div>
+    <div><div class="when"><i></i>Vår 2027</div><h3>Första kollektionen</h3><p>Grip, Lob, Ace och Drop i svart och natur. Glasskåp hos de första klubbarna.</p></div>
+    <div><div class="when"><i></i>Juli 2027</div><h3>Båstad</h3><p>Lansering under Nordea Open — på platsen strängarna kommer ifrån.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="who">
+    <div>
+      <div class="eyebrow">Vem</div>
+      <h2>Ett designföretag med en verkstad, inte en fabrik med en butik.</h2>
+      <p>All Strings Attached är ett litet designföretag med egen verkstad i Båstad, på samma ort som strängarna. Materialet, processen och spårbarheten är vår del. Formen gör vi tillsammans med olika designers — varje serie får sin formgivare, och namnet står på brickan bredvid källan.</p>
+    </div>
+    <div>
+      <div class="eyebrow" style="margin-bottom:8px">Partners och rådgivare</div>
+      <div class="partner"><b>RISE</b><span>Materialanalys av strängen: polymer, smältpunkt, nedbrytning. Mölndal.</span></div>
+      <div class="partner"><b>Noztek</b><span>Extrudertillverkare, Storbritannien. Första partner på filamentsidan, följer projektet.</span></div>
+      <div class="partner"><b>3devo</b><span>Materialvalidering och extruderingslinje, Utrecht.</span></div>
+      <div class="partner"><b>Klubbar</b><span>Båstad först. Sedan de stora klubbarna i Skandinavien — KLTK och SALK i Stockholm, Göteborg, KB i Köpenhamn, Oslo Tennisklubb.</span></div>
+      <div class="partner"><b>Turneringar</b><span>Stockholm Open och Nordea Open i Båstad — proffsens strängar, spårbara till turneringsveckan.</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="verkstaden"><div class="wrap">
+  <div class="head">
+    <div class="eyebrow">Verkstaden</div>
+    <div><h2>Skrivbordsmaskiner, inte en fabrik.</h2>
+    <p class="lede" style="margin-top:14px">Hela linjen får plats på två bänkar. Steg 1 är en brittisk extruder och lindare som levereras på två veckor. Steg 2, när volymen finns, är en holländsk produktionslinje med laser­mätning av tråden.</p></div>
+  </div>
+  <div class="mach">
+    <figure><div class="ph"><img loading="lazy" src="img/m_touch.webp" alt="Noztek Touch extruder"></div><figcaption><h3>Noztek Touch</h3><div class="role">Extruder · steg 1</div><p>Smälter kornen och pressar 1,75 mm tråd. Pekskärm, 4 kg/dygn. Tillverkaren har bekräftat att 3–5 mm strängkorn matar fint.</p><div class="price">≈ 30 000 kr<small>£2 245 ex moms, 10 % rabatt förhandlad</small></div></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="img/m_line.webp" alt="Noztek lindare, dragverk, kylbana och Xcalibur"></div><figcaption><h3>Noztek Winder 2.0</h3><div class="role">Lindare och dragverk · steg 1</div><p>Drar tråden i jämn hastighet, mäter diametern och spolar upp. Med lindare hålls ±0,10 mm — tillräckligt för egna skrivare.</p><div class="price">≈ 30 000 kr<small>£2 495 ex moms</small></div></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="img/m_dry.webp" alt="Torkskåp för plastgranulat"></div><figcaption><h3>Granulattork</h3><div class="role">Tork · steg 1</div><p>Polyester måste vara torr när den smälts, annars blir tråden porös. Torkas i timmar direkt före extrudering. Här en Moretto X Comb, begagnad marknad finns.</p><div class="price">15–25 000 kr<small>beroende på storlek</small></div></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="img/m_one.webp" alt="3devo Filament Maker ONE"></div><figcaption><h3>3devo Filament Maker ONE</h3><div class="role">Extruder · steg 2</div><p>Extruder, lasermätning och lindare i ett hus. Fyra värmezoner, ±0,05 mm. Det är den här som gör tråden säljbar till andra.</p><div class="price">≈ 82 000 kr<small>€7 277 ex moms</small></div></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="img/m_two.webp" alt="3devo Filament Maker TWO med dragverk"></div><figcaption><h3>3devo Filament Maker TWO</h3><div class="role">Produktionslinje · steg 2, vid volym</div><p>Större skruv, dragverk och luftkylning för kontinuerlig körning. Aktuell först om turneringarna ger 250 kg om året.</p><div class="price">≈ 200 000 kr<small>€17 900 ex moms</small></div></figcaption></figure>
+    <figure><div class="ph"><img loading="lazy" src="img/m_gp20.webp" alt="3devo GP20 kvarn"></div><figcaption><h3>3devo GP20</h3><div class="role">Kvarn · steg 2</div><p>Industrikvarn som mal strängen till jämna korn. I steg 1 räcker en mindre kvarn eller malning hos partner.</p><div class="price">≈ 120 000 kr<small>€10 800 ex moms · steg 1: ≈ 19 000 kr</small></div></figcaption></figure>
+  </div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+  <div class="bigline">Varje sträng har spelat.<br>Nu får den stå still och vara vacker.</div>
+</div></section>
+
+<footer><div class="wrap">
+  <img src="img/logo_ink.png" alt="All Strings Attached" style="height:44px;width:auto"><span>Båstad</span><span>hej@allstrings.se</span><span>© 2026 All Strings Attached</span>
+</div></footer>
+
+</body>
+</html>
