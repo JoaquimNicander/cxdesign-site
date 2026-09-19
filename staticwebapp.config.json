@@ -1,7 +1,7 @@
 {
   "routes": [
     { "route": "/ledskarmar", "rewrite": "/ledskarmar.html" },
-    { "route": "/allstrings", "rewrite": "/allstrings/index.html" }
+    { "route": "/allstrings", "redirect": "/allstrings/", "statusCode": 308 }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
