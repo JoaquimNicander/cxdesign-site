@@ -48,6 +48,7 @@
 
   /* ---------- HERO: produkt + färgval ---------- */
   .hero{position:relative;min-height:90vh;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:40px;padding:70px 0 60px;overflow:hidden}
+  .hero .txt{padding-left:clamp(0px,6vw,96px)}
   .hero .ey{display:inline-flex;align-items:center;gap:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.26em;font-size:.74rem;font-weight:700;margin-bottom:22px}
   .hero .ey::before{content:"";width:28px;height:2px;background:var(--accent)}
   .hero h1{font-size:clamp(3.2rem,9vw,8.4rem);font-weight:900;letter-spacing:-.05em;line-height:.86}
@@ -181,6 +182,7 @@
 
   @media(max-width:920px){
     .hero{grid-template-columns:1fr;padding-top:40px;gap:10px;min-height:auto}
+    .hero .txt{padding-left:0}
     .stage{order:-1;height:46vh;max-height:46vh;aspect-ratio:auto;margin-top:16px}
     .stage .prod{width:auto;max-width:78%;max-height:88%}
     .stage .disc,.stage .ring{inset:4% 10%}
@@ -221,7 +223,7 @@
 
 <!-- HERO -->
 <header class="hero wrap">
-  <div>
+  <div class="txt">
     <div class="ey">Profilprodukt · Bygghandel</div>
     <h1>Hantverkar&shy;kalsongen<span class="year">Upplaga 2027</span></h1>
     <p class="lede">Boxern med verktygsbältet. Svart, packad i en låda med er logga. Och för varje par går <strong>20 kr till Prostatacancerfonden</strong>.</p>
