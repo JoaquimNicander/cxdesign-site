@@ -30,8 +30,24 @@
   @media(max-width:520px){.pill .l{display:none}.pill .s{display:inline}}
   .pill{background:var(--ink);color:var(--paper);border-radius:999px;padding:10px 20px;font-size:.85rem;font-weight:700}
 
+  /* ---------- FILM överst ---------- */
+  .film{position:relative;width:100%;aspect-ratio:16/9;max-height:88vh;background:var(--ink);overflow:hidden;margin-top:64px}
+  .film video,.film iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+  .film .ph{position:absolute;inset:0;display:grid;place-items:center;color:var(--paper);text-align:center;overflow:hidden}
+  .film .ph img{position:absolute;right:-4%;bottom:-8%;width:46%;opacity:.18;filter:grayscale(1);transform:rotate(-6deg)}
+  .film .ph .c{position:relative;z-index:1;display:grid;justify-items:center;gap:18px;padding:20px}
+  .film .play{width:92px;height:92px;border-radius:50%;background:var(--accent);display:grid;place-items:center;box-shadow:0 20px 40px rgba(255,77,46,.35);animation:pulse 2.6s ease-in-out infinite}
+  .film .play::after{content:"";margin-left:6px;border-left:26px solid #fff;border-top:16px solid transparent;border-bottom:16px solid transparent}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+  .film .ph h2{font-size:clamp(1.6rem,4vw,3.2rem);font-weight:800;letter-spacing:-.03em;line-height:1}
+  .film .ph .k{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#c9c1b1}
+  .film .ph .note{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:1;font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#8a8172;border:1px dashed #8a8172;padding:4px 10px;border-radius:4px;white-space:nowrap}
+  .film .corner{position:absolute;z-index:2;top:22px;left:32px;display:flex;align-items:center;gap:10px;color:var(--paper);font-weight:700;font-size:.9rem}
+  .film .corner i{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;box-shadow:0 0 0 4px rgba(255,77,46,.25)}
+  @media(max-width:920px){.film{aspect-ratio:4/3;margin-top:58px}.film .play{width:68px;height:68px}.film .play::after{border-left-width:20px;border-top-width:12px;border-bottom-width:12px}.film .corner{left:20px;top:16px}}
+
   /* ---------- HERO: produkt + färgval ---------- */
-  .hero{position:relative;min-height:100vh;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:40px;padding:120px 0 60px;overflow:hidden}
+  .hero{position:relative;min-height:90vh;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:40px;padding:70px 0 60px;overflow:hidden}
   .hero .ey{display:inline-flex;align-items:center;gap:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.26em;font-size:.74rem;font-weight:700;margin-bottom:22px}
   .hero .ey::before{content:"";width:28px;height:2px;background:var(--accent)}
   .hero h1{font-size:clamp(3.2rem,9vw,8.4rem);font-weight:900;letter-spacing:-.05em;line-height:.86}
@@ -164,7 +180,7 @@
   .mock{position:fixed;bottom:0;left:0;right:0;z-index:80;background:rgba(255,77,46,.12);border-top:1px dashed var(--accent);color:#b8371f;font-size:.72rem;font-weight:700;text-align:center;padding:6px;font-family:'IBM Plex Mono',monospace;letter-spacing:.08em}
 
   @media(max-width:920px){
-    .hero{grid-template-columns:1fr;padding-top:110px;gap:10px;min-height:auto}
+    .hero{grid-template-columns:1fr;padding-top:40px;gap:10px;min-height:auto}
     .stage{order:-1;height:46vh;max-height:46vh;aspect-ratio:auto;margin-top:16px}
     .stage .prod{width:auto;max-width:78%;max-height:88%}
     .stage .disc,.stage .ring{inset:4% 10%}
@@ -188,6 +204,20 @@
   <img src="../logo-ink.png" alt="CX Design">
   <a class="pill" href="#stall"><span class="l">20 kr/par till fonden</span><span class="s">20 kr/par</span></a>
 </div></nav>
+
+<!-- FILM (byt källa i VIDEO-inställningen längst ner i filen) -->
+<section class="film" id="film">
+  <div class="corner"><i></i>Om projektet</div>
+  <div class="ph" id="filmPh">
+    <img src="img/gra-bak.png" alt="" aria-hidden="true">
+    <div class="c">
+      <div class="play" aria-hidden="true"></div>
+      <h2>Hantverkarkalsongen 2027</h2>
+      <div class="k">Film · spelas in inom kort</div>
+    </div>
+    <div class="note">Platshållare – byts mot filmen</div>
+  </div>
+</section>
 
 <!-- HERO -->
 <header class="hero wrap">
@@ -283,6 +313,16 @@
 <div class="mock">FÖRHANDSVISNING — EJ PUBLICERAD</div>
 
 <script>
+  // ===== VIDEO-INSTÄLLNING =====
+  // type: 'none' (platshållare) | 'file' (uppladdad fil, t.ex. 'media/kalsonger-2027.mp4') | 'youtube' (video-id) | 'vimeo' (video-id)
+  const VIDEO={type:'none',src:'',poster:''};
+  (function(){
+    const sec=document.getElementById('film'),ph=document.getElementById('filmPh');
+    if(VIDEO.type==='file'&&VIDEO.src){const v=document.createElement('video');v.src=VIDEO.src;if(VIDEO.poster)v.poster=VIDEO.poster;v.controls=true;v.playsInline=true;v.preload='metadata';ph.replaceWith(v);}
+    else if(VIDEO.type==='youtube'&&VIDEO.src){const f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+VIDEO.src+'?rel=0&modestbranding=1';f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';f.allowFullscreen=true;f.title='Film om Hantverkarkalsongen 2027';ph.replaceWith(f);}
+    else if(VIDEO.type==='vimeo'&&VIDEO.src){const f=document.createElement('iframe');f.src='https://player.vimeo.com/video/'+VIDEO.src+'?dnt=1&title=0&byline=0&portrait=0';f.allow='autoplay; fullscreen; picture-in-picture';f.allowFullscreen=true;f.title='Film om Hantverkarkalsongen 2027';ph.replaceWith(f);}
+  })();
+
   // Karusell i heron
   const stage=document.getElementById('stage'),slides=[...stage.querySelectorAll('.slide')],dots=document.getElementById('dots'),ring=document.getElementById('ringLbl');
   const discs={'':'radial-gradient(circle at 50% 42%,#f7f3ea 0,#e6dfd0 60%,transparent 70%)',gra:'radial-gradient(circle at 50% 42%,#f7f3ea 0,#e6dfd0 60%,transparent 70%)',bla:'radial-gradient(circle at 50% 42%,#eef2f8 0,#d6dde8 60%,transparent 70%)'};
