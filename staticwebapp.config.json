@@ -1,11 +1,32 @@
 {
   "routes": [
-    { "route": "/ledskarmar", "rewrite": "/ledskarmar.html" },
-    { "route": "/allstrings", "rewrite": "/allstrings/index.html" }
+    {
+      "route": "/ledskarmar",
+      "rewrite": "/ledskarmar.html"
+    },
+    {
+      "route": "/allstrings",
+      "rewrite": "/allstrings/index.html"
+    },
+    {
+      "route": "/xlbygg",
+      "rewrite": "/xlbygg/index.html"
+    }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["/allstrings/*", "/ledskarmar.html", "/*.png", "/*.jpg", "/*.jpeg", "/*.webp", "/*.svg", "/*.css", "/*.js"]
+    "exclude": [
+      "/allstrings/*",
+      "/xlbygg/*",
+      "/ledskarmar.html",
+      "/*.png",
+      "/*.jpg",
+      "/*.jpeg",
+      "/*.webp",
+      "/*.svg",
+      "/*.css",
+      "/*.js"
+    ]
   },
   "responseOverrides": {
     "404": {
