@@ -48,28 +48,28 @@
   @media(max-width:920px){.film{aspect-ratio:4/3;margin-top:58px}.film .play{width:68px;height:68px}.film .play::after{border-left-width:20px;border-top-width:12px;border-bottom-width:12px}.film .corner{left:20px;top:16px}}
 
   /* ---------- HERO: produkt + färgval ---------- */
-  .hero{position:relative;min-height:90vh;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:40px;padding:70px 0 60px;overflow:hidden}
+  .hero{position:relative;min-height:90vh;display:grid;grid-template-columns:.85fr 1.15fr;align-items:center;gap:40px;padding:70px 0 60px;overflow:hidden}
   .hero .txt{padding-left:clamp(0px,6vw,96px)}
   .hero .ey{display:inline-flex;align-items:center;gap:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.26em;font-size:.74rem;font-weight:700;margin-bottom:22px}
   .hero .ey::before{content:"";width:28px;height:2px;background:var(--accent)}
-  .hero h1{font-size:clamp(3.2rem,9vw,8.4rem);font-weight:900;letter-spacing:-.05em;line-height:.86}
+  .hero h1{font-size:clamp(2.8rem,6.4vw,6rem);font-weight:900;letter-spacing:-.05em;line-height:.88}
   .hero h1 .year{display:block;color:var(--muted);font-weight:800;font-size:.46em;letter-spacing:-.03em;margin-top:.18em}
-  .hero p.lede{max-width:40ch;font-size:1.2rem;color:#39332c;font-weight:500;margin-top:30px}
+  .hero p.lede{max-width:40ch;font-size:1.1rem;color:#39332c;font-weight:500;margin-top:26px}
   .hero .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:34px}
   .btn{background:var(--accent);color:#fff;font-weight:700;padding:16px 32px;border-radius:999px;font-size:1rem;display:inline-flex;align-items:center;gap:10px;transition:transform .3s var(--e-out)}
   .btn:hover{transform:translateY(-2px)}
   .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid rgba(20,17,14,.3)}
 
   /* produktscen */
-  .stage{position:relative;aspect-ratio:1/1;max-height:78vh;display:grid;place-items:center}
+  .stage{position:relative;aspect-ratio:1/1;max-height:84vh;display:grid;place-items:center}
   .stage .disc{position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle at 50% 42%,#f7f3ea 0,#e6dfd0 60%,transparent 70%);transition:background .6s var(--e-out)}
   .stage .ring{position:absolute;inset:6%;border-radius:50%;border:1.5px dashed rgba(20,17,14,.22);animation:spin 60s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   .stage .ring span{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--paper);padding:0 10px;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
   .stage .slide{position:absolute;inset:0;z-index:2;display:grid;place-items:center;opacity:0;transform:scale(.96) translateY(10px);transition:opacity .7s var(--e-out),transform .9s var(--e-out);pointer-events:none}
   .stage .slide.on{opacity:1;transform:none}
-  .stage .slide img{width:auto;height:auto;max-width:82%;max-height:82%;filter:drop-shadow(0 30px 40px rgba(20,17,14,.22))}
-  .stage .slide.box img{max-height:88%;max-width:60%}
+  .stage .slide img{width:auto;height:auto;max-width:90%;max-height:90%;filter:drop-shadow(0 30px 40px rgba(20,17,14,.22))}
+  .stage .slide.box img{max-height:94%;max-width:64%}
   .stage .slide.box img{animation:sway 7s ease-in-out infinite}
   @keyframes sway{0%,100%{transform:rotate(-1.5deg) translateY(0)}50%{transform:rotate(1.5deg) translateY(-8px)}}
   .stage .ring span{transition:opacity .3s}
