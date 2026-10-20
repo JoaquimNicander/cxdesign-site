@@ -89,13 +89,11 @@
   .pack ul{list-style:none;margin-top:20px;display:grid;gap:10px}
   .pack li{display:flex;gap:10px;align-items:baseline;font-weight:500}
   .pack li::before{content:"■";color:var(--accent);font-size:.66rem}
-  .boxes{position:relative;display:flex;justify-content:center;align-items:flex-end;gap:0;min-height:420px}
-  .boxes img{width:46%;filter:drop-shadow(0 26px 34px rgba(20,17,14,.25));transition:transform .6s var(--e-out)}
-  .boxes img:first-child{transform:translateX(12%) rotate(-3deg)}
-  .boxes img:last-child{transform:translateX(-12%) rotate(3deg) translateY(10px)}
-  .boxes:hover img:first-child{transform:translateX(4%) rotate(-5deg)}
-  .boxes:hover img:last-child{transform:translateX(-4%) rotate(5deg) translateY(10px)}
-  .boxes .tag{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:var(--paper);border:1px solid rgba(20,17,14,.18);padding:6px 12px;border-radius:999px;font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .boxes{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,3vw,40px);align-items:end}
+  .boxes figure{display:grid;gap:14px;justify-items:center}
+  .boxes img{width:100%;max-width:300px;height:auto;filter:drop-shadow(0 28px 30px rgba(20,17,14,.22));transition:transform .6s var(--e-out)}
+  .boxes figure:hover img{transform:translateY(-8px)}
+  .boxes figcaption{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:center;padding-top:12px;border-top:1px solid rgba(20,17,14,.18);width:100%}
 
   /* ---------- Prostatacancerfonden / kalkylator ---------- */
   .give{padding:110px 0 90px}
@@ -154,7 +152,7 @@
     .stage .ring span{display:none}
     .back{font-size:.8rem}.nav-in img{height:26px}
     .steps-grid{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid rgba(20,17,14,.12);padding-left:0!important}
-    .pack{margin:0 16px}.pack .in{grid-template-columns:1fr}.boxes{min-height:320px}
+    .pack{margin:0 16px}.pack .in{grid-template-columns:1fr}
     .give-grid,.contact-grid{grid-template-columns:1fr;gap:34px}
     .specs-grid{grid-template-columns:1fr 1fr}
     .wrap{padding:0 20px}.nav-in{padding:14px 20px}
@@ -232,9 +230,8 @@
       </ul>
     </div>
     <div class="boxes">
-      <span class="tag">XL-BYGG Materialmännen · XL-BYGG Åkersberga</span>
-      <img src="img/box.png" alt="Förpackning med XL-BYGG Materialmännens logga" loading="lazy">
-      <img src="img/box2.png" alt="Förpackning med XL-BYGG Åkersbergas logga" loading="lazy">
+      <figure><img src="img/box.png" alt="Förpackning med XL-BYGG Materialmännens logga" loading="lazy"><figcaption>XL-BYGG Materialmännen</figcaption></figure>
+      <figure><img src="img/box2.png" alt="Förpackning med XL-BYGG Åkersbergas logga" loading="lazy"><figcaption>XL-BYGG Åkersberga</figcaption></figure>
     </div>
   </div>
 </section>
