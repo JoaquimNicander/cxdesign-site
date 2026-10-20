@@ -101,15 +101,10 @@
   .give h2{font-size:clamp(2rem,5.4vw,4.4rem);font-weight:900;letter-spacing:-.04em;line-height:.92}
   .give h2 em{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-weight:400;color:var(--blue)}
   .give p{color:#3a352f;font-size:1.1rem;margin-top:22px;font-weight:500;max-width:46ch}
-  .calc{background:#fff;border:1px solid rgba(20,17,14,.14);border-radius:22px;padding:clamp(24px,3.6vw,40px)}
-  .calc .lbl{display:flex;justify-content:space-between;align-items:baseline;font-weight:700}
-  .calc .lbl span{font-family:'IBM Plex Mono',monospace;font-size:.78rem;letter-spacing:.08em;color:var(--muted)}
-  .calc input[type=range]{width:100%;margin:22px 0 10px;accent-color:var(--accent)}
-  .calc .out{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px;padding-top:22px;border-top:1px dashed rgba(20,17,14,.22)}
-  .calc .out .k{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-  .calc .out .v{font-size:clamp(1.7rem,3.4vw,2.6rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin-top:6px;font-variant-numeric:tabular-nums}
-  .calc .out .v.blue{color:var(--blue)}
-  .calc .fine{margin-top:18px;font-size:.84rem;color:var(--muted)}
+  .big{display:grid;align-content:center;justify-items:start;gap:10px;padding:clamp(24px,3.6vw,40px);border-left:3px solid var(--blue);height:100%}
+  .big .k{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .big .n{font-size:clamp(5rem,14vw,11rem);font-weight:900;letter-spacing:-.06em;line-height:.85;color:var(--blue)}
+  .big .n span{font-size:.3em;font-weight:800;letter-spacing:-.02em;margin-left:.1em;color:var(--ink)}
 
   /* ---------- Specs ---------- */
   .specs{padding:30px 0 100px}
@@ -120,22 +115,14 @@
   .spec .v small{display:block;font-weight:500;color:#3a352f;font-size:.92rem;margin-top:4px}
   .todo{display:inline-block;background:rgba(255,77,46,.12);color:#b8371f;border:1px dashed var(--accent);padding:2px 8px;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;margin-left:6px;vertical-align:middle}
 
-  /* ---------- Offert ---------- */
+  /* ---------- Kontakt ---------- */
   .contact{margin:0 0 0;background:var(--ink);color:var(--paper);border-radius:28px;padding:clamp(40px,7vw,90px)}
-  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:start}
+  .contact .r{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;margin-top:34px}
+  .contact .r p{margin-top:0}
+  .btn2{background:var(--accent);color:#fff;font-weight:700;padding:15px 32px;border-radius:999px;display:inline-block}
   .contact h2{font-size:clamp(2rem,6vw,4.8rem);font-weight:800;letter-spacing:-.04em;line-height:.94}
   .contact h2 span{color:var(--accent)}
   .contact p{color:#c9c1b1;margin-top:20px;font-size:1.05rem;max-width:40ch}
-  form{display:grid;gap:14px}
-  .f2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  label{display:grid;gap:6px;font-size:.8rem;font-weight:600;color:#c9c1b1}
-  input,select,textarea{font:inherit;color:var(--paper);background:rgba(239,233,221,.06);border:1px solid rgba(239,233,221,.22);border-radius:10px;padding:13px 14px;width:100%;outline:none}
-  input:focus,select:focus,textarea:focus{border-color:var(--accent)}
-  select option{color:var(--ink)}
-  textarea{min-height:90px;resize:vertical}
-  .btn2{background:var(--accent);color:#fff;font-weight:700;padding:15px 32px;border-radius:999px;border:0;cursor:pointer;font-size:1rem;justify-self:start}
-  .alt{margin-top:14px;font-size:.9rem;color:#c9c1b1}
-  .alt a{text-decoration:underline;text-underline-offset:3px}
 
   footer{padding:34px 0 60px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 
@@ -153,11 +140,11 @@
     .back{font-size:.8rem}.nav-in img{height:26px}
     .steps-grid{grid-template-columns:1fr}.step{border-right:0;border-bottom:1px solid rgba(20,17,14,.12);padding-left:0!important}
     .pack{margin:0 16px}.pack .in{grid-template-columns:1fr}
-    .give-grid,.contact-grid{grid-template-columns:1fr;gap:34px}
+    .give-grid{grid-template-columns:1fr;gap:34px}
     .specs-grid{grid-template-columns:1fr 1fr}
     .wrap{padding:0 20px}.nav-in{padding:14px 20px}
   }
-  @media(max-width:520px){.f2{grid-template-columns:1fr}.specs-grid{grid-template-columns:1fr}}
+  @media(max-width:520px){.specs-grid{grid-template-columns:1fr}}
   @media (prefers-reduced-motion:reduce){*{animation:none!important}.obs{opacity:1;transform:none}}
 </style>
 </head>
@@ -167,7 +154,7 @@
 <nav><div class="nav-in">
   <a class="back" href="../index.html"><span class="accent">←</span> CX Design</a>
   <img src="../logo-ink.png" alt="CX Design">
-  <a class="pill" href="#offert">Begär offert</a>
+  <a class="pill" href="#fonden">20 kr/par till fonden</a>
 </div></nav>
 
 <!-- HERO -->
@@ -182,8 +169,7 @@
       <button class="sw" data-c="bla" role="radio" aria-checked="false"><i></i><span class="nm">Blå</span></button>
     </div>
     <div class="cta">
-      <a class="btn" href="#offert">Begär offert <span>→</span></a>
-      <a class="btn ghost" href="#fonden">20 kr/par till fonden</a>
+      <a class="btn" href="#fonden">20 kr/par till Prostatacancerfonden <span>→</span></a>
     </div>
   </div>
   <div class="stage" id="stage">
@@ -210,7 +196,7 @@
 <!-- STEG -->
 <section class="steps"><div class="wrap">
   <div class="steps-grid">
-    <div class="step obs"><div class="n">01 — Välj</div><h3>Färg & antal</h3><p>Grå eller blå – eller en mix. Ni bestämmer volym, vi tar fram pris och leveranstid.</p></div>
+    <div class="step obs"><div class="n">01 — Välj</div><h3>Färg & antal</h3><p>Grå eller blå – eller en mix. De flesta tar 50 eller 100 par till butiken.</p></div>
     <div class="step obs"><div class="n">02 — Profilera</div><h3>Er logga på lådan</h3><p>Skicka er logotyp så sätter vi den på förpackningen. Ni får ett korrektur att godkänna innan tryck.</p></div>
     <div class="step obs"><div class="n">03 — Ge tillbaka</div><h3>20 kr per par</h3><p>För varje sålt par skänks 20 kr till Prostatacancerfonden. Ni kan berätta det för era kunder – med gott samvete.</p></div>
   </div>
@@ -245,15 +231,10 @@
       <p>Prostatacancer är Sveriges vanligaste cancerform – och den drabbar precis den målgrupp som bär de här kalsongerna. Därför går 20 kr från varje par, oavkortat, till Prostatacancerfonden.</p>
       <p style="margin-top:12px"><a href="https://prostatacancerfonden.se" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px;font-weight:600">Läs mer om Prostatacancerfonden ↗</a></p>
     </div>
-    <div class="calc obs" aria-live="polite">
-      <div class="lbl">Räkna på er beställning <span>dra i reglaget</span></div>
-      <input type="range" id="qty" min="50" max="2000" step="50" value="500" aria-label="Antal par">
-      <div class="lbl" style="font-weight:600;color:#3a352f"><span style="font-family:inherit;font-size:1rem;letter-spacing:0;color:#3a352f">Antal par</span><strong id="qtyOut" style="font-variant-numeric:tabular-nums">500</strong></div>
-      <div class="out">
-        <div><div class="k">Till Prostatacancerfonden</div><div class="v blue" id="donOut">10 000 kr</div></div>
-        <div><div class="k">Motsvarar</div><div class="v" id="eqOut">500 par</div></div>
-      </div>
-      <div class="fine">20 kr per par. Bidraget redovisas öppet i er leverans.</div>
+    <div class="big obs">
+      <div class="k">Per sålt par</div>
+      <div class="n">20<span>kr</span></div>
+      <div class="k">oavkortat till Prostatacancerfonden</div>
     </div>
   </div>
 </div></section>
@@ -268,30 +249,12 @@
   </div>
 </div></section>
 
-<!-- OFFERT -->
-<section class="wrap" id="offert"><div class="contact obs">
-  <div class="contact-grid">
-    <div>
-      <h2>Vill ni ha er logga <span>på lådan?</span></h2>
-      <p>Berätta hur många par ni tänker er och vilka färger. Vi återkommer med pris, leveranstid och ett korrektur på förpackningen.</p>
-    </div>
-    <form id="offertForm">
-      <div class="f2">
-        <label>Företag<input name="foretag" required placeholder="Bygghandel AB"></label>
-        <label>Kontaktperson<input name="namn" required placeholder="För- och efternamn"></label>
-      </div>
-      <div class="f2">
-        <label>E-post<input name="epost" type="email" required placeholder="namn@foretag.se"></label>
-        <label>Telefon<input name="tel" type="tel" placeholder="070-…"></label>
-      </div>
-      <div class="f2">
-        <label>Ungefärligt antal par<select name="antal"><option>50–100</option><option>100–250</option><option selected>250–500</option><option>500–1000</option><option>1000+</option></select></label>
-        <label>Färger<select name="farg"><option>Mix av båda</option><option>Grå</option><option>Blå</option></select></label>
-      </div>
-      <label>Övrigt<textarea name="ovrigt" placeholder="Önskat leveransdatum, flera butiker, frågor…"></textarea></label>
-      <button class="btn2" type="submit">Skicka förfrågan →</button>
-      <div class="alt">Eller mejla direkt: <a href="mailto:joaquim@cxdesign.se?subject=Hantverkarkalsongen%202027">joaquim@cxdesign.se</a></div>
-    </form>
+<!-- KONTAKT -->
+<section class="wrap" id="kontakt"><div class="contact obs">
+  <h2>Frågor om kalsongerna <span>eller fonden?</span></h2>
+  <div class="r">
+    <p>Hör av dig till Joaquim på CX Design – om produkten, förpackningen eller hur bidraget till Prostatacancerfonden redovisas.</p>
+    <a class="btn2" href="mailto:joaquim@cxdesign.se?subject=Hantverkarkalsongen%202027">joaquim@cxdesign.se</a>
   </div>
 </div></section>
 
@@ -317,19 +280,6 @@
     setTimeout(()=>{prod.src=imgs[c];prod.alt=alts[c];prod.classList.remove('swap');},220);
     stage.querySelector('.disc').style.background=discs[c];
   }));
-
-  // Kalkylator
-  const q=document.getElementById('qty');
-  const fmt=n=>n.toLocaleString('sv-SE');
-  const upd=()=>{const n=+q.value;qtyOut.textContent=fmt(n);donOut.textContent=fmt(n*20)+' kr';eqOut.textContent=fmt(n)+' par';};
-  q.addEventListener('input',upd);upd();
-
-  // Formulär → mejl (statisk sajt)
-  document.getElementById('offertForm').addEventListener('submit',e=>{
-    e.preventDefault();const d=new FormData(e.target);
-    const body=[...d.entries()].map(([k,v])=>k+': '+v).join('\n');
-    location.href='mailto:joaquim@cxdesign.se?subject='+encodeURIComponent('Offert – Hantverkarkalsongen 2027 ('+d.get('foretag')+')')+'&body='+encodeURIComponent(body);
-  });
 
   // Scroll-reveal
   const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});
