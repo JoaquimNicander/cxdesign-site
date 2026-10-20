@@ -124,12 +124,13 @@
 
   /* ---------- Ställ ingår ---------- */
   .stand{padding:110px 0 60px}
-  .stand-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(30px,6vw,90px);align-items:center}
-  .stand-img{position:relative;aspect-ratio:10/9;border-radius:22px;overflow:hidden;box-shadow:0 30px 50px rgba(20,17,14,.22);background:#e7e0d2}
+  .stand-grid{display:grid;grid-template-columns:.78fr 1.22fr;gap:clamp(30px,5vw,80px);align-items:stretch}
+  .stand-img{position:relative;height:100%;min-height:480px}
+  .stand-img .sf.photo{border-radius:22px;overflow:hidden;box-shadow:0 30px 50px rgba(20,17,14,.22)}
   .stand-img .sf{position:absolute;inset:0;opacity:0;transition:opacity .9s var(--e-out)}
   .stand-img .sf.on{opacity:1}
   .stand-img .sf img{width:100%;height:100%;object-fit:cover;display:block}
-  .stand-img .sf.render img{position:absolute;inset:0;margin:auto;width:auto;height:86%;max-width:86%;object-fit:contain;filter:drop-shadow(0 26px 30px rgba(20,17,14,.3))}
+  .stand-img .sf.render img{position:absolute;inset:0;margin:auto;width:auto;height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 26px 30px rgba(20,17,14,.3))}
   .sf-dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:2}
   .sf-dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.55);box-shadow:0 0 0 1px rgba(0,0,0,.25)}
   .sf-dots i.on{background:#fff;transform:scale(1.3)}
@@ -147,7 +148,7 @@
   .offer .t{font-weight:700;line-height:1.2}
   .offer .t small{display:block;font-weight:500;color:var(--muted);font-size:.86rem;margin-top:2px}
   .offer .row:first-child .t small{color:#c9c1b1}
-  @media(max-width:920px){.stand-grid{grid-template-columns:1fr}.stand-img{order:-1}}
+  @media(max-width:920px){.stand-grid{grid-template-columns:1fr}.stand-img{order:-1;height:auto;aspect-ratio:3/4;min-height:0}}
 
   /* ---------- Prostatacancerfonden / kalkylator ---------- */
   .give{padding:110px 0 90px}
@@ -282,8 +283,8 @@
   <div class="stand-grid">
     <div class="stand-img obs" id="standFade">
       <div class="sf on render"><img src="img/stall.png" alt="Golvstället med XL-BYGG-logga, friställt" loading="lazy" width="667" height="1500"></div>
-      <div class="sf"><img src="img/stall-butik.jpg" alt="Golvstället framför kassan i en bygghandel" loading="lazy" width="1400" height="1260"></div>
-      <div class="sf"><img src="img/stall-avdelning.jpg" alt="Golvstället på avdelningen för arbetskläder" loading="lazy" width="1400" height="1260"></div>
+      <div class="sf photo"><img src="img/stall-butik.jpg" alt="Golvstället framför kassan i en bygghandel" loading="lazy" width="1000" height="1467"></div>
+      <div class="sf photo"><img src="img/stall-avdelning.jpg" alt="Golvstället på avdelningen för arbetskläder" loading="lazy" width="1000" height="1467"></div>
       <div class="sf-dots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
     </div>
     <div class="obs">
