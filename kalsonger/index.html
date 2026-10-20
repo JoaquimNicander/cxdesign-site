@@ -26,6 +26,8 @@
   .nav-in{max-width:var(--max);margin:0 auto;padding:16px 32px;display:flex;align-items:center;justify-content:space-between}
   .nav-in img{height:32px}
   .back{font-weight:600;font-size:.9rem;display:inline-flex;gap:8px;align-items:center}
+  .pill .s{display:none}
+  @media(max-width:520px){.pill .l{display:none}.pill .s{display:inline}}
   .pill{background:var(--ink);color:var(--paper);border-radius:999px;padding:10px 20px;font-size:.85rem;font-weight:700}
 
   /* ---------- HERO: produkt + färgval ---------- */
@@ -46,8 +48,16 @@
   .stage .ring{position:absolute;inset:6%;border-radius:50%;border:1.5px dashed rgba(20,17,14,.22);animation:spin 60s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
   .stage .ring span{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--paper);padding:0 10px;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-  .stage .prod{position:relative;z-index:2;width:82%;height:auto;filter:drop-shadow(0 30px 40px rgba(20,17,14,.22));transition:opacity .45s var(--e-out),transform .6s var(--e-out)}
-  .stage .prod.swap{opacity:0;transform:translateY(14px) scale(.98)}
+  .stage .slide{position:absolute;inset:0;z-index:2;display:grid;place-items:center;opacity:0;transform:scale(.96) translateY(10px);transition:opacity .7s var(--e-out),transform .9s var(--e-out);pointer-events:none}
+  .stage .slide.on{opacity:1;transform:none}
+  .stage .slide img{width:auto;height:auto;max-width:82%;max-height:82%;filter:drop-shadow(0 30px 40px rgba(20,17,14,.22))}
+  .stage .slide.box img{max-height:88%;max-width:60%}
+  .stage .slide.box img{animation:sway 7s ease-in-out infinite}
+  @keyframes sway{0%,100%{transform:rotate(-1.5deg) translateY(0)}50%{transform:rotate(1.5deg) translateY(-8px)}}
+  .stage .ring span{transition:opacity .3s}
+  .dots{position:absolute;bottom:2%;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:8px}
+  .dots button{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:rgba(20,17,14,.22);cursor:pointer;transition:transform .3s,background .3s}
+  .dots button.on{background:var(--ink);transform:scale(1.4)}
 
   /* färgval */
   .swatches{display:flex;gap:12px;align-items:center;margin-top:40px}
@@ -154,7 +164,7 @@
 <nav><div class="nav-in">
   <a class="back" href="../index.html"><span class="accent">←</span> CX Design</a>
   <img src="../logo-ink.png" alt="CX Design">
-  <a class="pill" href="#fonden">20 kr/par till fonden</a>
+  <a class="pill" href="#fonden"><span class="l">20 kr/par till fonden</span><span class="s">20 kr/par</span></a>
 </div></nav>
 
 <!-- HERO -->
@@ -174,8 +184,13 @@
   </div>
   <div class="stage" id="stage">
     <div class="disc"></div>
-    <div class="ring"><span>Verktygsbälte · 2 färger · er logga</span></div>
-    <img class="prod" id="prod" src="img/gra.png" alt="Hantverkarkalsong, grå" width="1142" height="908" fetchpriority="high">
+    <div class="ring"><span id="ringLbl">Förpackning · XL-BYGG Materialmännen</span></div>
+    <div class="slide box on" data-lbl="Förpackning · XL-BYGG Materialmännen" data-c=""><img src="img/box.png" alt="Förpackning med XL-BYGG Materialmännens logga" width="486" height="921" fetchpriority="high"></div>
+    <div class="slide" data-lbl="Grå · framsida" data-c="gra"><img src="img/gra.png" alt="Hantverkarkalsong, grå" width="1142" height="908"></div>
+    <div class="slide box" data-lbl="Förpackning · XL-BYGG Åkersberga" data-c=""><img src="img/box2.png" alt="Förpackning med XL-BYGG Åkersbergas logga" width="494" height="931"></div>
+    <div class="slide" data-lbl="Grå · baksida" data-c="gra"><img src="img/gra-bak.png" alt="Hantverkarkalsong, grå, baksida" width="1400" height="1062"></div>
+    <div class="slide" data-lbl="Blå · framsida" data-c="bla"><img src="img/bla.png" alt="Hantverkarkalsong, blå" width="996" height="728"></div>
+    <div class="dots" id="dots" aria-hidden="true"></div>
   </div>
 </header>
 
@@ -266,20 +281,19 @@
 <div class="mock">FÖRHANDSVISNING — EJ PUBLICERAD</div>
 
 <script>
-  // Färgval
-  const imgs={gra:'img/gra.png',bla:'img/bla.png'};
-  const alts={gra:'Hantverkarkalsong, grå',bla:'Hantverkarkalsong, blå'};
-  const discs={gra:'radial-gradient(circle at 50% 42%,#f7f3ea 0,#e6dfd0 60%,transparent 70%)',
-               bla:'radial-gradient(circle at 50% 42%,#eef2f8 0,#d6dde8 60%,transparent 70%)'};
-  const prod=document.getElementById('prod'),stage=document.getElementById('stage');
-  Object.values(imgs).forEach(s=>{const i=new Image();i.src=s});
-  document.querySelectorAll('.sw').forEach(b=>b.addEventListener('click',()=>{
-    const c=b.dataset.c;
-    document.querySelectorAll('.sw').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-checked',x===b)});
-    prod.classList.add('swap');
-    setTimeout(()=>{prod.src=imgs[c];prod.alt=alts[c];prod.classList.remove('swap');},220);
-    stage.querySelector('.disc').style.background=discs[c];
-  }));
+  // Karusell i heron
+  const stage=document.getElementById('stage'),slides=[...stage.querySelectorAll('.slide')],dots=document.getElementById('dots'),ring=document.getElementById('ringLbl');
+  const discs={'':'radial-gradient(circle at 50% 42%,#f7f3ea 0,#e6dfd0 60%,transparent 70%)',gra:'radial-gradient(circle at 50% 42%,#f7f3ea 0,#e6dfd0 60%,transparent 70%)',bla:'radial-gradient(circle at 50% 42%,#eef2f8 0,#d6dde8 60%,transparent 70%)'};
+  let cur=0,timer;
+  slides.forEach((_,i)=>{const b=document.createElement('button');b.addEventListener('click',()=>{go(i);restart()});dots.appendChild(b)});
+  function go(i){cur=(i+slides.length)%slides.length;slides.forEach((sl,k)=>sl.classList.toggle('on',k===cur));[...dots.children].forEach((d,k)=>d.classList.toggle('on',k===cur));
+    const sl=slides[cur];ring.style.opacity=0;setTimeout(()=>{ring.textContent=sl.dataset.lbl;ring.style.opacity=1},300);
+    stage.querySelector('.disc').style.background=discs[sl.dataset.c];
+    const c=sl.dataset.c;document.querySelectorAll('.sw').forEach(x=>{const on=c&&x.dataset.c===c;x.classList.toggle('on',on);x.setAttribute('aria-checked',on)});}
+  function restart(){clearInterval(timer);if(!matchMedia('(prefers-reduced-motion:reduce)').matches)timer=setInterval(()=>go(cur+1),3800)}
+  go(0);restart();
+  stage.addEventListener('mouseenter',()=>clearInterval(timer));stage.addEventListener('mouseleave',restart);
+  document.querySelectorAll('.sw').forEach(b=>b.addEventListener('click',()=>{const i=slides.findIndex(sl=>sl.dataset.c===b.dataset.c);if(i>-1){go(i);restart()}}));
 
   // Scroll-reveal
   const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});
