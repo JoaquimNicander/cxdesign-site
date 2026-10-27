@@ -13,6 +13,10 @@
       "rewrite": "/allstrings/index.html"
     },
     {
+      "route": "/xlbygg/k/*",
+      "rewrite": "/xlbygg/index.html"
+    },
+    {
       "route": "/xlbygg",
       "rewrite": "/xlbygg/index.html"
     }

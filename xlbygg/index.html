@@ -326,6 +326,31 @@
 
 
 <script>
+  // ===== SPÅRNING =====
+  // Adressen /xlbygg/k/<kod> visar exakt samma sida – ingen vidarebefordran,
+  // ingen mellansida. Koden skickas iväg i bakgrunden med sendBeacon, som
+  // överlever att man klickar vidare direkt. Inget väntar på svar.
+  (function(){
+    var m = location.pathname.match(/\/xlbygg\/k\/([a-z0-9-]{1,40})/i);
+    var kod = (m ? m[1] : new URLSearchParams(location.search).get('k') || '').toLowerCase();
+    if(!kod) return;
+    var data = JSON.stringify({
+      code: kod,
+      user_agent: navigator.userAgent.slice(0,300),
+      referrer: document.referrer.slice(0,300),
+      lang: navigator.language || ''
+    });
+    var url = 'https://cxdesign.vercel.app/api/open';
+    try{
+      var blob = new Blob([data], {type:'application/json'});
+      if(!(navigator.sendBeacon && navigator.sendBeacon(url, blob))){
+        fetch(url, {method:'POST', body:data, headers:{'Content-Type':'application/json'},
+                    keepalive:true, mode:'cors'}).catch(function(){});
+      }
+    }catch(e){}
+    if(history.replaceState) history.replaceState(null,'','/xlbygg/');
+  })();
+
   // ===== VIDEO-INSTÄLLNING =====
   // type: 'none' (platshållare) | 'file' (uppladdad fil, t.ex. 'media/kalsonger-2027.mp4') | 'youtube' (video-id) | 'vimeo' (video-id)
   const VIDEO={type:'file',src:'media/kalsongerna.mp4',poster:'media/kalsongerna-poster.jpg'};
