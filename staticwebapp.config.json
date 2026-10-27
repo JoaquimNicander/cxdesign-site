@@ -2,7 +2,7 @@
   "routes": [
     {
       "route": "/k/*",
-      "rewrite": "/k/index.html"
+      "rewrite": "/xlbygg/index.html"
     },
     {
       "route": "/ledskarmar",

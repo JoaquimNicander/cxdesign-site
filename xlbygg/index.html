@@ -331,7 +331,9 @@
   // ingen mellansida. Koden skickas iväg i bakgrunden med sendBeacon, som
   // överlever att man klickar vidare direkt. Inget väntar på svar.
   (function(){
-    var m = location.pathname.match(/\/xlbygg\/k\/([a-z0-9-]{1,40})/i);
+    // Både cxdesign.se/k/<kod> och cxdesign.se/xlbygg/k/<kod> visar den här
+    // sidan direkt. Adressen skrivs bara om i fönstret efteråt.
+    var m = location.pathname.match(/\/(?:xlbygg\/)?k\/([a-z0-9-]{1,40})/i);
     var kod = (m ? m[1] : new URLSearchParams(location.search).get('k') || '').toLowerCase();
     if(!kod) return;
     var data = JSON.stringify({
