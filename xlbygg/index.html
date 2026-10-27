@@ -332,14 +332,11 @@
   (function(){
     const sec=document.getElementById('film'),ph=document.getElementById('filmPh');
     if(VIDEO.type==='file'&&VIDEO.src){
-      const v=document.createElement('video');v.src=VIDEO.src;if(VIDEO.poster)v.poster=VIDEO.poster;v.playsInline=true;v.preload='metadata';v.setAttribute('controlsList','nodownload');
+      const v=document.createElement('video');v.src=VIDEO.src;if(VIDEO.poster)v.poster=VIDEO.poster;v.playsInline=true;v.preload='auto';v.setAttribute('controlsList','nodownload');
       const ov=document.createElement('button');ov.className='film-start';ov.type='button';ov.setAttribute('aria-label','Spela filmen');
       ov.innerHTML='<span class="play"></span><span class="t">Se filmen</span><span class="d">4 min 42 s</span>';
       ph.replaceWith(v);sec.appendChild(ov);
-      ov.addEventListener('click',()=>{ov.remove();v.controls=true;v.muted=false;const p=v.play();
-        const fs=()=>{if(v.requestFullscreen)v.requestFullscreen().catch(()=>{});else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen();else if(sec.webkitRequestFullscreen)sec.webkitRequestFullscreen();};
-        if(p&&p.then)p.then(fs).catch(fs);else fs();});
-      v.addEventListener('ended',()=>{if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});});
+      ov.addEventListener('click',()=>{ov.remove();v.controls=true;v.muted=false;v.play().catch(()=>{});});
     }
     else if(VIDEO.type==='youtube'&&VIDEO.src){const f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+VIDEO.src+'?rel=0&modestbranding=1';f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';f.allowFullscreen=true;f.title='Film om Hantverkarkalsongen 2027';ph.replaceWith(f);}
     else if(VIDEO.type==='vimeo'&&VIDEO.src){const f=document.createElement('iframe');f.src='https://player.vimeo.com/video/'+VIDEO.src+'?dnt=1&title=0&byline=0&portrait=0';f.allow='autoplay; fullscreen; picture-in-picture';f.allowFullscreen=true;f.title='Film om Hantverkarkalsongen 2027';ph.replaceWith(f);}
