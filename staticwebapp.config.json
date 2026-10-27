@@ -39,6 +39,8 @@
   "mimeTypes": {
     ".json": "application/json",
     ".webp": "image/webp",
-    ".svg": "image/svg+xml"
+    ".svg": "image/svg+xml",
+    ".mp4": "video/mp4",
+    ".jpg": "image/jpeg"
   }
 }
