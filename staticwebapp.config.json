@@ -1,6 +1,10 @@
 {
   "routes": [
     {
+      "route": "/k/*",
+      "rewrite": "/k/index.html"
+    },
+    {
       "route": "/ledskarmar",
       "rewrite": "/ledskarmar.html"
     },
@@ -16,6 +20,7 @@
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
+      "/k/*",
       "/allstrings/*",
       "/xlbygg/*",
       "/ledskarmar.html",

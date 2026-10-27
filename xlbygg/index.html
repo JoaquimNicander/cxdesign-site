@@ -332,7 +332,7 @@
   (function(){
     const sec=document.getElementById('film'),ph=document.getElementById('filmPh');
     if(VIDEO.type==='file'&&VIDEO.src){
-      const v=document.createElement('video');v.src=VIDEO.src;if(VIDEO.poster)v.poster=VIDEO.poster;v.playsInline=true;v.preload='auto';v.setAttribute('controlsList','nodownload');
+      const v=document.createElement('video');v.src=VIDEO.src;if(VIDEO.poster)v.poster=VIDEO.poster;v.setAttribute('playsinline','');v.setAttribute('webkit-playsinline','');v.playsInline=true;v.preload='auto';v.setAttribute('controlsList','nodownload');
       const ov=document.createElement('button');ov.className='film-start';ov.type='button';ov.setAttribute('aria-label','Spela filmen');
       ov.innerHTML='<span class="play"></span><span class="t">Se filmen</span><span class="d">4 min 42 s</span>';
       ph.replaceWith(v);sec.appendChild(ov);
