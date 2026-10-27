@@ -45,8 +45,16 @@
   .film .ph .note{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:1;font-family:'IBM Plex Mono',monospace;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#8a8172;border:1px dashed #8a8172;padding:4px 10px;border-radius:4px;white-space:nowrap}
   .film .corner{position:absolute;z-index:2;top:22px;left:32px;display:flex;align-items:center;gap:10px;color:var(--paper);font-weight:700;font-size:.9rem}
   .film .corner i{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;box-shadow:0 0 0 4px rgba(255,77,46,.25)}
-  @media(max-width:920px){.film{aspect-ratio:4/3;margin-top:58px}.film .play{width:68px;height:68px}.film .play::after{border-left-width:20px;border-top-width:12px;border-bottom-width:12px}.film .corner{left:20px;top:16px}}
+  @media(max-width:920px){.film{aspect-ratio:16/9;margin-top:58px}.film .play{width:68px;height:68px}.film .play::after{border-left-width:20px;border-top-width:12px;border-bottom-width:12px}.film .corner{left:20px;top:16px}}
 
+  .film video{background:#000;object-fit:contain}
+  .film-start{position:absolute;inset:0;z-index:3;width:100%;height:100%;border:0;background:linear-gradient(180deg,rgba(20,17,14,.15),rgba(20,17,14,.55));color:var(--paper);cursor:pointer;display:grid;place-items:center;align-content:center;gap:12px;font:inherit;padding:0}
+  .film-start .play{width:92px;height:92px;border-radius:50%;background:var(--accent);display:grid;place-items:center;box-shadow:0 20px 40px rgba(255,77,46,.35);transition:transform .3s var(--e-out)}
+  .film-start .play::after{content:"";margin-left:6px;border-left:26px solid #fff;border-top:16px solid transparent;border-bottom:16px solid transparent}
+  .film-start:hover .play{transform:scale(1.06)}
+  .film-start .t{font-size:clamp(1.3rem,3vw,2.2rem);font-weight:800;letter-spacing:-.03em;text-shadow:0 2px 14px rgba(0,0,0,.4)}
+  .film-start .d{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:#e6dfd0}
+  @media(max-width:920px){.film-start .play{width:68px;height:68px}.film-start .play::after{border-left-width:20px;border-top-width:12px;border-bottom-width:12px}}
   /* ---------- HERO: produkt + färgval ---------- */
   .hero{position:relative;min-height:90vh;display:grid;grid-template-columns:.85fr 1.15fr;align-items:center;gap:40px;padding:70px 0 60px;overflow:hidden}
   .hero .txt{padding-left:clamp(0px,6vw,96px)}
@@ -320,10 +328,19 @@
 <script>
   // ===== VIDEO-INSTÄLLNING =====
   // type: 'none' (platshållare) | 'file' (uppladdad fil, t.ex. 'media/kalsonger-2027.mp4') | 'youtube' (video-id) | 'vimeo' (video-id)
-  const VIDEO={type:'none',src:'',poster:''};
+  const VIDEO={type:'file',src:'media/kalsongerna.mp4',poster:'media/kalsongerna-poster.jpg'};
   (function(){
     const sec=document.getElementById('film'),ph=document.getElementById('filmPh');
-    if(VIDEO.type==='file'&&VIDEO.src){const v=document.createElement('video');v.src=VIDEO.src;if(VIDEO.poster)v.poster=VIDEO.poster;v.controls=true;v.playsInline=true;v.preload='metadata';ph.replaceWith(v);}
+    if(VIDEO.type==='file'&&VIDEO.src){
+      const v=document.createElement('video');v.src=VIDEO.src;if(VIDEO.poster)v.poster=VIDEO.poster;v.playsInline=true;v.preload='metadata';v.setAttribute('controlsList','nodownload');
+      const ov=document.createElement('button');ov.className='film-start';ov.type='button';ov.setAttribute('aria-label','Spela filmen');
+      ov.innerHTML='<span class="play"></span><span class="t">Se filmen</span><span class="d">4 min 42 s</span>';
+      ph.replaceWith(v);sec.appendChild(ov);
+      ov.addEventListener('click',()=>{ov.remove();v.controls=true;v.muted=false;const p=v.play();
+        const fs=()=>{if(v.requestFullscreen)v.requestFullscreen().catch(()=>{});else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen();else if(sec.webkitRequestFullscreen)sec.webkitRequestFullscreen();};
+        if(p&&p.then)p.then(fs).catch(fs);else fs();});
+      v.addEventListener('ended',()=>{if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});});
+    }
     else if(VIDEO.type==='youtube'&&VIDEO.src){const f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+VIDEO.src+'?rel=0&modestbranding=1';f.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';f.allowFullscreen=true;f.title='Film om Hantverkarkalsongen 2027';ph.replaceWith(f);}
     else if(VIDEO.type==='vimeo'&&VIDEO.src){const f=document.createElement('iframe');f.src='https://player.vimeo.com/video/'+VIDEO.src+'?dnt=1&title=0&byline=0&portrait=0';f.allow='autoplay; fullscreen; picture-in-picture';f.allowFullscreen=true;f.title='Film om Hantverkarkalsongen 2027';ph.replaceWith(f);}
   })();
