@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — Projekt — CX Design</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#efe9dd;--card:#f6f2e9;--ink:#14110e;--muted:#8a8172;--accent:#ff4d2e;--green:#2f8f5b;--line:rgba(20,17,14,.14);--e:cubic-bezier(.23,1,.32,1)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter Tight',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px}
+  .mono{font-family:'IBM Plex Mono',monospace}
+  header{border-bottom:1px solid var(--line);padding:22px 0}
+  header .in{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  header img{height:28px}
+  .tag{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  h1{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin:34px 0 18px}
+  .btn{border:0;border-radius:999px;padding:11px 20px;font-weight:700;font-size:.92rem;cursor:pointer;font-family:inherit;background:var(--ink);color:var(--paper);transition:transform .15s var(--e)}
+  .btn:active{transform:scale(.97)}
+  .btn.acc{background:var(--accent);color:#fff}
+  .btn.ok{background:var(--green);color:#fff}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .btn.sm{padding:7px 13px;font-size:.82rem}
+  input,textarea,select{font-family:inherit;font-size:.95rem;border:1px solid var(--line);border-radius:11px;padding:11px 13px;background:#fff;color:var(--ink);width:100%}
+  textarea{min-height:60px;resize:vertical}
+  .gate{max-width:380px;margin:16vh auto;text-align:center}
+  .gate h2{font-size:1.4rem;font-weight:800;margin-bottom:6px}
+  .gate p{color:var(--muted);margin-bottom:18px}
+  .gate .row{display:flex;gap:10px}
+  .newp{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;display:grid;gap:12px;margin-bottom:24px}
+  .newp .row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:center}
+  .proj{background:var(--card);border:1px solid var(--line);border-radius:16px;margin-bottom:16px;overflow:hidden}
+  .phead{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 20px;cursor:pointer}
+  .phead h3{font-size:1.15rem;font-weight:800}
+  .phead .meta{color:var(--muted);font-size:.84rem;font-weight:600}
+  .counts{display:flex;gap:8px;flex-wrap:wrap}
+  .cnt{border-radius:999px;padding:4px 10px;font-size:.74rem;font-weight:800;color:#fff}
+  .c-review{background:#6b6459}.c-changes{background:var(--accent)}.c-approved{background:var(--green)}
+  .pbody{border-top:1px solid var(--line);padding:18px 20px;display:none}
+  .pbody.open{display:block}
+  .share{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:11px;padding:8px 8px 8px 14px;margin-bottom:18px;flex-wrap:wrap}
+  .share code{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:#3a352f;word-break:break-all;flex:1;min-width:180px}
+  .up{display:grid;gap:10px;background:#fff;border:1px dashed var(--line);border-radius:12px;padding:16px;margin-bottom:18px}
+  .up .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .del{display:flex;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+  .del:last-child{border-bottom:0}
+  .del .th{width:74px;height:56px;border-radius:8px;background:#0b0906;object-fit:cover;flex:0 0 auto}
+  .del .t{flex:1;min-width:0}
+  .del .t b{display:block;font-weight:700}
+  .del .t span{color:var(--muted);font-size:.8rem}
+  .msg{font-size:.85rem;color:var(--muted)}
+  .msg.err{color:var(--accent)}
+  footer{color:var(--muted);font-size:.82rem;padding:30px 0 50px}
+</style>
+</head>
+<body>
+<header><div class="wrap in">
+  <img src="logo-ink.png" alt="CX Design">
+  <span class="tag">Projekt · Admin</span>
+</div></header>
+
+<main class="wrap" id="app">
+  <div class="gate">
+    <h2>Admin-inloggning</h2>
+    <p>Ange din admin-nyckel för att hantera projekt.</p>
+    <div class="row"><input id="key" type="password" placeholder="Admin-nyckel" autofocus><button class="btn" id="enter">Logga in</button></div>
+    <div class="msg err" id="gerr" style="margin-top:10px"></div>
+  </div>
+</main>
+<footer class="wrap">CX Design · granskningsportal</footer>
+
+<script>
+const SB="https://fueggdqtgmvldjbhcdfn.supabase.co";
+const KEY="sb_publishable_vZCnLnp41c29DFN7MLpYsQ_AUBnxJPy";
+const FN=SB+"/functions/v1/admin";
+const CLIENT=location.origin+location.pathname.replace(/projekt-admin\.html$/,"projekt.html");
+const STL={review:"Att granska",changes:"Ändring begärd",approved:"Godkänt"};
+let AKEY=sessionStorage.getItem("cxd_akey")||"";
+const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PUB=SB+"/storage/v1/object/public/proofing/";
+async function api(body){
+  const r=await fetch(FN,{method:"POST",headers:{"Content-Type":"application/json",apikey:KEY,"x-admin-key":AKEY},body:JSON.stringify(body)});
+  const t=await r.text(); let j={}; try{j=t?JSON.parse(t):{}}catch{j={error:t}}
+  if(!r.ok) throw new Error(j.error||("HTTP "+r.status));
+  return j;
+}
+document.getElementById("enter").onclick=tryLogin;
+document.getElementById("key").addEventListener("keydown",e=>{if(e.key==="Enter")tryLogin();});
+async function tryLogin(){
+  AKEY=document.getElementById("key").value.trim();
+  try{await api({action:"list"});sessionStorage.setItem("cxd_akey",AKEY);dash();}
+  catch(e){document.getElementById("gerr").textContent="Fel nyckel.";}
+}
+if(AKEY){api({action:"list"}).then(dash).catch(()=>{});}
+
+let STATE={projects:[],dels:[]};
+async function dash(){
+  const d=await api({action:"list"});
+  STATE.projects=d.projects||[]; STATE.dels=d.deliverables||[];
+  let h='<h1>Projekt</h1>';
+  h+='<div class="newp"><div class="row"><input id="np-name" placeholder="Projektnamn, t.ex. Sveriges Fria Bygghandlare"><input id="np-client" placeholder="Kund (valfritt)"><button class="btn acc" id="np-add">Skapa projekt</button></div></div>';
+  for(const p of STATE.projects){
+    const ds=STATE.dels.filter(x=>x.project_id===p.id);
+    const c={review:0,changes:0,approved:0}; ds.forEach(x=>c[x.status]++);
+    h+='<div class="proj" data-id="'+p.id+'"><div class="phead" onclick="toggle(\''+p.id+'\')">'
+      +'<div><h3>'+esc(p.name)+'</h3>'+(p.client?'<div class="meta">'+esc(p.client)+'</div>':'')+'</div>'
+      +'<div class="counts">'
+      +(c.review?'<span class="cnt c-review">'+c.review+' att granska</span>':'')
+      +(c.changes?'<span class="cnt c-changes">'+c.changes+' ändring</span>':'')
+      +(c.approved?'<span class="cnt c-approved">'+c.approved+' godkänt</span>':'')
+      +(ds.length?'':'<span class="meta">tom</span>')
+      +'</div></div><div class="pbody" id="pb-'+p.id+'"></div></div>';
+  }
+  document.getElementById("app").innerHTML=h;
+  document.getElementById("np-add").onclick=createProject;
+}
+function toggle(id){
+  const el=document.getElementById("pb-"+id);
+  if(el.classList.contains("open")){el.classList.remove("open");return;}
+  el.classList.add("open"); renderBody(id);
+}
+function renderBody(id){
+  const p=STATE.projects.find(x=>x.id===id);
+  const link=CLIENT+"?p="+id;
+  const ds=STATE.dels.filter(x=>x.project_id===id);
+  let h='<div class="share"><code>'+esc(link)+'</code><button class="btn ghost sm" onclick="copyLink(\''+link.replace(/'/g,"")+'\')">Kopiera länk</button><a class="btn ghost sm" href="'+link+'" target="_blank" style="text-decoration:none">Öppna</a></div>';
+  h+='<div class="up"><div class="row"><input id="u-title-'+id+'" placeholder="Titel på leveransen"></div>'
+    +'<textarea id="u-desc-'+id+'" placeholder="Beskrivning (valfritt)"></textarea>'
+    +'<div class="row"><input type="file" id="u-file-'+id+'" accept="image/*,video/*" style="border:0;padding:0;background:transparent">'
+    +'<button class="btn acc sm" onclick="upload(\''+id+'\')">Ladda upp</button>'
+    +'<span class="msg" id="u-msg-'+id+'"></span></div></div>';
+  h+='<div id="dels-'+id+'">'+delsHTML(id,ds)+'</div>';
+  h+='<div style="margin-top:14px"><button class="btn ghost sm" onclick="delProject(\''+id+'\',\''+esc(p.name).replace(/'/g,"")+'\')">Radera projekt</button></div>';
+  document.getElementById("pb-"+id).innerHTML=h;
+}
+function delsHTML(pid,ds){
+  if(!ds.length) return '<div class="msg">Inga leveranser än. Ladda upp ovan.</div>';
+  // behöver titel/path – hämta från klient-RPC inte tillgängligt här; använd admin list räcker ej. Visa minimalt via status.
+  return ds.map(d=>'<div class="del"><div class="t"><b>'+esc(d.title||d.id.slice(0,8))+'</b><span>'+STL[d.status]+'</span></div>'
+    +'<select onchange="setStatus(\''+d.id+'\',this.value,\''+pid+'\')">'
+    +['review','changes','approved'].map(s=>'<option value="'+s+'" '+(d.status===s?"selected":"")+'>'+STL[s]+'</option>').join("")
+    +'</select>'
+    +'<button class="btn ghost sm" onclick="delDeliverable(\''+d.id+'\',\''+pid+'\')">Radera</button></div>').join("");
+}
+async function createProject(){
+  const name=document.getElementById("np-name").value.trim();
+  if(!name)return;
+  const client=document.getElementById("np-client").value.trim();
+  try{await api({action:"create_project",name,client});await dash();}catch(e){alert(e.message);}
+}
+async function upload(pid){
+  const f=document.getElementById("u-file-"+pid).files[0];
+  const title=document.getElementById("u-title-"+pid).value.trim();
+  const desc=document.getElementById("u-desc-"+pid).value.trim();
+  const msg=document.getElementById("u-msg-"+pid);
+  if(!f){msg.textContent="Välj en fil.";msg.className="msg err";return;}
+  if(!title){msg.textContent="Ange en titel.";msg.className="msg err";return;}
+  msg.className="msg";msg.textContent="Laddar upp…";
+  try{
+    const s=await api({action:"sign_upload",project:pid,filename:f.name});
+    const put=await fetch(s.uploadUrl,{method:"PUT",headers:{"content-type":f.type||"application/octet-stream","x-upsert":"true"},body:f});
+    if(!put.ok) throw new Error("Uppladdning misslyckades ("+put.status+")");
+    const kind=(f.type||"").startsWith("video")?"video":"image";
+    await api({action:"add_deliverable",project:pid,title,description:desc,kind,storage_path:s.path});
+    msg.textContent="Klart!"; await refreshProject(pid);
+  }catch(e){msg.className="msg err";msg.textContent=e.message;}
+}
+async function refreshProject(pid){
+  const d=await api({action:"list"}); STATE.projects=d.projects||[]; STATE.dels=d.deliverables||[];
+  renderBody(pid);
+}
+async function setStatus(id,st,pid){try{await api({action:"set_status",deliverable:id,status:st});await refreshProject(pid);}catch(e){alert(e.message);}}
+async function delDeliverable(id,pid){if(!confirm("Radera leveransen?"))return;try{await api({action:"delete_deliverable",deliverable:id});await refreshProject(pid);}catch(e){alert(e.message);}}
+async function delProject(id,name){if(!confirm("Radera projektet \""+name+"\" och allt i det?"))return;try{await api({action:"delete_project",project:id});await dash();}catch(e){alert(e.message);}}
+function copyLink(t){navigator.clipboard.writeText(t).then(()=>{},()=>{});}
+window.toggle=toggle;window.copyLink=copyLink;window.upload=upload;window.setStatus=setStatus;window.delDeliverable=delDeliverable;window.delProject=delProject;
+</script>
+</body>
+</html>
