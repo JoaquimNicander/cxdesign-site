@@ -126,23 +126,44 @@ function renderBody(id){
   const link=CLIENT+"?p="+id;
   const ds=STATE.dels.filter(x=>x.project_id===id);
   let h='<div class="share"><code>'+esc(link)+'</code><button class="btn ghost sm" onclick="copyLink(\''+link.replace(/'/g,"")+'\')">Kopiera länk</button><a class="btn ghost sm" href="'+link+'" target="_blank" style="text-decoration:none">Öppna</a></div>';
-  h+='<div class="up"><div class="row"><input id="u-title-'+id+'" placeholder="Titel på leveransen"></div>'
+  h+='<div class="up"><div style="font-weight:700;margin-bottom:2px">Lägg till del</div>'
+    +'<div class="row"><input id="u-title-'+id+'" placeholder="Titel, t.ex. Logotyp animerad"></div>'
     +'<textarea id="u-desc-'+id+'" placeholder="Beskrivning (valfritt)"></textarea>'
     +'<div class="row"><input type="file" id="u-file-'+id+'" accept="image/*,video/*" style="border:0;padding:0;background:transparent">'
-    +'<button class="btn acc sm" onclick="upload(\''+id+'\')">Ladda upp</button>'
-    +'<span class="msg" id="u-msg-'+id+'"></span></div></div>';
+    +'<button class="btn acc sm" onclick="addPart(\''+id+'\')">Lägg till del</button>'
+    +'<span class="msg" id="u-msg-'+id+'"></span></div>'
+    +'<div class="msg">Tips: lämna filen tom för en <b>planerad</b> del — ladda upp filen senare.</div></div>';
   h+='<div id="dels-'+id+'">'+delsHTML(id,ds)+'</div>';
   h+='<div style="margin-top:14px"><button class="btn ghost sm" onclick="delProject(\''+id+'\',\''+esc(p.name).replace(/'/g,"")+'\')">Radera projekt</button></div>';
   document.getElementById("pb-"+id).innerHTML=h;
 }
+function thumb(d){
+  if(d.storage_path){
+    if(d.kind==="video") return '<div class="th" style="display:grid;place-items:center;color:#fff;font-size:1.1rem">▶</div>';
+    return '<img class="th" src="'+PUB+d.storage_path+'" alt="">';
+  }
+  return '<div class="th" style="display:grid;place-items:center;background:#e7e0d2;color:var(--muted);font-size:.62rem;text-align:center;line-height:1.1;padding:4px">Väntar<br>på fil</div>';
+}
 function delsHTML(pid,ds){
-  if(!ds.length) return '<div class="msg">Inga leveranser än. Ladda upp ovan.</div>';
-  // behöver titel/path – hämta från klient-RPC inte tillgängligt här; använd admin list räcker ej. Visa minimalt via status.
-  return ds.map(d=>'<div class="del"><div class="t"><b>'+esc(d.title||d.id.slice(0,8))+'</b><span>'+STL[d.status]+'</span></div>'
+  if(!ds.length) return '<div class="msg">Inga delar än. Lägg till planerade delar eller ladda upp ovan.</div>';
+  return ds.map(d=>'<div class="del">'+thumb(d)
+    +'<div class="t"><b>'+esc(d.title||"(utan titel)")+'</b><span>'+STL[d.status]+(d.storage_path?'':' · ingen fil än')+'</span></div>'
     +'<select onchange="setStatus(\''+d.id+'\',this.value,\''+pid+'\')">'
     +['review','changes','approved'].map(s=>'<option value="'+s+'" '+(d.status===s?"selected":"")+'>'+STL[s]+'</option>').join("")
     +'</select>'
+    +'<label class="btn ghost sm" style="cursor:pointer">'+(d.storage_path?"Byt fil":"Ladda upp fil")+'<input type="file" accept="image/*,video/*" style="display:none" onchange="attachFile(\''+d.id+'\',\''+pid+'\',this)"></label>'
     +'<button class="btn ghost sm" onclick="delDeliverable(\''+d.id+'\',\''+pid+'\')">Radera</button></div>').join("");
+}
+async function doUpload(pid,file){
+  const s=await api({action:"sign_upload",project:pid,filename:file.name});
+  const put=await fetch(s.uploadUrl,{method:"PUT",headers:{"content-type":file.type||"application/octet-stream","x-upsert":"true"},body:file});
+  if(!put.ok) throw new Error("Uppladdning misslyckades ("+put.status+")");
+  return {path:s.path, kind:(file.type||"").startsWith("video")?"video":"image"};
+}
+async function attachFile(delId,pid,input){
+  const f=input.files[0]; if(!f) return;
+  try{const u=await doUpload(pid,f);await api({action:"attach_file",deliverable:delId,storage_path:u.path,kind:u.kind});await refreshProject(pid);}
+  catch(e){alert(e.message);}
 }
 async function createProject(){
   const name=document.getElementById("np-name").value.trim();
@@ -150,20 +171,16 @@ async function createProject(){
   const client=document.getElementById("np-client").value.trim();
   try{await api({action:"create_project",name,client});await dash();}catch(e){alert(e.message);}
 }
-async function upload(pid){
-  const f=document.getElementById("u-file-"+pid).files[0];
+async function addPart(pid){
   const title=document.getElementById("u-title-"+pid).value.trim();
   const desc=document.getElementById("u-desc-"+pid).value.trim();
+  const f=document.getElementById("u-file-"+pid).files[0];
   const msg=document.getElementById("u-msg-"+pid);
-  if(!f){msg.textContent="Välj en fil.";msg.className="msg err";return;}
   if(!title){msg.textContent="Ange en titel.";msg.className="msg err";return;}
-  msg.className="msg";msg.textContent="Laddar upp…";
+  msg.className="msg";msg.textContent=f?"Laddar upp…":"Lägger till…";
   try{
-    const s=await api({action:"sign_upload",project:pid,filename:f.name});
-    const put=await fetch(s.uploadUrl,{method:"PUT",headers:{"content-type":f.type||"application/octet-stream","x-upsert":"true"},body:f});
-    if(!put.ok) throw new Error("Uppladdning misslyckades ("+put.status+")");
-    const kind=(f.type||"").startsWith("video")?"video":"image";
-    await api({action:"add_deliverable",project:pid,title,description:desc,kind,storage_path:s.path});
+    const r=await api({action:"add_planned",project:pid,title,description:desc});
+    if(f){const u=await doUpload(pid,f);await api({action:"attach_file",deliverable:r.id,storage_path:u.path,kind:u.kind});}
     msg.textContent="Klart!"; await refreshProject(pid);
   }catch(e){msg.className="msg err";msg.textContent=e.message;}
 }
@@ -175,7 +192,7 @@ async function setStatus(id,st,pid){try{await api({action:"set_status",deliverab
 async function delDeliverable(id,pid){if(!confirm("Radera leveransen?"))return;try{await api({action:"delete_deliverable",deliverable:id});await refreshProject(pid);}catch(e){alert(e.message);}}
 async function delProject(id,name){if(!confirm("Radera projektet \""+name+"\" och allt i det?"))return;try{await api({action:"delete_project",project:id});await dash();}catch(e){alert(e.message);}}
 function copyLink(t){navigator.clipboard.writeText(t).then(()=>{},()=>{});}
-window.toggle=toggle;window.copyLink=copyLink;window.upload=upload;window.setStatus=setStatus;window.delDeliverable=delDeliverable;window.delProject=delProject;
+window.toggle=toggle;window.copyLink=copyLink;window.addPart=addPart;window.attachFile=attachFile;window.setStatus=setStatus;window.delDeliverable=delDeliverable;window.delProject=delProject;
 </script>
 </body>
 </html>

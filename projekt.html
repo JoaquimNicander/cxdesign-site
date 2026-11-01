@@ -118,8 +118,8 @@ function render(){
   h+='</div>';
   document.getElementById("main").innerHTML=h;
   for(const d of items){
-    document.getElementById("ok-"+d.id).onclick=()=>setStatus(d.id,"approved");
-    document.getElementById("ch-"+d.id).onclick=()=>{setStatus(d.id,"changes");document.getElementById("body-"+d.id).focus();};
+    const ok=document.getElementById("ok-"+d.id); if(ok) ok.onclick=()=>setStatus(d.id,"approved");
+    const ch=document.getElementById("ch-"+d.id); if(ch) ch.onclick=()=>{setStatus(d.id,"changes");document.getElementById("body-"+d.id).focus();};
     document.getElementById("send-"+d.id).onclick=()=>addComment(d.id);
   }
 }
@@ -128,7 +128,7 @@ function cardHTML(d){
   let media='<div class="media">';
   if(d.kind==="video"&&url) media+='<video src="'+url+'" controls preload="metadata"></video>';
   else if(url) media+='<img src="'+url+'" alt="'+esc(d.title)+'">';
-  else media+='<div style="color:#6b6459;padding:60px">Ingen fil</div>';
+  else media+='<div style="color:#8a8172;padding:64px 20px;text-align:center;font-weight:600">Leverans kommer snart</div>';
   media+='<span class="badge b-'+d.status+'">'+STL[d.status]+'</span></div>';
   let cm='<div class="comments"><h4>Kommentarer</h4>';
   const cs=d.comments||[];
@@ -139,8 +139,8 @@ function cardHTML(d){
     +'<div class="row"><button class="btn ghost" id="send-'+d.id+'">Skicka kommentar</button></div></div></div>';
   return '<div class="card">'+media+'<div class="body"><h3>'+esc(d.title)+'</h3>'
     +(d.description?'<div class="desc">'+esc(d.description)+'</div>':'')
-    +'<div class="actions"><button class="btn btn-ok" id="ok-'+d.id+'" '+(d.status==="approved"?"disabled":"")+'>✓ Godkänn</button>'
-    +'<button class="btn btn-ch" id="ch-'+d.id+'">Begär ändring</button></div>'
+    +(d.storage_path?('<div class="actions"><button class="btn btn-ok" id="ok-'+d.id+'" '+(d.status==="approved"?"disabled":"")+'>✓ Godkänn</button>'
+    +'<button class="btn btn-ch" id="ch-'+d.id+'">Begär ändring</button></div>'):'')
     +cm+'</div></div>';
 }
 async function setStatus(id,st){
