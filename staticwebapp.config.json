@@ -1,6 +1,14 @@
 {
   "routes": [
     {
+      "route": "/projekt.html",
+      "headers": { "cache-control": "no-store, must-revalidate" }
+    },
+    {
+      "route": "/projekt-admin.html",
+      "headers": { "cache-control": "no-store, must-revalidate" }
+    },
+    {
       "route": "/k/*",
       "rewrite": "/xlbygg/index.html"
     },

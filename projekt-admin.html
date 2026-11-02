@@ -37,7 +37,7 @@
   .phead .meta{color:var(--muted);font-size:.84rem;font-weight:600}
   .counts{display:flex;gap:8px;flex-wrap:wrap}
   .cnt{border-radius:999px;padding:4px 10px;font-size:.74rem;font-weight:800;color:#fff}
-  .c-review{background:#6b6459}.c-changes{background:var(--accent)}.c-approved{background:var(--green)}
+  .c-review{background:#6b6459}.c-changes{background:var(--accent)}.c-approved{background:var(--green)}.c-cmt{background:#14110e}
   .pbody{border-top:1px solid var(--line);padding:18px 20px;display:none}
   .pbody.open{display:block}
   .share{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:11px;padding:8px 8px 8px 14px;margin-bottom:18px;flex-wrap:wrap}
@@ -155,10 +155,13 @@ async function dash(){
   h+='<div class="newp"><div class="row"><input id="np-name" placeholder="Projektnamn, t.ex. Sveriges Fria Bygghandlare"><input id="np-client" placeholder="Kund (valfritt)"><button class="btn acc" id="np-add">Skapa projekt</button></div></div>';
   for(const p of STATE.projects){
     const ds=STATE.dels.filter(x=>x.project_id===p.id);
+    const dids=ds.map(x=>x.id);
+    const nc=STATE.comments.filter(c=>dids.includes(c.deliverable_id)).length;
     const c={review:0,changes:0,approved:0}; ds.forEach(x=>c[x.status]++);
     h+='<div class="proj" data-id="'+p.id+'"><div class="phead" onclick="toggle(\''+p.id+'\')">'
       +'<div><h3>'+esc(p.name)+'</h3>'+(p.client?'<div class="meta">'+esc(p.client)+'</div>':'')+'</div>'
       +'<div class="counts">'
+      +(nc?'<span class="cnt c-cmt">💬 '+nc+'</span>':'')
       +(c.review?'<span class="cnt c-review">'+c.review+' att granska</span>':'')
       +(c.changes?'<span class="cnt c-changes">'+c.changes+' ändring</span>':'')
       +(c.approved?'<span class="cnt c-approved">'+c.approved+' godkänt</span>':'')
@@ -284,8 +287,8 @@ function delsHTML(pid,ds){
     +'</select>'
     +'<button class="btn ghost sm" onclick="delDeliverable(\''+d.id+'\',\''+pid+'\')">Radera</button></div>'
     +filesManagerHTML(d.id)
-    +'<button class="hbtn" id="hb-'+d.id+'" onclick="toggleHist(\''+d.id+'\')"><span class="chev">›</span> Kommentarer &amp; historik'+(nc?' <span class="pip">'+nc+'</span>':'')+'</button>'
-    +'<div class="hist" id="hist-'+d.id+'">'+timelineHTML(d.id)+'</div></div>';
+    +'<button class="hbtn'+(nc?' open':'')+'" id="hb-'+d.id+'" onclick="toggleHist(\''+d.id+'\')"><span class="chev">›</span> Kommentarer &amp; historik'+(nc?' <span class="pip">'+nc+'</span>':'')+'</button>'
+    +'<div class="hist'+(nc?' open':'')+'" id="hist-'+d.id+'">'+timelineHTML(d.id)+'</div></div>';
   }).join("");
 }
 function toggleHist(id){
