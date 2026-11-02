@@ -52,7 +52,27 @@
   .del .t span{color:var(--muted);font-size:.8rem}
   .del select{width:auto;flex:0 1 190px;min-width:140px}
   .del .btn{white-space:nowrap;flex:0 0 auto}
-  @media(max-width:620px){.del{flex-wrap:wrap}.del .t{flex:1 1 100%;order:1}.del .th{order:0}.del select,.del .btn{order:2}}
+  .delrow{border-bottom:1px solid var(--line)}
+  .delrow:last-child{border-bottom:0}
+  .delrow .del{border-bottom:0}
+  .hbtn{background:transparent;border:0;cursor:pointer;font-family:inherit;color:var(--muted);font-size:.8rem;font-weight:700;padding:0 0 12px 88px;display:inline-flex;align-items:center;gap:6px}
+  .hbtn:hover{color:var(--ink)}
+  .hbtn .chev{transition:transform .2s var(--e);display:inline-block}
+  .hbtn.open .chev{transform:rotate(90deg)}
+  .hbtn .pip{background:var(--accent);color:#fff;border-radius:999px;font-size:.66rem;padding:1px 7px;font-weight:800}
+  .hist{display:none;padding:0 0 16px 88px}
+  .hist.open{display:block}
+  .tl{border-left:2px solid var(--line);padding-left:16px;display:grid;gap:12px}
+  .tl .it{position:relative}
+  .tl .it::before{content:"";position:absolute;left:-23px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--muted)}
+  .tl .it.ev::before{background:var(--ink)}
+  .tl .it.cm::before{background:var(--accent)}
+  .tl .when{color:var(--muted);font-size:.72rem;font-weight:600}
+  .tl .who{font-weight:700;font-size:.9rem}
+  .tl .txt{color:#2c2822;font-size:.92rem;white-space:pre-wrap}
+  .tl .ev-txt{font-size:.9rem;font-weight:600}
+  .tl .empty{color:var(--muted);font-size:.86rem}
+  @media(max-width:620px){.del{flex-wrap:wrap}.del .t{flex:1 1 100%;order:1}.del .th{order:0}.del select,.del .btn{order:2}.hbtn{padding-left:0}.hist{padding-left:0}}
   .msg{font-size:.85rem;color:var(--muted)}
   .msg.err{color:var(--accent)}
   footer{color:var(--muted);font-size:.82rem;padding:30px 0 50px}
@@ -80,6 +100,7 @@ const KEY="sb_publishable_vZCnLnp41c29DFN7MLpYsQ_AUBnxJPy";
 const FN=SB+"/functions/v1/admin";
 const CLIENT=location.origin+location.pathname.replace(/projekt-admin\.html$/,"projekt.html");
 const STL={review:"Att granska",changes:"Ändring begärd",approved:"Godkänt"};
+const EVL={review:"Satt till Att granska",changes:"Kund begärde ändring",approved:"Kund godkände"};
 let AKEY=sessionStorage.getItem("cxd_akey")||"";
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const PUB=SB+"/storage/v1/object/public/proofing/";
@@ -98,10 +119,10 @@ async function tryLogin(){
 }
 if(AKEY){api({action:"list"}).then(dash).catch(()=>{});}
 
-let STATE={projects:[],dels:[]};
+let STATE={projects:[],dels:[],comments:[],events:[]};
 async function dash(){
   const d=await api({action:"list"});
-  STATE.projects=d.projects||[]; STATE.dels=d.deliverables||[];
+  STATE.projects=d.projects||[]; STATE.dels=d.deliverables||[]; STATE.comments=d.comments||[]; STATE.events=d.events||[];
   let h='<h1>Projekt</h1>';
   h+='<div class="newp"><div class="row"><input id="np-name" placeholder="Projektnamn, t.ex. Sveriges Fria Bygghandlare"><input id="np-client" placeholder="Kund (valfritt)"><button class="btn acc" id="np-add">Skapa projekt</button></div></div>';
   for(const p of STATE.projects){
@@ -147,16 +168,38 @@ function thumb(d){
   }
   return '<div class="th" style="display:grid;place-items:center;background:#e7e0d2;color:var(--muted);font-size:.62rem;text-align:center;line-height:1.1;padding:4px">Väntar<br>på fil</div>';
 }
+function when(s){const d=new Date(s);return d.toLocaleDateString("sv-SE")+" "+d.toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"});}
+function timelineHTML(delId){
+  const cm=STATE.comments.filter(c=>c.deliverable_id===delId).map(c=>({t:c.created_at,type:"cm",author:c.author,body:c.body}));
+  const ev=STATE.events.filter(e=>e.deliverable_id===delId).map(e=>({t:e.created_at,type:"ev",kind:e.kind,status:e.status}));
+  const all=cm.concat(ev).sort((a,b)=>new Date(b.t)-new Date(a.t));
+  if(!all.length) return '<div class="tl"><div class="empty">Ingen aktivitet än.</div></div>';
+  return '<div class="tl">'+all.map(x=>{
+    if(x.type==="cm") return '<div class="it cm"><div class="who">'+esc(x.author||"Kund")+' <span class="when">'+when(x.t)+'</span></div><div class="txt">'+esc(x.body)+'</div></div>';
+    const label=x.kind==="created"?"Del skapad ("+(STL[x.status]||x.status)+")":(EVL[x.status]||("Status: "+(STL[x.status]||x.status)));
+    return '<div class="it ev"><div class="ev-txt">'+esc(label)+' <span class="when">'+when(x.t)+'</span></div></div>';
+  }).join("")+'</div>';
+}
 function delsHTML(pid,ds){
   if(!ds.length) return '<div class="msg">Inga delar än. Lägg till planerade delar eller ladda upp ovan.</div>';
-  return ds.map(d=>'<div class="del">'+thumb(d)
+  return ds.map(d=>{
+    const nc=STATE.comments.filter(c=>c.deliverable_id===d.id).length;
+    return '<div class="delrow"><div class="del">'+thumb(d)
     +'<div class="t"><b>'+esc(d.title||"(utan titel)")+'</b><span>'+STL[d.status]+(d.storage_path?'':' · ingen fil än')+'</span></div>'
     +'<select onchange="setStatus(\''+d.id+'\',this.value,\''+pid+'\')">'
     +['review','changes','approved'].map(s=>'<option value="'+s+'" '+(d.status===s?"selected":"")+'>'+STL[s]+'</option>').join("")
     +'</select>'
     +'<label class="btn ghost sm" style="cursor:pointer">'+(d.storage_path?"Byt fil":"Ladda upp fil")+'<input type="file" accept="image/*,video/*" style="display:none" onchange="attachFile(\''+d.id+'\',\''+pid+'\',this)"></label>'
-    +'<button class="btn ghost sm" onclick="delDeliverable(\''+d.id+'\',\''+pid+'\')">Radera</button></div>').join("");
+    +'<button class="btn ghost sm" onclick="delDeliverable(\''+d.id+'\',\''+pid+'\')">Radera</button></div>'
+    +'<button class="hbtn" id="hb-'+d.id+'" onclick="toggleHist(\''+d.id+'\')"><span class="chev">›</span> Kommentarer &amp; historik'+(nc?' <span class="pip">'+nc+'</span>':'')+'</button>'
+    +'<div class="hist" id="hist-'+d.id+'">'+timelineHTML(d.id)+'</div></div>';
+  }).join("");
 }
+function toggleHist(id){
+  const h=document.getElementById("hist-"+id), b=document.getElementById("hb-"+id);
+  const open=h.classList.toggle("open"); b.classList.toggle("open",open);
+}
+window.toggleHist=toggleHist;
 async function doUpload(pid,file){
   const s=await api({action:"sign_upload",project:pid,filename:file.name});
   const put=await fetch(s.uploadUrl,{method:"PUT",headers:{"content-type":file.type||"application/octet-stream","x-upsert":"true"},body:file});
@@ -188,7 +231,7 @@ async function addPart(pid){
   }catch(e){msg.className="msg err";msg.textContent=e.message;}
 }
 async function refreshProject(pid){
-  const d=await api({action:"list"}); STATE.projects=d.projects||[]; STATE.dels=d.deliverables||[];
+  const d=await api({action:"list"}); STATE.projects=d.projects||[]; STATE.dels=d.deliverables||[]; STATE.comments=d.comments||[]; STATE.events=d.events||[];
   renderBody(pid);
 }
 async function setStatus(id,st,pid){try{await api({action:"set_status",deliverable:id,status:st});await refreshProject(pid);}catch(e){alert(e.message);}}
