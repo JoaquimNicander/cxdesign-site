@@ -69,7 +69,24 @@
   .fchip .fname{font-size:.62rem;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .fchip .fx{position:absolute;top:-6px;right:-6px;width:19px;height:19px;border-radius:50%;background:var(--ink);color:#fff;border:0;cursor:pointer;font-size:.8rem;line-height:1;display:grid;place-items:center;padding:0}
   .fchip .fx:hover{background:var(--accent)}
+  .fchip .fthumb{cursor:zoom-in}
+  .fchip .first{position:absolute;bottom:17px;left:3px;background:var(--green);color:#fff;font-size:.56rem;font-weight:800;padding:1px 5px;border-radius:999px;letter-spacing:.03em}
+  .fchip .pinbadge{position:absolute;top:-6px;left:-6px;background:var(--accent);color:#fff;border-radius:999px;font-size:.6rem;font-weight:800;padding:1px 6px;border:2px solid var(--card)}
+  .fmove{display:flex;gap:4px;margin-top:3px;justify-content:center}
+  .fmove button{width:24px;height:20px;border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer;font-size:.72rem;line-height:1;color:var(--ink);padding:0}
+  .fmove button:disabled{opacity:.3;cursor:default}
+  .fmove button:not(:disabled):hover{border-color:var(--ink)}
   @media(max-width:620px){.files{padding-left:0}}
+  .lb{position:fixed;inset:0;background:rgba(12,9,6,.82);display:none;place-items:center;z-index:50;padding:24px}
+  .lb.on{display:grid}
+  .lb .inner{position:relative;max-width:min(900px,92vw);max-height:88vh}
+  .lb img{max-width:100%;max-height:88vh;display:block;border-radius:8px}
+  .lb .lpin{position:absolute;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50% 50% 50% 2px;background:var(--accent);color:#fff;border:2px solid #fff;display:grid;place-items:center;font-size:.78rem;font-weight:800;cursor:pointer;box-shadow:0 2px 7px rgba(0,0,0,.5)}
+  .lb .lpin .bub{display:none;position:absolute;bottom:34px;left:50%;transform:translateX(-50%);width:220px;background:#14110e;color:#f3efe6;border-radius:10px;padding:10px 12px;font-size:.82rem;line-height:1.4;font-weight:500;text-align:left}
+  .lb .lpin.show .bub{display:block}
+  .lb .lpin .who{font-weight:800;display:block;font-size:.74rem}
+  .lb .lclose{position:absolute;top:-14px;right:-14px;width:36px;height:36px;border-radius:50%;background:#fff;border:0;cursor:pointer;font-size:1.1rem;font-weight:800}
+  .lb .lcap{position:absolute;bottom:-30px;left:0;color:#e9e2d4;font-size:.82rem;font-weight:600}
   .tl{border-left:2px solid var(--line);padding-left:16px;display:grid;gap:12px}
   .tl .it{position:relative}
   .tl .it::before{content:"";position:absolute;left:-23px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--muted)}
@@ -80,6 +97,8 @@
   .tl .txt{color:#2c2822;font-size:.92rem;white-space:pre-wrap}
   .tl .ev-txt{font-size:.9rem;font-weight:600}
   .tl .empty{color:var(--muted);font-size:.86rem}
+  .tl .pinnum{cursor:pointer;color:var(--accent);font-weight:800;font-size:.8rem}
+  .tl .pinnum:hover{text-decoration:underline}
   @media(max-width:620px){.del{flex-wrap:wrap}.del .t{flex:1 1 100%;order:1}.del .th{order:0}.del select,.del .btn{order:2}.hbtn{padding-left:0}.hist{padding-left:0}}
   .msg{font-size:.85rem;color:var(--muted)}
   .msg.err{color:var(--accent)}
@@ -101,6 +120,7 @@
   </div>
 </main>
 <footer class="wrap">CX Design · granskningsportal</footer>
+<div class="lb" id="lb" onclick="if(event.target.id==='lb')closeLightbox()"><div class="inner"></div></div>
 
 <script>
 const SB="https://fueggdqtgmvldjbhcdfn.supabase.co";
@@ -180,14 +200,31 @@ function thumb(d){
   if(pdf) return '<div class="th" style="display:grid;place-items:center;background:#efe9dd;color:var(--accent);font-size:.7rem;font-weight:800">PDF</div>';
   return '<div class="th" style="display:grid;place-items:center;background:#e7e0d2;color:var(--muted);font-size:.62rem;text-align:center;line-height:1.1;padding:4px">Väntar<br>på fil</div>';
 }
+function pinsForFile(fileId){
+  // numbered pinned comments on this file (numbering per deliverable, created order)
+  const f=STATE.files.find(x=>x.id===fileId); if(!f) return [];
+  const all=STATE.comments.filter(c=>c.deliverable_id===f.deliverable_id);
+  let n=0, out=[];
+  for(const c of all){ if(c.file_id!=null&&c.x!=null&&c.y!=null){ n++; if(c.file_id===fileId) out.push({c,n}); } }
+  return out;
+}
 function filesManagerHTML(delId){
   const fs=filesFor(delId);
+  const firstImg=fs.find(f=>f.kind==="image");
   let chips=fs.map(f=>{
     let th;
-    if(f.kind==="image") th='<img class="fthumb" src="'+PUB+f.storage_path+'" alt="">';
+    const pins=f.kind==="image"?pinsForFile(f.id):[];
+    if(f.kind==="image") th='<img class="fthumb" src="'+PUB+f.storage_path+'" alt="" onclick="openLightbox(\''+f.id+'\')">';
     else if(f.kind==="video") th='<div class="fthumb">▶</div>';
     else th='<div class="fthumb pdf">PDF</div>';
-    return '<div class="fchip">'+th+'<div class="fname">'+esc(f.filename||"")+'</div>'
+    const i=fs.indexOf(f);
+    const canL=i>0, canR=i<fs.length-1;
+    return '<div class="fchip">'+th
+      +(firstImg&&f.id===firstImg.id?'<span class="first">Visas först</span>':'')
+      +(pins.length?'<span class="pinbadge" title="Markeringar på bilden">📍'+pins.length+'</span>':'')
+      +'<div class="fname">'+esc(f.filename||"")+'</div>'
+      +'<div class="fmove"><button '+(canL?'':'disabled')+' title="Flytta vänster" onclick="moveFile(\''+delId+'\',\''+f.id+'\',-1)">◀</button>'
+      +'<button '+(canR?'':'disabled')+' title="Flytta höger" onclick="moveFile(\''+delId+'\',\''+f.id+'\',1)">▶</button></div>'
       +'<button class="fx" title="Ta bort fil" onclick="delFile(\''+f.id+'\',\''+delId+'\')">×</button></div>';
   }).join("");
   return '<div class="files">'+chips
@@ -196,14 +233,41 @@ function filesManagerHTML(delId){
     +'<input type="file" accept="image/*,video/*,application/pdf,.pdf" multiple style="display:none" onchange="attachFiles(\''+delId+'\',this)"></label>'
     +'</div>';
 }
+async function moveFile(delId,fileId,dir){
+  const fs=filesFor(delId).slice();
+  const i=fs.findIndex(f=>f.id===fileId); const j=i+dir;
+  if(i<0||j<0||j>=fs.length) return;
+  const t=fs[i]; fs[i]=fs[j]; fs[j]=t;
+  const pid=STATE.dels.find(x=>x.id===delId)?.project_id;
+  try{await api({action:"reorder_files",deliverable:delId,order:fs.map(f=>f.id)});await refreshProject(pid);}
+  catch(e){alert(e.message);}
+}
+function openLightbox(fileId){
+  const f=STATE.files.find(x=>x.id===fileId); if(!f) return;
+  const pins=pinsForFile(fileId);
+  const lb=document.getElementById("lb");
+  lb.querySelector(".inner").innerHTML='<button class="lclose" onclick="closeLightbox()">✕</button>'
+    +'<img src="'+PUB+f.storage_path+'" alt="">'
+    +pins.map(o=>'<button class="lpin" style="left:'+(o.c.x*100)+'%;top:'+(o.c.y*100)+'%" onclick="event.stopPropagation();this.classList.toggle(\'show\')">'+o.n
+      +'<span class="bub"><span class="who">'+esc(o.c.author||"Kund")+'</span>'+esc(o.c.body)+'</span></button>').join("")
+    +'<div class="lcap">'+esc(f.filename||"")+(pins.length?' · '+pins.length+' markering'+(pins.length>1?'ar':''):'')+'</div>';
+  lb.classList.add("on");
+}
+function closeLightbox(){document.getElementById("lb").classList.remove("on");}
+window.moveFile=moveFile;window.openLightbox=openLightbox;window.closeLightbox=closeLightbox;
 function when(s){const d=new Date(s);return d.toLocaleDateString("sv-SE")+" "+d.toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"});}
 function timelineHTML(delId){
-  const cm=STATE.comments.filter(c=>c.deliverable_id===delId).map(c=>({t:c.created_at,type:"cm",author:c.author,body:c.body}));
+  let pn=0; const numById={};
+  for(const c of STATE.comments.filter(c=>c.deliverable_id===delId)){ if(c.file_id!=null&&c.x!=null&&c.y!=null){pn++;numById[c.id]=c.file_id?pn:0;} }
+  const cm=STATE.comments.filter(c=>c.deliverable_id===delId).map(c=>({t:c.created_at,type:"cm",author:c.author,body:c.body,fileId:c.file_id,num:numById[c.id]}));
   const ev=STATE.events.filter(e=>e.deliverable_id===delId).map(e=>({t:e.created_at,type:"ev",kind:e.kind,status:e.status}));
   const all=cm.concat(ev).sort((a,b)=>new Date(b.t)-new Date(a.t));
   if(!all.length) return '<div class="tl"><div class="empty">Ingen aktivitet än.</div></div>';
   return '<div class="tl">'+all.map(x=>{
-    if(x.type==="cm") return '<div class="it cm"><div class="who">'+esc(x.author||"Kund")+' <span class="when">'+when(x.t)+'</span></div><div class="txt">'+esc(x.body)+'</div></div>';
+    if(x.type==="cm"){
+      const pin=x.num?' <span class="pinnum" title="Markering på bild — klicka" onclick="openLightbox(\''+x.fileId+'\')">📍'+x.num+'</span>':'';
+      return '<div class="it cm"><div class="who">'+esc(x.author||"Kund")+pin+' <span class="when">'+when(x.t)+'</span></div><div class="txt">'+esc(x.body)+'</div></div>';
+    }
     const label=x.kind==="created"?"Del skapad ("+(STL[x.status]||x.status)+")":(EVL[x.status]||("Status: "+(STL[x.status]||x.status)));
     return '<div class="it ev"><div class="ev-txt">'+esc(label)+' <span class="when">'+when(x.t)+'</span></div></div>';
   }).join("")+'</div>';
