@@ -62,6 +62,14 @@
   .hbtn .pip{background:var(--accent);color:#fff;border-radius:999px;font-size:.66rem;padding:1px 7px;font-weight:800}
   .hist{display:none;padding:0 0 16px 88px}
   .hist.open{display:block}
+  .files{display:flex;gap:10px;flex-wrap:wrap;padding:0 0 12px 88px}
+  .fchip{position:relative;width:70px}
+  .fchip .fthumb{width:70px;height:54px;border-radius:8px;object-fit:cover;background:#0b0906;display:grid;place-items:center;color:#fff;font-size:.9rem;overflow:hidden}
+  .fchip .fthumb.pdf{background:#efe9dd;border:1px solid var(--line);color:var(--accent);font-weight:800;font-size:.66rem;letter-spacing:.04em}
+  .fchip .fname{font-size:.62rem;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .fchip .fx{position:absolute;top:-6px;right:-6px;width:19px;height:19px;border-radius:50%;background:var(--ink);color:#fff;border:0;cursor:pointer;font-size:.8rem;line-height:1;display:grid;place-items:center;padding:0}
+  .fchip .fx:hover{background:var(--accent)}
+  @media(max-width:620px){.files{padding-left:0}}
   .tl{border-left:2px solid var(--line);padding-left:16px;display:grid;gap:12px}
   .tl .it{position:relative}
   .tl .it::before{content:"";position:absolute;left:-23px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--muted)}
@@ -119,10 +127,10 @@ async function tryLogin(){
 }
 if(AKEY){api({action:"list"}).then(dash).catch(()=>{});}
 
-let STATE={projects:[],dels:[],comments:[],events:[]};
+let STATE={projects:[],dels:[],files:[],comments:[],events:[]};
 async function dash(){
   const d=await api({action:"list"});
-  STATE.projects=d.projects||[]; STATE.dels=d.deliverables||[]; STATE.comments=d.comments||[]; STATE.events=d.events||[];
+  STATE.projects=d.projects||[]; STATE.dels=d.deliverables||[]; STATE.files=d.files||[]; STATE.comments=d.comments||[]; STATE.events=d.events||[];
   let h='<h1>Projekt</h1>';
   h+='<div class="newp"><div class="row"><input id="np-name" placeholder="Projektnamn, t.ex. Sveriges Fria Bygghandlare"><input id="np-client" placeholder="Kund (valfritt)"><button class="btn acc" id="np-add">Skapa projekt</button></div></div>';
   for(const p of STATE.projects){
@@ -153,20 +161,40 @@ function renderBody(id){
   h+='<div class="up"><div style="font-weight:700;margin-bottom:2px">Lägg till del</div>'
     +'<div class="row"><input id="u-title-'+id+'" placeholder="Titel, t.ex. Logotyp animerad"></div>'
     +'<textarea id="u-desc-'+id+'" placeholder="Beskrivning (valfritt)"></textarea>'
-    +'<div class="row"><input type="file" id="u-file-'+id+'" accept="image/*,video/*" style="border:0;padding:0;background:transparent">'
+    +'<div class="row"><input type="file" id="u-file-'+id+'" accept="image/*,video/*,application/pdf,.pdf" multiple style="border:0;padding:0;background:transparent">'
     +'<button class="btn acc sm" onclick="addPart(\''+id+'\')">Lägg till del</button>'
     +'<span class="msg" id="u-msg-'+id+'"></span></div>'
-    +'<div class="msg">Tips: lämna filen tom för en <b>planerad</b> del — ladda upp filen senare.</div></div>';
+    +'<div class="msg">Lägg gärna till flera bilder eller en PDF. Tips: lämna tomt för en <b>planerad</b> del — ladda upp filerna senare.</div></div>';
   h+='<div id="dels-'+id+'">'+delsHTML(id,ds)+'</div>';
   h+='<div style="margin-top:14px"><button class="btn ghost sm" onclick="delProject(\''+id+'\',\''+esc(p.name).replace(/'/g,"")+'\')">Radera projekt</button></div>';
   document.getElementById("pb-"+id).innerHTML=h;
 }
+function filesFor(delId){return STATE.files.filter(f=>f.deliverable_id===delId);}
 function thumb(d){
-  if(d.storage_path){
-    if(d.kind==="video") return '<div class="th" style="display:grid;place-items:center;color:#fff;font-size:1.1rem">▶</div>';
-    return '<img class="th" src="'+PUB+d.storage_path+'" alt="">';
-  }
+  const fs=filesFor(d.id);
+  const img=fs.find(f=>f.kind==="image");
+  if(img) return '<img class="th" src="'+PUB+img.storage_path+'" alt="">';
+  const vid=fs.find(f=>f.kind==="video");
+  if(vid) return '<div class="th" style="display:grid;place-items:center;color:#fff;font-size:1.1rem">▶</div>';
+  const pdf=fs.find(f=>f.kind==="pdf");
+  if(pdf) return '<div class="th" style="display:grid;place-items:center;background:#efe9dd;color:var(--accent);font-size:.7rem;font-weight:800">PDF</div>';
   return '<div class="th" style="display:grid;place-items:center;background:#e7e0d2;color:var(--muted);font-size:.62rem;text-align:center;line-height:1.1;padding:4px">Väntar<br>på fil</div>';
+}
+function filesManagerHTML(delId){
+  const fs=filesFor(delId);
+  let chips=fs.map(f=>{
+    let th;
+    if(f.kind==="image") th='<img class="fthumb" src="'+PUB+f.storage_path+'" alt="">';
+    else if(f.kind==="video") th='<div class="fthumb">▶</div>';
+    else th='<div class="fthumb pdf">PDF</div>';
+    return '<div class="fchip">'+th+'<div class="fname">'+esc(f.filename||"")+'</div>'
+      +'<button class="fx" title="Ta bort fil" onclick="delFile(\''+f.id+'\',\''+delId+'\')">×</button></div>';
+  }).join("");
+  return '<div class="files">'+chips
+    +'<label class="fchip" style="cursor:pointer"><div class="fthumb" style="background:#fff;border:1px dashed var(--line);color:var(--muted);font-size:1.4rem">+</div>'
+    +'<div class="fname">Lägg till</div>'
+    +'<input type="file" accept="image/*,video/*,application/pdf,.pdf" multiple style="display:none" onchange="attachFiles(\''+delId+'\',this)"></label>'
+    +'</div>';
 }
 function when(s){const d=new Date(s);return d.toLocaleDateString("sv-SE")+" "+d.toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"});}
 function timelineHTML(delId){
@@ -184,13 +212,14 @@ function delsHTML(pid,ds){
   if(!ds.length) return '<div class="msg">Inga delar än. Lägg till planerade delar eller ladda upp ovan.</div>';
   return ds.map(d=>{
     const nc=STATE.comments.filter(c=>c.deliverable_id===d.id).length;
+    const nf=filesFor(d.id).length;
     return '<div class="delrow"><div class="del">'+thumb(d)
-    +'<div class="t"><b>'+esc(d.title||"(utan titel)")+'</b><span>'+STL[d.status]+(d.storage_path?'':' · ingen fil än')+'</span></div>'
+    +'<div class="t"><b>'+esc(d.title||"(utan titel)")+'</b><span>'+STL[d.status]+(nf?' · '+nf+(nf===1?' fil':' filer'):' · ingen fil än')+'</span></div>'
     +'<select onchange="setStatus(\''+d.id+'\',this.value,\''+pid+'\')">'
     +['review','changes','approved'].map(s=>'<option value="'+s+'" '+(d.status===s?"selected":"")+'>'+STL[s]+'</option>').join("")
     +'</select>'
-    +'<label class="btn ghost sm" style="cursor:pointer">'+(d.storage_path?"Byt fil":"Ladda upp fil")+'<input type="file" accept="image/*,video/*" style="display:none" onchange="attachFile(\''+d.id+'\',\''+pid+'\',this)"></label>'
     +'<button class="btn ghost sm" onclick="delDeliverable(\''+d.id+'\',\''+pid+'\')">Radera</button></div>'
+    +filesManagerHTML(d.id)
     +'<button class="hbtn" id="hb-'+d.id+'" onclick="toggleHist(\''+d.id+'\')"><span class="chev">›</span> Kommentarer &amp; historik'+(nc?' <span class="pip">'+nc+'</span>':'')+'</button>'
     +'<div class="hist" id="hist-'+d.id+'">'+timelineHTML(d.id)+'</div></div>';
   }).join("");
@@ -200,17 +229,27 @@ function toggleHist(id){
   const open=h.classList.toggle("open"); b.classList.toggle("open",open);
 }
 window.toggleHist=toggleHist;
+function fileKind(file){
+  const t=(file.type||"").toLowerCase(), n=(file.name||"").toLowerCase();
+  if(t.startsWith("video")) return "video";
+  if(t==="application/pdf"||n.endsWith(".pdf")) return "pdf";
+  return "image";
+}
 async function doUpload(pid,file){
   const s=await api({action:"sign_upload",project:pid,filename:file.name});
   const put=await fetch(s.uploadUrl,{method:"PUT",headers:{"content-type":file.type||"application/octet-stream","x-upsert":"true"},body:file});
   if(!put.ok) throw new Error("Uppladdning misslyckades ("+put.status+")");
-  return {path:s.path, kind:(file.type||"").startsWith("video")?"video":"image"};
+  return {path:s.path, kind:fileKind(file), filename:file.name};
 }
-async function attachFile(delId,pid,input){
-  const f=input.files[0]; if(!f) return;
-  try{const u=await doUpload(pid,f);await api({action:"attach_file",deliverable:delId,storage_path:u.path,kind:u.kind});await refreshProject(pid);}
-  catch(e){alert(e.message);}
+async function attachFiles(delId,input){
+  const pid=STATE.dels.find(x=>x.id===delId)?.project_id;
+  const files=[...input.files]; if(!files.length) return;
+  try{
+    for(const f of files){const u=await doUpload(pid,f);await api({action:"add_file",deliverable:delId,storage_path:u.path,kind:u.kind,filename:u.filename});}
+    await refreshProject(pid);
+  }catch(e){alert(e.message);}
 }
+async function delFile(fileId,pid){if(!confirm("Ta bort filen?"))return;try{await api({action:"delete_file",file:fileId});await refreshProject(pid);}catch(e){alert(e.message);}}
 async function createProject(){
   const name=document.getElementById("np-name").value.trim();
   if(!name)return;
@@ -220,25 +259,25 @@ async function createProject(){
 async function addPart(pid){
   const title=document.getElementById("u-title-"+pid).value.trim();
   const desc=document.getElementById("u-desc-"+pid).value.trim();
-  const f=document.getElementById("u-file-"+pid).files[0];
+  const files=[...document.getElementById("u-file-"+pid).files];
   const msg=document.getElementById("u-msg-"+pid);
   if(!title){msg.textContent="Ange en titel.";msg.className="msg err";return;}
-  msg.className="msg";msg.textContent=f?"Laddar upp…":"Lägger till…";
+  msg.className="msg";msg.textContent=files.length?"Laddar upp…":"Lägger till…";
   try{
     const r=await api({action:"add_planned",project:pid,title,description:desc});
-    if(f){const u=await doUpload(pid,f);await api({action:"attach_file",deliverable:r.id,storage_path:u.path,kind:u.kind});}
+    for(const f of files){const u=await doUpload(pid,f);await api({action:"add_file",deliverable:r.id,storage_path:u.path,kind:u.kind,filename:u.filename});}
     msg.textContent="Klart!"; await refreshProject(pid);
   }catch(e){msg.className="msg err";msg.textContent=e.message;}
 }
 async function refreshProject(pid){
-  const d=await api({action:"list"}); STATE.projects=d.projects||[]; STATE.dels=d.deliverables||[]; STATE.comments=d.comments||[]; STATE.events=d.events||[];
+  const d=await api({action:"list"}); STATE.projects=d.projects||[]; STATE.dels=d.deliverables||[]; STATE.files=d.files||[]; STATE.comments=d.comments||[]; STATE.events=d.events||[];
   renderBody(pid);
 }
 async function setStatus(id,st,pid){try{await api({action:"set_status",deliverable:id,status:st});await refreshProject(pid);}catch(e){alert(e.message);}}
 async function delDeliverable(id,pid){if(!confirm("Radera leveransen?"))return;try{await api({action:"delete_deliverable",deliverable:id});await refreshProject(pid);}catch(e){alert(e.message);}}
 async function delProject(id,name){if(!confirm("Radera projektet \""+name+"\" och allt i det?"))return;try{await api({action:"delete_project",project:id});await dash();}catch(e){alert(e.message);}}
 function copyLink(t){navigator.clipboard.writeText(t).then(()=>{},()=>{});}
-window.toggle=toggle;window.copyLink=copyLink;window.addPart=addPart;window.attachFile=attachFile;window.setStatus=setStatus;window.delDeliverable=delDeliverable;window.delProject=delProject;
+window.toggle=toggle;window.copyLink=copyLink;window.addPart=addPart;window.attachFiles=attachFiles;window.delFile=delFile;window.setStatus=setStatus;window.delDeliverable=delDeliverable;window.delProject=delProject;
 </script>
 </body>
 </html>

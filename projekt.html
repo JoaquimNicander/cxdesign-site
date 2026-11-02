@@ -31,8 +31,18 @@
   .list{padding:30px 0 90px;display:grid;gap:22px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
   .media{background:#0b0906;position:relative;display:grid;place-items:center;min-height:200px}
-  .media img{width:100%;display:block;max-height:60vh;object-fit:contain}
-  .media video{width:100%;display:block;max-height:60vh;background:#0b0906}
+  .media img{width:100%;display:block;max-height:70vh;object-fit:contain}
+  .media video{width:100%;display:block;max-height:70vh;background:#0b0906}
+  .media .stack{display:grid;gap:6px;width:100%}
+  .media .empty{color:#8a8172;padding:64px 20px;text-align:center;font-weight:600}
+  .docs{display:grid;gap:10px;margin-top:16px}
+  .doc{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--ink);transition:transform .15s var(--e),border-color .15s}
+  .doc:hover{transform:translateY(-1px);border-color:var(--accent)}
+  .doc .ic{width:38px;height:38px;border-radius:9px;background:#efe9dd;color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:.68rem;flex:0 0 auto;border:1px solid var(--line)}
+  .doc .dt{flex:1;min-width:0}
+  .doc .dt b{display:block;font-weight:700;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .doc .dt span{color:var(--muted);font-size:.76rem;font-weight:600}
+  .doc .dl{color:var(--accent);font-weight:800;font-size:.85rem;white-space:nowrap}
   .badge{position:absolute;top:14px;left:14px;border-radius:999px;padding:6px 13px;font-size:.72rem;font-weight:800;letter-spacing:.02em;color:#fff;display:inline-flex;gap:7px;align-items:center}
   .b-review{background:#6b6459} .b-changes{background:var(--accent)} .b-approved{background:var(--green)}
   .body{padding:22px 24px 24px}
@@ -124,12 +134,25 @@ function render(){
   }
 }
 function cardHTML(d){
-  const url=d.storage_path?PUB+d.storage_path:"";
+  const files=(d.files&&d.files.length)?d.files:(d.storage_path?[{storage_path:d.storage_path,kind:d.kind||"image",filename:""}]:[]);
+  const visuals=files.filter(f=>f.kind==="image"||f.kind==="video");
+  const pdfs=files.filter(f=>f.kind==="pdf");
+  const hasFiles=files.length>0;
   let media='<div class="media">';
-  if(d.kind==="video"&&url) media+='<video src="'+url+'" controls preload="metadata"></video>';
-  else if(url) media+='<img src="'+url+'" alt="'+esc(d.title)+'">';
-  else media+='<div style="color:#8a8172;padding:64px 20px;text-align:center;font-weight:600">Leverans kommer snart</div>';
+  if(visuals.length){
+    media+='<div class="stack">'+visuals.map(f=>f.kind==="video"
+      ?'<video src="'+PUB+f.storage_path+'" controls preload="metadata"></video>'
+      :'<img src="'+PUB+f.storage_path+'" alt="'+esc(d.title)+'">').join("")+'</div>';
+  } else if(pdfs.length){
+    media+='<div class="empty">'+pdfs.length+(pdfs.length===1?' PDF att ladda ner nedan':' PDF:er att ladda ner nedan')+'</div>';
+  } else {
+    media+='<div class="empty">Leverans kommer snart</div>';
+  }
   media+='<span class="badge b-'+d.status+'">'+STL[d.status]+'</span></div>';
+  let docs='';
+  if(pdfs.length){
+    docs='<div class="docs">'+pdfs.map(f=>'<a class="doc" href="'+PUB+f.storage_path+'" download="'+esc(f.filename||"dokument.pdf")+'" target="_blank" rel="noopener"><span class="ic">PDF</span><span class="dt"><b>'+esc(f.filename||"Dokument.pdf")+'</b><span>Klicka för att ladda ner</span></span><span class="dl">Ladda ner ↓</span></a>').join("")+'</div>';
+  }
   let cm='<div class="comments"><h4>Kommentarer</h4>';
   const cs=d.comments||[];
   if(!cs.length) cm+='<div style="color:var(--muted);font-size:.9rem;padding:2px 0 8px">Inga kommentarer än.</div>';
@@ -139,7 +162,8 @@ function cardHTML(d){
     +'<div class="row"><button class="btn ghost" id="send-'+d.id+'">Skicka kommentar</button></div></div></div>';
   return '<div class="card">'+media+'<div class="body"><h3>'+esc(d.title)+'</h3>'
     +(d.description?'<div class="desc">'+esc(d.description)+'</div>':'')
-    +(d.storage_path?('<div class="actions"><button class="btn btn-ok" id="ok-'+d.id+'" '+(d.status==="approved"?"disabled":"")+'>✓ Godkänn</button>'
+    +docs
+    +(hasFiles?('<div class="actions"><button class="btn btn-ok" id="ok-'+d.id+'" '+(d.status==="approved"?"disabled":"")+'>✓ Godkänn</button>'
     +'<button class="btn btn-ch" id="ch-'+d.id+'">Begär ändring</button></div>'):'')
     +cm+'</div></div>';
 }
