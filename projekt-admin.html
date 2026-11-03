@@ -38,6 +38,12 @@
   .counts{display:flex;gap:8px;flex-wrap:wrap}
   .cnt{border-radius:999px;padding:4px 10px;font-size:.74rem;font-weight:800;color:#fff}
   .c-review{background:#6b6459}.c-changes{background:var(--accent)}.c-approved{background:var(--green)}.c-cmt{background:#14110e}
+  .c-new{background:#caa23a;color:#14110e}
+  .newbadge{display:inline-block;background:#caa23a;color:#14110e;font-size:.62rem;font-weight:800;padding:1px 7px;border-radius:999px;vertical-align:middle;margin-left:4px;letter-spacing:.02em}
+  .hctl{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .dtag{display:inline-block;background:var(--line);color:var(--muted);font-size:.6rem;font-weight:800;padding:1px 6px;border-radius:999px;text-transform:uppercase;letter-spacing:.04em}
+  .tl.hidtl{margin-top:12px;opacity:.72;border-left-style:dashed}
+  .it.dim .txt{color:var(--muted)}
   .pbody{border-top:1px solid var(--line);padding:18px 20px;display:none}
   .pbody.open{display:block}
   .share{display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:11px;padding:8px 8px 8px 14px;margin-bottom:18px;flex-wrap:wrap}
@@ -156,11 +162,13 @@ async function dash(){
   for(const p of STATE.projects){
     const ds=STATE.dels.filter(x=>x.project_id===p.id);
     const dids=ds.map(x=>x.id);
-    const nc=STATE.comments.filter(c=>dids.includes(c.deliverable_id)).length;
+    const nc=STATE.comments.filter(c=>dids.includes(c.deliverable_id) && c.hidden!==true).length;
+    const nnew=ds.filter(x=>newActivity(x.id)).length;
     const c={review:0,changes:0,approved:0}; ds.forEach(x=>c[x.status]++);
     h+='<div class="proj" data-id="'+p.id+'"><div class="phead" onclick="toggle(\''+p.id+'\')">'
       +'<div><h3>'+esc(p.name)+'</h3>'+(p.client?'<div class="meta">'+esc(p.client)+'</div>':'')+'</div>'
       +'<div class="counts">'
+      +(nnew?'<span class="cnt c-new" id="newp-'+p.id+'">✨ '+nnew+' nytt</span>':'')
       +(nc?'<span class="cnt c-cmt">💬 '+nc+'</span>':'')
       +(c.review?'<span class="cnt c-review">'+c.review+' att granska</span>':'')
       +(c.changes?'<span class="cnt c-changes">'+c.changes+' ändring</span>':'')
@@ -174,7 +182,7 @@ async function dash(){
 function toggle(id){
   const el=document.getElementById("pb-"+id);
   if(el.classList.contains("open")){el.classList.remove("open");return;}
-  el.classList.add("open"); renderBody(id);
+  el.classList.add("open"); renderBody(id); markSeenProject(id);
 }
 function renderBody(id){
   const p=STATE.projects.find(x=>x.id===id);
@@ -206,7 +214,7 @@ function thumb(d){
 function pinsForFile(fileId){
   // numbered pinned comments on this file (numbering per deliverable, created order)
   const f=STATE.files.find(x=>x.id===fileId); if(!f) return [];
-  const all=STATE.comments.filter(c=>c.deliverable_id===f.deliverable_id);
+  const all=STATE.comments.filter(c=>c.deliverable_id===f.deliverable_id && c.hidden!==true);
   let n=0, out=[];
   for(const c of all){ if(c.file_id!=null&&c.x!=null&&c.y!=null){ n++; if(c.file_id===fileId) out.push({c,n}); } }
   return out;
@@ -259,36 +267,95 @@ function openLightbox(fileId){
 function closeLightbox(){document.getElementById("lb").classList.remove("on");}
 window.moveFile=moveFile;window.openLightbox=openLightbox;window.closeLightbox=closeLightbox;
 function when(s){const d=new Date(s);return d.toLocaleDateString("sv-SE")+" "+d.toLocaleTimeString("sv-SE",{hour:"2-digit",minute:"2-digit"});}
-function timelineHTML(delId){
+const SHOWHID=new Set();
+function cmLine(c,num,dim){
+  const pin=num?' <span class="pinnum" title="Markering på bild — klicka" onclick="openLightbox(\''+c.file_id+'\')">📍'+num+'</span>':'';
+  const tag=dim?' <span class="dtag">dold</span>':'';
+  return '<div class="it cm'+(dim?' dim':'')+'"><div class="who">'+esc(c.author||"Kund")+pin+tag+' <span class="when">'+when(c.created_at)+'</span></div><div class="txt">'+esc(c.body)+'</div></div>';
+}
+function timelineHTML(delId,pid){
+  const vis=STATE.comments.filter(c=>c.deliverable_id===delId && c.hidden!==true);
+  const hid=STATE.comments.filter(c=>c.deliverable_id===delId && c.hidden===true);
+  const ev=STATE.events.filter(e=>e.deliverable_id===delId);
   let pn=0; const numById={};
-  for(const c of STATE.comments.filter(c=>c.deliverable_id===delId)){ if(c.file_id!=null&&c.x!=null&&c.y!=null){pn++;numById[c.id]=c.file_id?pn:0;} }
-  const cm=STATE.comments.filter(c=>c.deliverable_id===delId).map(c=>({t:c.created_at,type:"cm",author:c.author,body:c.body,fileId:c.file_id,num:numById[c.id]}));
-  const ev=STATE.events.filter(e=>e.deliverable_id===delId).map(e=>({t:e.created_at,type:"ev",kind:e.kind,status:e.status}));
-  const all=cm.concat(ev).sort((a,b)=>new Date(b.t)-new Date(a.t));
-  if(!all.length) return '<div class="tl"><div class="empty">Ingen aktivitet än.</div></div>';
-  return '<div class="tl">'+all.map(x=>{
-    if(x.type==="cm"){
-      const pin=x.num?' <span class="pinnum" title="Markering på bild — klicka" onclick="openLightbox(\''+x.fileId+'\')">📍'+x.num+'</span>':'';
-      return '<div class="it cm"><div class="who">'+esc(x.author||"Kund")+pin+' <span class="when">'+when(x.t)+'</span></div><div class="txt">'+esc(x.body)+'</div></div>';
-    }
-    const label=x.kind==="created"?"Del skapad ("+(STL[x.status]||x.status)+")":(EVL[x.status]||("Status: "+(STL[x.status]||x.status)));
-    return '<div class="it ev"><div class="ev-txt">'+esc(label)+' <span class="when">'+when(x.t)+'</span></div></div>';
-  }).join("")+'</div>';
+  for(const c of vis){ if(c.file_id!=null&&c.x!=null&&c.y!=null){pn++;numById[c.id]=pn;} }
+  const items=vis.map(c=>({t:c.created_at,type:"cm",c,num:numById[c.id]}))
+    .concat(ev.map(e=>({t:e.created_at,type:"ev",kind:e.kind,status:e.status})))
+    .sort((a,b)=>new Date(b.t)-new Date(a.t));
+  let h='<div class="tl">';
+  if(!items.length) h+='<div class="empty">Ingen aktivitet än.</div>';
+  for(const x of items){
+    if(x.type==="cm"){ h+=cmLine(x.c,x.num,false); }
+    else{ const label=x.kind==="created"?"Del skapad ("+(STL[x.status]||x.status)+")":(EVL[x.status]||("Status: "+(STL[x.status]||x.status)));
+      h+='<div class="it ev"><div class="ev-txt">'+esc(label)+' <span class="when">'+when(x.t)+'</span></div></div>'; }
+  }
+  h+='</div>';
+  // controls
+  let ctr='<div class="hctl">';
+  if(vis.length) ctr+='<button class="btn ghost sm" onclick="hideComments(\''+delId+'\',\''+pid+'\')">Dölj lösta kommentarer</button>';
+  if(hid.length){
+    const shown=SHOWHID.has(delId);
+    ctr+='<button class="btn ghost sm" onclick="toggleHidden(\''+delId+'\')">'+(shown?'Göm dolda igen':'Visa '+hid.length+' dold'+(hid.length>1?'a':'')+'')+'</button>';
+    if(shown) ctr+='<button class="btn ghost sm" onclick="unhideComments(\''+delId+'\',\''+pid+'\')">Återställ alla</button>';
+  }
+  ctr+='</div>';
+  h+=ctr;
+  if(hid.length && SHOWHID.has(delId)){
+    let pn2=0; const num2={}; for(const c of hid){ if(c.file_id!=null&&c.x!=null&&c.y!=null){pn2++;num2[c.id]=pn2;} }
+    h+='<div class="tl hidtl">'+hid.slice().sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)).map(c=>cmLine(c,num2[c.id],true)).join("")+'</div>';
+  }
+  return h;
+}
+async function hideComments(delId,pid){
+  if(!confirm("Dölj alla kommentarer på den här delen?\nDe försvinner för kunden men kan visas igen av dig."))return;
+  try{await api({action:"hide_comments",deliverable:delId});SHOWHID.delete(delId);await refreshProject(pid);}catch(e){alert(e.message);}
+}
+async function unhideComments(delId,pid){
+  try{await api({action:"unhide_comments",deliverable:delId});await refreshProject(pid);}catch(e){alert(e.message);}
+}
+function toggleHidden(delId){
+  if(SHOWHID.has(delId))SHOWHID.delete(delId); else SHOWHID.add(delId);
+  const el=document.getElementById("hist-"+delId);
+  const pid=STATE.dels.find(x=>x.id===delId)?.project_id;
+  if(el) el.innerHTML=timelineHTML(delId,pid);
+}
+window.hideComments=hideComments;window.unhideComments=unhideComments;window.toggleHidden=toggleHidden;
+function loadSeen(){try{return JSON.parse(localStorage.getItem("cxd_seen")||"{}");}catch{return {};}}
+function saveSeen(o){try{localStorage.setItem("cxd_seen",JSON.stringify(o));}catch{}}
+let SEEN=loadSeen();
+// latest client-relevant activity on a deliverable: visible comments + status changes (not "created")
+function latestActivity(delId){
+  let t=0;
+  for(const c of STATE.comments){ if(c.deliverable_id===delId && c.hidden!==true){ const ts=+new Date(c.created_at); if(ts>t)t=ts; } }
+  for(const e of STATE.events){ if(e.deliverable_id===delId && e.kind!=="created"){ const ts=+new Date(e.created_at); if(ts>t)t=ts; } }
+  return t;
+}
+function newActivity(delId){
+  const latest=latestActivity(delId); if(!latest) return false;
+  const seen=SEEN[delId]?+new Date(SEEN[delId]):0;
+  return latest>seen;
+}
+function markSeenProject(pid){
+  const now=new Date().toISOString();
+  for(const d of STATE.dels.filter(x=>x.project_id===pid)) SEEN[d.id]=now;
+  saveSeen(SEEN);
+  const badge=document.getElementById("newp-"+pid); if(badge) badge.remove();
 }
 function delsHTML(pid,ds){
   if(!ds.length) return '<div class="msg">Inga delar än. Lägg till planerade delar eller ladda upp ovan.</div>';
   return ds.map(d=>{
-    const nc=STATE.comments.filter(c=>c.deliverable_id===d.id).length;
+    const nc=STATE.comments.filter(c=>c.deliverable_id===d.id && c.hidden!==true).length;
     const nf=filesFor(d.id).length;
+    const neu=newActivity(d.id);
     return '<div class="delrow"><div class="del">'+thumb(d)
-    +'<div class="t"><b>'+esc(d.title||"(utan titel)")+'</b><span>'+STL[d.status]+(nf?' · '+nf+(nf===1?' fil':' filer'):' · ingen fil än')+'</span></div>'
+    +'<div class="t"><b>'+esc(d.title||"(utan titel)")+(neu?' <span class="newbadge">✨ Nytt</span>':'')+'</b><span>'+STL[d.status]+(nf?' · '+nf+(nf===1?' fil':' filer'):' · ingen fil än')+'</span></div>'
     +'<select onchange="setStatus(\''+d.id+'\',this.value,\''+pid+'\')">'
     +['review','changes','approved'].map(s=>'<option value="'+s+'" '+(d.status===s?"selected":"")+'>'+STL[s]+'</option>').join("")
     +'</select>'
     +'<button class="btn ghost sm" onclick="delDeliverable(\''+d.id+'\',\''+pid+'\')">Radera</button></div>'
     +filesManagerHTML(d.id)
     +'<button class="hbtn'+(nc?' open':'')+'" id="hb-'+d.id+'" onclick="toggleHist(\''+d.id+'\')"><span class="chev">›</span> Kommentarer &amp; historik'+(nc?' <span class="pip">'+nc+'</span>':'')+'</button>'
-    +'<div class="hist'+(nc?' open':'')+'" id="hist-'+d.id+'">'+timelineHTML(d.id)+'</div></div>';
+    +'<div class="hist'+(nc?' open':'')+'" id="hist-'+d.id+'">'+timelineHTML(d.id,pid)+'</div></div>';
   }).join("");
 }
 function toggleHist(id){
