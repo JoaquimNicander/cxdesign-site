@@ -36,7 +36,11 @@
   .media .stack{display:grid;gap:6px;width:100%}
   .media .empty{color:#8a8172;padding:64px 20px;text-align:center;font-weight:600}
   .imgwrap{position:relative;display:block;cursor:crosshair;line-height:0}
+  .imgwrap.locked{cursor:default}
   .imgwrap img{display:block;width:100%}
+  .freshbadge{display:inline-block;background:#caa23a;color:#14110e;font-size:.62em;font-weight:800;padding:3px 10px;border-radius:999px;vertical-align:middle;margin-left:8px;letter-spacing:.02em;white-space:nowrap}
+  .lockednote{background:rgba(47,143,91,.1);border:1px solid rgba(47,143,91,.4);color:#236b45;border-radius:12px;padding:12px 14px;font-weight:600;font-size:.92rem}
+  .card.approved{opacity:.96}
   .carousel{position:relative;width:100%;overflow:hidden;touch-action:pan-y}
   .cslide{display:none}
   .cslide.on{display:block;animation:cfade .25s ease}
@@ -164,8 +168,8 @@ function render(){
   document.getElementById("main").innerHTML=h;
   for(const d of items){
     const ok=document.getElementById("ok-"+d.id); if(ok) ok.onclick=()=>setStatus(d.id,"approved");
-    const ch=document.getElementById("ch-"+d.id); if(ch) ch.onclick=()=>{setStatus(d.id,"changes");document.getElementById("body-"+d.id).focus();};
-    document.getElementById("send-"+d.id).onclick=()=>addComment(d.id);
+    const ch=document.getElementById("ch-"+d.id); if(ch) ch.onclick=()=>{setStatus(d.id,"changes");const t=document.getElementById("body-"+d.id);if(t)t.focus();};
+    const sb=document.getElementById("send-"+d.id); if(sb) sb.onclick=()=>addComment(d.id);
   }
   initCarousels();
 }
@@ -188,7 +192,9 @@ function pinsFor(fileId,pi){
 }
 function slideHTML(f,d,pi){
   if(f.kind==="video") return '<video src="'+PUB+f.storage_path+'" controls preload="metadata"></video>';
-  return '<div class="imgwrap" onclick="imgClick(event,\''+d.id+'\',\''+(f.id||"")+'\')"><img src="'+PUB+f.storage_path+'" alt="'+esc(d.title)+'" draggable="false">'+(f.id?pinsFor(f.id,pi):"")+'</div>';
+  const locked=d.status==="approved";
+  const oc=locked?'':' onclick="imgClick(event,\''+d.id+'\',\''+(f.id||"")+'\')"';
+  return '<div class="imgwrap'+(locked?' locked':'')+'"'+oc+'><img src="'+PUB+f.storage_path+'" alt="'+esc(d.title)+'" draggable="false">'+(f.id?pinsFor(f.id,pi):"")+'</div>';
 }
 const CAR={};
 function setSlide(delId,idx){
@@ -243,24 +249,35 @@ function cardHTML(d){
   if(pdfs.length){
     docs='<div class="docs">'+pdfs.map(f=>'<a class="doc" href="'+PUB+f.storage_path+'" download="'+esc(f.filename||"dokument.pdf")+'" target="_blank" rel="noopener"><span class="ic">PDF</span><span class="dt"><b>'+esc(f.filename||"Dokument.pdf")+'</b><span>Klicka för att ladda ner</span></span><span class="dl">Ladda ner ↓</span></a>').join("")+'</div>';
   }
-  const hint=(imgs.length&&imgs.some(f=>f.id))?'<div class="imghint"><span class="d"></span>Klicka direkt på bilden för att kommentera en specifik plats</div>':'';
-  let cm='<div class="comments"><h4>Kommentarer</h4>';
   const cs=d.comments||[];
-  if(!cs.length) cm+='<div style="color:var(--muted);font-size:.9rem;padding:2px 0 8px">Inga kommentarer än.</div>';
+  const locked=d.status==="approved";
+  const fresh=hasFiles && d.status==="review" && cs.length===0;
+  const hint=(!locked && imgs.length&&imgs.some(f=>f.id))?'<div class="imghint"><span class="d"></span>Klicka direkt på bilden för att kommentera en specifik plats</div>':'';
+  let listHTML='';
   for(const c of cs){
     const num=pi.numById[c.id];
-    cm+='<div class="cmt'+(num?' pinned':'')+'"'+(num?' onclick="focusPin(\''+c.id+'\')"':'')+'>'
+    listHTML+='<div class="cmt'+(num?' pinned':'')+'"'+(num?' onclick="focusPin(\''+c.id+'\')"':'')+'>'
       +(num?'<span class="pinnum">'+num+'</span>':'')
       +'<span class="who">'+esc(c.author||"Kund")+'</span> <span class="when">'+when(c.created_at)+'</span><div class="txt">'+esc(c.body)+'</div></div>';
   }
-  cm+='<div class="cform"><div class="pinchip" id="pinchip-'+d.id+'"><span id="pinchip-txt-'+d.id+'">📍 Punkt markerad på bilden</span><button onclick="clearPin(\''+d.id+'\')" title="Ta bort markering">✕</button></div>'
-    +'<div class="row"><input id="auth-'+d.id+'" placeholder="Ditt namn" style="max-width:200px"></div>'
-    +'<textarea id="body-'+d.id+'" placeholder="Vad vill du säga eller ändra?"></textarea>'
-    +'<div class="row"><button class="btn ghost" id="send-'+d.id+'">Skicka kommentar</button></div></div></div>';
-  return '<div class="card">'+media+'<div class="body"><h3>'+esc(d.title)+'</h3>'
+  let cm;
+  if(locked){
+    cm='<div class="comments">';
+    if(cs.length) cm+='<h4>Kommentarer</h4>'+listHTML;
+    cm+='<div class="lockednote">🔒 Godkänt — den här delen är klar. Hör av dig om något ändå behöver ändras.</div></div>';
+  }else{
+    cm='<div class="comments"><h4>Kommentarer</h4>';
+    if(!cs.length) cm+='<div style="color:var(--muted);font-size:.9rem;padding:2px 0 8px">Inga kommentarer än.</div>';
+    cm+=listHTML
+      +'<div class="cform"><div class="pinchip" id="pinchip-'+d.id+'"><span id="pinchip-txt-'+d.id+'">📍 Punkt markerad på bilden</span><button onclick="clearPin(\''+d.id+'\')" title="Ta bort markering">✕</button></div>'
+      +'<div class="row"><input id="auth-'+d.id+'" placeholder="Ditt namn" style="max-width:200px"></div>'
+      +'<textarea id="body-'+d.id+'" placeholder="Vad vill du säga eller ändra?"></textarea>'
+      +'<div class="row"><button class="btn ghost" id="send-'+d.id+'">Skicka kommentar</button></div></div></div>';
+  }
+  return '<div class="card'+(locked?' approved':'')+'">'+media+'<div class="body"><h3>'+esc(d.title)+(fresh?' <span class="freshbadge">✨ Uppdaterad – granska</span>':'')+'</h3>'
     +(d.description?'<div class="desc">'+esc(d.description)+'</div>':'')
     +docs+hint
-    +(hasFiles?('<div class="actions"><button class="btn btn-ok" id="ok-'+d.id+'" '+(d.status==="approved"?"disabled":"")+'>✓ Godkänn</button>'
+    +((hasFiles&&!locked)?('<div class="actions"><button class="btn btn-ok" id="ok-'+d.id+'">✓ Godkänn</button>'
     +'<button class="btn btn-ch" id="ch-'+d.id+'">Begär ändring</button></div>'):'')
     +cm+'</div></div>';
 }
