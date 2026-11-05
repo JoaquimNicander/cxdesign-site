@@ -8,13 +8,6 @@
       }
     },
     {
-      "route": "/commerce/",
-      "rewrite": "/commerce/index.html",
-      "headers": {
-        "cache-control": "no-store"
-      }
-    },
-    {
       "route": "/smartcraft/admin",
       "rewrite": "/smartcraft/admin.html",
       "headers": {
