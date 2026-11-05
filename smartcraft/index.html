@@ -80,6 +80,15 @@
   .thanks p b{color:var(--txt)}
   .thanks .btn{display:inline-block;margin-top:10px;background:var(--orange);color:#fff;font-weight:800;padding:14px 22px;border-radius:8px;cursor:pointer;border:0;font:800 1rem Barlow,sans-serif}
 
+  /* JULKLAPP */
+  .gift-badge{position:absolute;top:14px;right:14px;background:var(--orange);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;padding:8px 14px;border-radius:999px;transform:rotate(4deg);box-shadow:0 6px 16px rgba(255,121,22,.35)}
+  .gift{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;background:var(--navy);color:#fff;border-radius:14px;padding:22px 26px;margin:0 0 56px}
+  .gift .ico{font-size:2.6rem;line-height:1}
+  .gift h3{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(1.4rem,3vw,2rem);line-height:1.05;text-transform:uppercase}
+  .gift p{margin-top:4px;opacity:.85;font-size:.95rem;max-width:62ch}
+  .gift a{background:var(--orange);color:#fff;font-weight:800;padding:12px 18px;border-radius:8px;white-space:nowrap}
+  @media(max-width:700px){.gift{grid-template-columns:1fr}.gift a{text-align:center}}
+
   /* BESTÄLL */
   .order{padding:0 0 40px}
   .order-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
@@ -180,6 +189,7 @@
     </div>
     <div class="hero-img">
       <img id="heroImg" src="img/svart.webp" alt="Hantverkarkalsongen, svart">
+      <div class="gift-badge">🎁 Julklappstips</div>
       <div class="tag" id="heroTag">Svart</div>
       <div class="flip"><button type="button" class="on" data-side="">Framsida</button><button type="button" data-side="-bak">Baksida</button></div>
     </div>
@@ -190,6 +200,14 @@
     <div class="usp"><b>10 för 9</b><span>var tionde par på köpet</span></div>
     <div class="usp"><b>20 kr/par</b><span>till prostatacancerforskning</span></div>
     <div class="usp"><b>2–5 dagar</b><span>leverans med Postnord</span></div>
+  </div>
+  <div class="gift">
+    <div class="ico">🎁</div>
+    <div>
+      <h3>Julklappen som faktiskt används</h3>
+      <p>Till gänget på bygget, svärfar eller dig själv. 139 kr per par – och köper du 10 får hela firman var sitt plus ett på köpet. Beställ senast <b>17 december</b> så ligger de under granen.</p>
+    </div>
+    <a href="#bestall">Beställ julklappar</a>
   </div>
 </div></header>
 
