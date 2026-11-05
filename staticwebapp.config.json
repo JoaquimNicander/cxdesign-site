@@ -1,12 +1,27 @@
 {
   "routes": [
     {
+      "route": "/smartcraft/admin",
+      "rewrite": "/smartcraft/admin.html",
+      "headers": {
+        "cache-control": "no-store"
+      }
+    },
+    {
+      "route": "/smartcraft",
+      "rewrite": "/smartcraft/index.html"
+    },
+    {
       "route": "/projekt.html",
-      "headers": { "cache-control": "no-store, must-revalidate" }
+      "headers": {
+        "cache-control": "no-store, must-revalidate"
+      }
     },
     {
       "route": "/projekt-admin.html",
-      "headers": { "cache-control": "no-store, must-revalidate" }
+      "headers": {
+        "cache-control": "no-store, must-revalidate"
+      }
     },
     {
       "route": "/k/*",
@@ -32,6 +47,7 @@
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
+      "/smartcraft/*",
       "/k/*",
       "/allstrings/*",
       "/xlbygg/*",

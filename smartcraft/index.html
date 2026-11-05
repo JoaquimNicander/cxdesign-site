@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<base href="/smartcraft/">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Hantverkarkalsongen — I samarbete med SmartCraft</title>
+<meta name="description" content="Hantverkarkalsongen i svart och blå, 139 kr/par. Köp 10 – betala för 9. 20 kr per par går till Prostatacancerfonden.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#121314;--panel:#1b1d1f;--line:#2b2e31;--txt:#f2f0ea;--mute:#9a9893;
+    --yellow:#ffd23f;--yellow-ink:#1a1500;--blue:#2c5fb8;--max:1200px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Barlow',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;line-height:1.5;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .cond{font-family:'Barlow Condensed','Barlow',sans-serif}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  .kicker{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--yellow)}
+  .kicker.partner{display:flex;align-items:center;gap:16px;font-size:.95rem}
+  .kicker.partner img{height:48px}
+
+  /* varningsrand */
+  .stripe{height:10px;background:repeating-linear-gradient(135deg,var(--yellow) 0 22px,#111 22px 44px)}
+
+  nav{position:sticky;top:0;z-index:50;background:rgba(18,19,20,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:var(--max);margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:12px;font-weight:700;font-size:.9rem;color:var(--mute)}
+  .brand img.cx{height:26px;filter:invert(1) brightness(1.4)}
+  .brand img.sc{height:34px}
+  .brand span{color:var(--mute);font-weight:500}
+  .navbtn{background:var(--yellow);color:var(--yellow-ink);font-weight:800;padding:10px 18px;border-radius:6px;font-size:.9rem;white-space:nowrap}
+
+  /* HERO */
+  .hero{padding:40px 0 24px}
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+  h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(3rem,8vw,6.4rem);line-height:.9;text-transform:uppercase;letter-spacing:-.01em;margin:14px 0 18px}
+  h1 em{font-style:normal;color:var(--yellow)}
+  .lead{font-size:1.15rem;color:var(--mute);max-width:46ch}
+  .price-row{display:flex;gap:28px;align-items:flex-end;margin-top:28px;flex-wrap:wrap}
+  .price{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:3.4rem;line-height:1}
+  .price small{font-size:1.1rem;font-weight:700;color:var(--mute);margin-left:6px}
+  .deal{border:2px solid var(--yellow);color:var(--yellow);font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.25rem;padding:8px 14px;border-radius:6px;text-transform:uppercase;letter-spacing:.04em;transform:rotate(-2deg)}
+  .hero-img{position:relative}
+  .hero-img img{width:100%;height:auto;transition:opacity .35s}
+  .hero-img .tag{position:absolute;left:0;bottom:12px;background:var(--panel);border:1px solid var(--line);padding:8px 14px;font-weight:700;font-size:.85rem;border-radius:6px}
+  .flip{position:absolute;right:0;bottom:12px;display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel)}
+  .flip button{background:transparent;border:0;color:var(--mute);font:700 .85rem Barlow,sans-serif;padding:8px 14px;cursor:pointer}
+  .flip button.on{background:var(--yellow);color:var(--yellow-ink)}
+
+  /* USP-rad */
+  .usps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:36px 0 48px}
+  .usp{background:var(--panel);padding:18px 20px}
+  .usp b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:800;line-height:1.1}
+  .usp span{font-size:.88rem;color:var(--mute)}
+
+  /* 20 KR-BAND */
+  .cause{background:var(--yellow);color:var(--yellow-ink);padding:16px 0;margin:0}
+  .cause-in{max-width:var(--max);margin:0 auto;padding:0 24px;display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+  .cause .big{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2.2rem,5vw,3.4rem);line-height:.85;white-space:nowrap;display:flex;align-items:baseline;gap:10px}
+  .cause .big small{font-size:.38em;letter-spacing:.12em;text-transform:uppercase;font-weight:800}
+  .cause h3{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(1.2rem,2.4vw,1.7rem);line-height:1.05;text-transform:uppercase}
+  .cause p{margin-top:3px;font-weight:500;font-size:.92rem;max-width:70ch;opacity:.85}
+  @media(max-width:700px){.cause-in{grid-template-columns:1fr}}
+
+  /* TACK-VY */
+  .thanks{position:fixed;inset:0;z-index:100;background:var(--bg);display:none;place-items:center;padding:24px;overflow:auto}
+  .thanks.on{display:grid}
+  .thanks .card{max-width:560px;width:100%;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:36px}
+  .thanks .check{width:64px;height:64px;border-radius:50%;background:var(--yellow);color:var(--yellow-ink);display:grid;place-items:center;font-size:2rem;font-weight:900;margin-bottom:20px}
+  .thanks h2{font-size:clamp(2.6rem,7vw,4rem);line-height:.95;margin:12px 0 18px}
+  .thanks p{color:var(--mute);margin-bottom:14px;line-height:1.55}
+  .thanks p b{color:var(--txt)}
+  .thanks .btn{display:inline-block;margin-top:10px;background:var(--yellow);color:var(--yellow-ink);font-weight:800;padding:14px 22px;border-radius:8px;cursor:pointer;border:0;font:800 1rem Barlow,sans-serif}
+
+  /* BESTÄLL */
+  .order{padding:0 0 40px}
+  .order-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+  h2{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2rem,4.5vw,3.2rem);text-transform:uppercase;line-height:1;margin-bottom:8px}
+  .sub{color:var(--mute);margin-bottom:24px}
+  .colors{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px}
+  .color{background:var(--panel);border:2px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;transition:border-color .2s}
+  .color.on{border-color:var(--yellow)}
+  .color img{width:100%;aspect-ratio:4/3;object-fit:contain;background:#fff;border-radius:6px}
+  .color .n{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-weight:700}
+  .color .dot{width:14px;height:14px;border-radius:50%;border:2px solid #fff3}
+  .sizes{display:grid;gap:10px}
+  .size{display:grid;grid-template-columns:1fr auto;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px 12px 18px}
+  .size .l{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.5rem}
+  .size .l small{font-family:'Barlow',sans-serif;font-size:.8rem;color:var(--mute);font-weight:500;margin-left:8px}
+  .step{display:flex;align-items:center;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .step button{width:42px;height:42px;background:#232527;border:0;color:var(--txt);font-size:1.4rem;cursor:pointer;font-weight:700}
+  .step button:hover{background:#2c2f32}
+  .step input{width:48px;height:42px;background:var(--panel);border:0;color:var(--txt);text-align:center;font-weight:700;font-size:1.05rem;-moz-appearance:textfield}
+  .step input::-webkit-inner-spin-button{-webkit-appearance:none}
+
+  .summary{position:sticky;top:76px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px}
+  .summary h3{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.6rem;text-transform:uppercase;margin-bottom:14px}
+  .lines{display:grid;gap:8px;font-size:.98rem}
+  .lines div{display:flex;justify-content:space-between;gap:12px}
+  .lines .m{color:var(--mute)}
+  .lines .free{color:var(--yellow);font-weight:700}
+  .total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);margin-top:14px;padding-top:14px}
+  .total b{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:900}
+  .fund{margin-top:10px;font-size:.88rem;color:var(--mute);background:#1f2224;border-radius:8px;padding:10px 12px}
+  .fund b{color:var(--txt)}
+  .nudge{margin-top:12px;font-size:.9rem;color:var(--yellow);font-weight:600;min-height:1.3em}
+  .buy{width:100%;margin-top:18px;background:var(--yellow);color:var(--yellow-ink);border:0;border-radius:10px;padding:18px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;text-transform:uppercase;letter-spacing:.03em;cursor:pointer;transition:transform .15s,opacity .2s}
+  .buy:hover{transform:translateY(-1px)}
+  .buy:disabled{opacity:.35;cursor:not-allowed;transform:none}
+  .pay{display:flex;gap:10px;justify-content:center;margin-top:12px;font-size:.78rem;color:var(--mute);flex-wrap:wrap}
+  .pay span{border:1px solid var(--line);border-radius:4px;padding:3px 8px}
+  .err{margin-top:10px;color:#ff7a6b;font-size:.9rem;display:none}
+
+
+  /* INFO */
+  .info{padding:24px 0 64px}
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px}
+  .fact{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+  .fact b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:1.35rem;font-weight:800;margin-bottom:6px}
+  .fact span{color:var(--mute);font-size:.95rem;line-height:1.5}
+  .ask{margin-top:20px;color:var(--mute)}
+  .ask a{color:var(--yellow);font-weight:600}
+
+  footer{border-top:1px solid var(--line);padding:28px 0;color:var(--mute);font-size:.85rem}
+  .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+
+  @media(max-width:900px){
+    .hero-grid,.order-grid{grid-template-columns:1fr}
+    .facts{grid-template-columns:1fr 1fr}
+    .hero-img{order:-1}
+    .usps{grid-template-columns:1fr 1fr}
+    .summary{position:static}
+  }
+  @media(max-width:520px){.usps,.facts{grid-template-columns:1fr}.colors{grid-template-columns:1fr 1fr;gap:8px}.color{padding:10px}}
+</style>
+</head>
+<body>
+<div class="thanks" id="thanks"><div class="card">
+  <div class="check">✓</div>
+  <div class="kicker">I samarbete med SmartCraft</div>
+  <h2>Tack!<br>Nu är det på gång.</h2>
+  <p>Din betalning är genomförd och ett kvitto är på väg till din mejl. Vi packar och skickar med Postnord inom <b>2–5 arbetsdagar</b>.</p>
+  <p><b>20 kr per par</b> går till prostatacancerforskning – tack för att du är med och bidrar.</p>
+  <p>Frågor? Mejla <a href="mailto:joaquim@cxdesign.se" style="color:var(--yellow)">joaquim@cxdesign.se</a>.</p>
+  <button class="btn" id="thanksClose">Tillbaka till butiken</button>
+</div></div>
+<div class="stripe"></div>
+<nav><div class="nav-in">
+  <a class="brand" href="/"><img class="cx" src="../cxd-logo.png" alt="CX Design"><span>×</span><img class="sc" src="img/smartcraft-white.svg" alt="SmartCraft"></a>
+  <a class="navbtn" href="#bestall">Beställ</a>
+</div></nav>
+
+<section class="cause"><div class="cause-in">
+  <div class="big">20,00 kr<small>per par</small></div>
+  <div>
+    <h3>Går till prostatacancerforskning</h3>
+    <p>För varje sålt par skänker vi 20 kr till Prostatacancerfonden – även för paret du får på köpet.</p>
+  </div>
+</div></section>
+
+<header class="hero"><div class="wrap">
+  <div class="hero-grid">
+    <div>
+      <div class="kicker partner">I samarbete med <img src="img/smartcraft-white.svg" alt="SmartCraft"></div>
+      <h1>Hantverkar-<br><em>kalsongen</em></h1>
+      <p class="lead">Verktygsbältet du aldrig glömmer hemma. Mjuk, skön och tryckt med hammare, skiftnyckel och tumstock. Finns i svart och blå, storlek M–XL. <b style="color:var(--txt)">20 kr per par går till prostatacancerforskning.</b></p>
+      <div class="price-row">
+        <div class="price">139<small>kr/par</small></div>
+        <div class="deal">Köp 10 – betala för 9</div>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img id="heroImg" src="img/svart.webp" alt="Hantverkarkalsongen, svart">
+      <div class="tag" id="heroTag">Svart</div>
+      <div class="flip"><button type="button" class="on" data-side="">Framsida</button><button type="button" data-side="-bak">Baksida</button></div>
+    </div>
+  </div>
+
+  <div class="usps">
+    <div class="usp"><b>139 kr</b><span>per par, inkl. moms</span></div>
+    <div class="usp"><b>10 för 9</b><span>var tionde par på köpet</span></div>
+    <div class="usp"><b>20 kr/par</b><span>till prostatacancerforskning</span></div>
+    <div class="usp"><b>2–5 dagar</b><span>leverans med Postnord</span></div>
+  </div>
+</div></header>
+
+
+<section class="order" id="bestall"><div class="wrap">
+  <div class="order-grid">
+    <div>
+      <h2>Beställ</h2>
+      <p class="sub">Välj färg, fyll i antal per storlek. Du kan blanda färger och storlekar – rabatten räknas på totalen.</p>
+
+      <div class="colors">
+        <div class="color on" data-color="svart">
+          <img src="img/svart.webp" alt="Svart">
+          <div class="n"><span>Svart</span><span class="dot" style="background:#3a3a3a"></span></div>
+        </div>
+        <div class="color" data-color="bla">
+          <img src="img/bla.webp" alt="Blå">
+          <div class="n"><span>Blå</span><span class="dot" style="background:#2c5fb8"></span></div>
+        </div>
+      </div>
+
+      <div class="sizes" id="sizes"></div>
+    </div>
+
+    <aside class="summary">
+      <h3>Din beställning</h3>
+      <div class="lines" id="lines"><div class="m"><span>Inget valt ännu</span><span></span></div></div>
+      <div class="total"><span>Att betala</span><b id="total">0 kr</b></div>
+      <div class="fund">Till prostatacancerforskning: <b id="fund">0 kr</b></div>
+      <div class="nudge" id="nudge"></div>
+      <button class="buy" id="buy" disabled>Till kassan</button>
+      <div class="pay"><span>Kort</span><span>Klarna</span><span>Apple Pay</span><span>Google Pay</span></div>
+      <div class="err" id="err"></div>
+    </aside>
+  </div>
+</div></section>
+
+
+<section class="info"><div class="wrap">
+  <div class="kicker">Bra att veta</div>
+  <h2>Skönt på jobbet, kul i omklädningsrummet</h2>
+  <div class="facts">
+    <div class="fact"><b>Material</b><span>Mjukt och stretchigt – håller formen och trycket tvätt efter tvätt.</span></div>
+    <div class="fact"><b>Storlekar</b><span>M, L och XL. Normal passform – ta din vanliga storlek.</span></div>
+    <div class="fact"><b>Leverans</b><span>Skickas med Postnord inom 2–5 arbetsdagar. Frakt 59 kr, fri frakt från 10 par.</span></div>
+    <div class="fact"><b>Välgörenhet</b><span>20 kr per sålt par går till prostatacancerforskning via Prostatacancerfonden – även för paret du får på köpet.</span></div>
+  </div>
+  <p class="ask">Frågor? <a href="mailto:joaquim@cxdesign.se">joaquim@cxdesign.se</a></p>
+</div></section>
+
+<footer><div class="wrap foot">
+  <div>© CX Marknad &amp; Kommunikation · Laholm · <a href="/">cxdesign.se</a></div>
+  <div>Säker betalning via Stripe</div>
+</div></footer>
+
+<script>
+(function(){
+  const FN = "https://fueggdqtgmvldjbhcdfn.supabase.co/functions/v1/kalsong-checkout";
+  const PRICE=139, SHIP=59, FREE_EVERY=10, FREE_SHIP_FROM=10, FUND=20;
+  const COLORS={svart:"Svart",bla:"Blå"}, SIZES=["M","L","XL"];
+  const qty={}; // "svart-M" -> n
+  let color="svart", side="";
+  function setHero(){const h=document.getElementById("heroImg"); h.style.opacity=0; setTimeout(()=>{h.src="img/"+(side?"svart-bak":color)+".webp"; h.alt="Hantverkarkalsongen, "+COLORS[color]+(side?" baksida":""); h.style.opacity=1;},180);}
+  function showSide(sd){side=sd; document.querySelectorAll(".flip button").forEach(x=>x.classList.toggle("on",x.dataset.side===sd)); setHero();}
+  let auto=setInterval(()=>showSide(side?"":"-bak"),3500);
+  document.querySelectorAll(".flip button").forEach(b=>b.addEventListener("click",()=>{clearInterval(auto); showSide(b.dataset.side);}));
+  const kr=n=>n.toLocaleString("sv-SE")+" kr";
+
+  const sizesEl=document.getElementById("sizes");
+  function renderSizes(){
+    sizesEl.innerHTML=SIZES.map(s=>`
+      <div class="size">
+        <div class="l">${COLORS[color]} · ${s}</div>
+        <div class="step">
+          <button type="button" data-d="-1" data-k="${color}-${s}">−</button>
+          <input type="number" min="0" max="200" value="${qty[color+"-"+s]||0}" data-k="${color}-${s}">
+          <button type="button" data-d="1" data-k="${color}-${s}">+</button>
+        </div>
+      </div>`).join("");
+  }
+  sizesEl.addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    const k=b.dataset.k; qty[k]=Math.max(0,Math.min(200,(qty[k]||0)+Number(b.dataset.d)));
+    if(new URLSearchParams(location.search).get("paid")){document.getElementById("thanks").classList.add("on");history.replaceState(null,"",location.pathname);}
+  document.getElementById("thanksClose").onclick=()=>document.getElementById("thanks").classList.remove("on");
+  renderSizes(); update();
+  });
+  sizesEl.addEventListener("input",e=>{
+    if(e.target.tagName!=="INPUT") return;
+    qty[e.target.dataset.k]=Math.max(0,Math.min(200,parseInt(e.target.value)||0)); update();
+  });
+
+  document.querySelectorAll(".color").forEach(c=>c.addEventListener("click",()=>{
+    color=c.dataset.color;
+    document.querySelectorAll(".color").forEach(x=>x.classList.toggle("on",x===c));
+    setHero();
+    document.getElementById("heroTag").textContent=COLORS[color];
+    renderSizes();
+  }));
+
+  function items(){ return Object.entries(qty).filter(([,n])=>n>0).map(([k,n])=>{const [c,s]=k.split("-");return {color:c,size:s,qty:n};}); }
+
+  function update(){
+    const it=items(); const pairs=it.reduce((a,i)=>a+i.qty,0);
+    const free=Math.floor(pairs/FREE_EVERY), disc=free*PRICE, sub=pairs*PRICE;
+    const ship=pairs===0?0:(pairs>=FREE_SHIP_FROM?0:SHIP);
+    const total=sub-disc+ship;
+    const L=document.getElementById("lines");
+    if(!pairs){ L.innerHTML='<div class="m"><span>Inget valt ännu</span><span></span></div>'; }
+    else{
+      L.innerHTML=it.map(i=>`<div><span>${COLORS[i.color]} · ${i.size} × ${i.qty}</span><span>${kr(i.qty*PRICE)}</span></div>`).join("")
+        +(disc?`<div class="free"><span>${free} par på köpet</span><span>−${kr(disc)}</span></div>`:"")
+        +`<div class="m"><span>Frakt</span><span>${ship?kr(ship):"Fri"}</span></div>`;
+    }
+    document.getElementById("total").textContent=kr(total);
+    document.getElementById("fund").textContent=kr(pairs*FUND);
+    const left=pairs?((FREE_EVERY-pairs%FREE_EVERY)%FREE_EVERY):0;
+    document.getElementById("nudge").textContent=pairs&&left&&left<=3?`${left} par till så får du ett på köpet + fri frakt`:"";
+    document.getElementById("buy").disabled=pairs===0;
+  }
+
+  document.getElementById("buy").addEventListener("click",async()=>{
+    const b=document.getElementById("buy"), err=document.getElementById("err");
+    b.disabled=true; b.textContent="Öppnar kassan…"; err.style.display="none";
+    try{
+      const ref=new URLSearchParams(location.search).get("ref")||"";
+      const r=await fetch(FN,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:items(),ref})});
+      const d=await r.json();
+      if(!r.ok||!d.url) throw new Error(d.error||"Kunde inte öppna kassan");
+      location.href=d.url;
+    }catch(e){
+      err.textContent="Något gick fel: "+e.message+". Försök igen eller mejla joaquim@cxdesign.se.";
+      err.style.display="block"; b.disabled=false; b.textContent="Till kassan";
+    }
+  });
+
+  if(new URLSearchParams(location.search).get("paid")){document.getElementById("thanks").classList.add("on");history.replaceState(null,"",location.pathname);}
+  document.getElementById("thanksClose").onclick=()=>document.getElementById("thanks").classList.remove("on");
+  renderSizes(); update();
+})();
+</script>
+</body>
+</html>

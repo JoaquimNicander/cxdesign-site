@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<base href="/smartcraft/">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Orderpanel — Hantverkarkalsongen</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#121314;--panel:#1b1d1f;--line:#2b2e31;--txt:#f2f0ea;--mute:#9a9893;--yellow:#ffd23f;--yellow-ink:#1a1500;--green:#5cd68a;--blue:#6aa3ff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Barlow',system-ui,sans-serif;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;line-height:1.45}
+  a{color:inherit}
+  .cond{font-family:'Barlow Condensed',sans-serif}
+  .stripe{height:8px;background:repeating-linear-gradient(135deg,var(--yellow) 0 22px,#111 22px 44px)}
+  header{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:1px solid var(--line);gap:12px;flex-wrap:wrap}
+  header h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.7rem;text-transform:uppercase}
+  header h1 span{color:var(--yellow)}
+  .tools{display:flex;gap:8px;flex-wrap:wrap}
+  button,.btn{background:#26292c;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:9px 14px;font:600 .9rem Barlow,sans-serif;cursor:pointer}
+  button:hover{background:#2f3337}
+  button.y{background:var(--yellow);color:var(--yellow-ink);border-color:var(--yellow)}
+  button.g{background:#1f3b2a;border-color:#2c5c3d;color:var(--green)}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  main{padding:20px 24px;max-width:1400px;margin:0 auto}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+  .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;line-height:1}
+  .kpi span{font-size:.82rem;color:var(--mute)}
+  .kpi.open b{color:var(--yellow)}
+  .filters{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+  .filters button.on{background:var(--yellow);color:var(--yellow-ink);border-color:var(--yellow)}
+  .filters input{margin-left:auto;background:var(--panel);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:9px 12px;min-width:220px;font:500 .9rem Barlow,sans-serif}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}
+  td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:.93rem}
+  tr.row{cursor:pointer}
+  tr.row:hover td{background:#202326}
+  .st{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+  .st.ny,.st.paid{background:var(--yellow);color:var(--yellow-ink)}
+  .st.packad{background:#2a3a55;color:var(--blue)}
+  .st.skickad{background:#1f3b2a;color:var(--green)}
+  .items{color:var(--mute);font-size:.86rem}
+  .empty{padding:40px;text-align:center;color:var(--mute)}
+
+  /* detalj-panel */
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100vw);background:var(--panel);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .25s;z-index:20;overflow:auto;padding:24px}
+  .drawer.open{transform:none}
+  .drawer h2{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+  .drawer .x{background:transparent;border:0;color:var(--mute);font-size:1.6rem;cursor:pointer}
+  .block{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+  .block h4{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+  .block .big{font-size:1.05rem;font-weight:600}
+  .line{display:flex;justify-content:space-between;padding:4px 0}
+  .line.m{color:var(--mute)}
+  .line.t{border-top:1px solid var(--line);margin-top:6px;padding-top:8px;font-weight:700}
+  .actions{display:grid;gap:8px;margin-top:10px}
+  .actions .row2{display:flex;gap:8px}
+  .actions input,.actions textarea{flex:1;background:#121314;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:9px 12px;font:500 .9rem Barlow,sans-serif}
+  .actions textarea{width:100%;min-height:60px;resize:vertical}
+  label.chk{display:flex;gap:8px;align-items:center;font-size:.9rem;color:var(--mute)}
+  .ok{color:var(--green);font-size:.88rem;min-height:1.2em}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10;display:none}
+  .overlay.on{display:block}
+
+  /* login */
+  .login{max-width:380px;margin:80px auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px}
+  .login input{width:100%;background:#121314;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:11px 12px;font:500 1rem Barlow,sans-serif;margin:14px 0}
+
+  /* packsedel (print) */
+  #print{display:none}
+  @media print{
+    body *{visibility:hidden}
+    #print,#print *{visibility:visible}
+    #print{display:block;position:absolute;left:0;top:0;width:100%;background:#fff;color:#000;padding:24px;font-family:Helvetica,Arial,sans-serif}
+    .sheet{page-break-after:always;padding-bottom:30px}
+    .sheet h1{font-size:26px;margin-bottom:4px}
+    .sheet .meta{color:#555;font-size:13px;margin-bottom:18px}
+    .sheet table{width:100%;border-collapse:collapse;margin:14px 0}
+    .sheet th,.sheet td{border-bottom:1px solid #ddd;padding:8px 6px;text-align:left;font-size:14px;visibility:visible}
+    .sheet .addr{font-size:16px;line-height:1.5;border:2px solid #000;padding:12px;display:inline-block;min-width:260px}
+    .sheet .foot{margin-top:24px;font-size:12px;color:#555}
+    .sheet .check{font-size:18px;margin-top:14px}
+  }
+  @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.hide-m{display:none}}
+</style>
+</head>
+<body>
+<div class="stripe"></div>
+
+<div id="loginView" class="login">
+  <h1 class="cond" style="font-size:1.8rem;font-weight:900;text-transform:uppercase">Orderpanel</h1>
+  <p style="color:var(--mute);margin-top:4px">Hantverkarkalsongen · SmartCraft</p>
+  <input id="key" type="password" placeholder="Adminnyckel" autocomplete="current-password">
+  <button class="y" id="loginBtn" style="width:100%">Logga in</button>
+  <p id="loginErr" style="color:#ff7a6b;margin-top:10px;font-size:.9rem"></p>
+</div>
+
+<div id="app" style="display:none">
+<header>
+  <h1>Order<span>panel</span> <small style="font:500 .85rem Barlow;color:var(--mute);text-transform:none;margin-left:8px">Hantverkarkalsongen</small></h1>
+  <div class="tools">
+    <button id="printOpen">🖨 Packsedlar (alla nya)</button>
+    <button id="csv">⬇ CSV</button>
+    <button id="refresh">↻ Uppdatera</button>
+    <button id="logout">Logga ut</button>
+  </div>
+</header>
+<main>
+  <div class="kpis">
+    <div class="kpi open"><b id="kOpen">–</b><span>att packa</span></div>
+    <div class="kpi"><b id="kOrders">–</b><span>ordrar totalt</span></div>
+    <div class="kpi"><b id="kPairs">–</b><span>par sålda</span></div>
+    <div class="kpi"><b id="kTotal">–</b><span>omsättning</span></div>
+    <div class="kpi"><b id="kFund">–</b><span>till prostatacancerforskning</span></div>
+  </div>
+  <div class="filters">
+    <button class="on" data-f="">Alla</button>
+    <button data-f="ny">Nya</button>
+    <button data-f="packad">Packade</button>
+    <button data-f="skickad">Skickade</button>
+    <input id="q" placeholder="Sök namn, mejl, ort, ordernr…">
+  </div>
+  <table>
+    <thead><tr><th>#</th><th>Datum</th><th>Kund</th><th class="hide-m">Varor</th><th>Par</th><th>Betalt</th><th>Status</th></tr></thead>
+    <tbody id="rows"><tr><td colspan="7" class="empty">Laddar…</td></tr></tbody>
+  </table>
+</main>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer"></aside>
+<div id="print"></div>
+
+<script>
+(function(){
+  const FN="https://fueggdqtgmvldjbhcdfn.supabase.co/functions/v1/kalsong-admin";
+  const COLORS={svart:"Svart",bla:"Blå"};
+  const kr=n=>Number(n||0).toLocaleString("sv-SE",{maximumFractionDigits:0})+" kr";
+  const dt=s=>s?new Date(s).toLocaleString("sv-SE",{dateStyle:"short",timeStyle:"short"}):"";
+  const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const norm=s=>s==="paid"?"ny":s;
+  let key=localStorage.getItem("kalsongAdminKey")||"", orders=[], filter="", q="", cur=null;
+
+  async function api(body){
+    const r=await fetch(FN,{method:"POST",headers:{"Content-Type":"application/json","x-admin-key":key},body:JSON.stringify(body)});
+    const d=await r.json(); if(!r.ok) throw new Error(d.error||r.status); return d;
+  }
+  const $=id=>document.getElementById(id);
+
+  async function login(){
+    key=$("key").value.trim(); $("loginErr").textContent="";
+    try{ await load(); localStorage.setItem("kalsongAdminKey",key); $("loginView").style.display="none"; $("app").style.display="block"; }
+    catch(e){ $("loginErr").textContent="Fel nyckel"; }
+  }
+  $("loginBtn").onclick=login; $("key").addEventListener("keydown",e=>{if(e.key==="Enter")login();});
+  $("logout").onclick=()=>{localStorage.removeItem("kalsongAdminKey");location.reload();};
+  $("refresh").onclick=()=>load();
+
+  async function load(){
+    const d=await api({action:"list"}); orders=d.orders;
+    $("kOpen").textContent=d.sum.open; $("kOrders").textContent=d.sum.orders; $("kPairs").textContent=d.sum.pairs;
+    $("kTotal").textContent=kr(d.sum.total); $("kFund").textContent=kr(d.sum.fund);
+    render();
+  }
+  function visible(){
+    return orders.filter(o=>(!filter||norm(o.status)===filter)&&(!q||[o.id,o.customer_name,o.customer_email,o.shipping?.city,o.tracking].join(" ").toLowerCase().includes(q)));
+  }
+  function render(){
+    const v=visible();
+    $("rows").innerHTML=v.length?v.map(o=>`<tr class="row" data-id="${o.id}">
+      <td><b>#${o.id}</b></td><td>${dt(o.created_at)}</td>
+      <td><b>${esc(o.customer_name)}</b><br><span class="items">${esc(o.shipping?.city||"")}</span></td>
+      <td class="hide-m items">${(o.items||[]).map(i=>`${COLORS[i.color]||i.color} ${i.size}×${i.qty}`).join(", ")}</td>
+      <td>${o.pairs}${o.free_pairs?` <span class="items">(${o.free_pairs} gratis)</span>`:""}</td>
+      <td>${kr(o.total_sek)}</td>
+      <td><span class="st ${norm(o.status)}">${norm(o.status)}</span></td></tr>`).join("")
+      :'<tr><td colspan="7" class="empty">Inga ordrar här ännu.</td></tr>';
+  }
+  document.querySelectorAll(".filters button").forEach(b=>b.onclick=()=>{filter=b.dataset.f;document.querySelectorAll(".filters button").forEach(x=>x.classList.toggle("on",x===b));render();});
+  $("q").addEventListener("input",e=>{q=e.target.value.trim().toLowerCase();render();});
+  $("rows").addEventListener("click",e=>{const tr=e.target.closest("tr.row");if(tr)open(Number(tr.dataset.id));});
+
+  function addr(o){const a=o.shipping;if(!a)return "–";return [esc(o.customer_name),esc(a.line1),a.line2?esc(a.line2):null,`${esc(a.postal_code)} ${esc(a.city)}`].filter(Boolean).join("<br>");}
+
+  function open(id){
+    cur=orders.find(o=>o.id===id); if(!cur) return; const o=cur;
+    $("drawer").innerHTML=`
+      <h2><span>Order #${o.id}</span><button class="x" id="close">×</button></h2>
+      <div style="color:var(--mute)">${dt(o.created_at)} · <span class="st ${norm(o.status)}">${norm(o.status)}</span>${o.note?` · <span style="color:var(--yellow)">${esc(o.note)}</span>`:""}</div>
+      <div class="block"><h4>Leveransadress</h4><div class="big">${addr(o)}</div>
+        <div style="margin-top:8px;color:var(--mute)"><a href="mailto:${esc(o.customer_email)}">${esc(o.customer_email)}</a>${o.customer_phone?` · ${esc(o.customer_phone)}`:""}</div></div>
+      <div class="block"><h4>Varor</h4>
+        ${(o.items||[]).map(i=>`<div class="line"><span>${COLORS[i.color]||i.color} · stl ${esc(i.size)}</span><b>${i.qty} st</b></div>`).join("")}
+        <div class="line m"><span>Varor</span><span>${kr(o.subtotal_sek)}</span></div>
+        ${Number(o.discount_sek)?`<div class="line m"><span>${o.free_pairs} par på köpet</span><span>−${kr(o.discount_sek)}</span></div>`:""}
+        <div class="line m"><span>Frakt</span><span>${kr(o.shipping_sek)}</span></div>
+        <div class="line t"><span>Betalt</span><span>${kr(o.total_sek)}</span></div>
+        <div class="line m"><span>Till forskningen</span><span>${kr(o.fund_sek)}</span></div></div>
+      <div class="block"><h4>Hantera</h4>
+        <div class="actions">
+          <div class="row2"><button id="pack" ${norm(o.status)!=="ny"?"disabled":""}>✔ Markera packad</button><button id="printOne">🖨 Packsedel</button></div>
+          <div class="row2"><input id="track" placeholder="Spårningsnummer (Postnord)" value="${esc(o.tracking||"")}"></div>
+          <label class="chk"><input type="checkbox" id="mail" checked> Mejla kunden "ditt paket är på väg"</label>
+          <button class="g" id="ship" ${norm(o.status)==="skickad"?"disabled":""}>🚚 Markera skickad${norm(o.status)==="skickad"?" (klar)":""}</button>
+          ${o.shipped_mail_sent_at?`<div class="ok">Skickat-mejl gick ${dt(o.shipped_mail_sent_at)}</div>`:""}
+          <textarea id="note" placeholder="Intern anteckning">${esc(o.note||"")}</textarea>
+          <div class="row2"><button id="saveNote">Spara anteckning</button><button id="reset" style="margin-left:auto;color:var(--mute)">Återställ till ny</button></div>
+          <div class="ok" id="msg"></div>
+        </div></div>
+      <div class="block" style="color:var(--mute);font-size:.82rem">Stripe: ${esc(o.stripe_session_id)}<br>Packad: ${dt(o.packed_at)||"–"} · Skickad: ${dt(o.shipped_at)||"–"}</div>`;
+    $("drawer").classList.add("open"); $("overlay").classList.add("on");
+    $("close").onclick=close;
+    $("pack").onclick=()=>act({action:"set_status",id:o.id,status:"packad"},"Markerad som packad");
+    $("reset").onclick=()=>act({action:"set_status",id:o.id,status:"ny"},"Återställd");
+    $("saveNote").onclick=()=>act({action:"note",id:o.id,note:$("note").value},"Anteckning sparad");
+    $("ship").onclick=()=>act({action:"ship",id:o.id,tracking:$("track").value,sendMail:$("mail").checked},"Markerad som skickad");
+    $("printOne").onclick=()=>printSheets([o]);
+  }
+  function close(){$("drawer").classList.remove("open");$("overlay").classList.remove("on");}
+  $("overlay").onclick=close;
+  async function act(body,msg){
+    try{ const d=await api(body); $("msg").textContent=msg+(body.action==="ship"?(d.mailed?" – mejl skickat":" – inget mejl skickat"):""); await load(); open(body.id); $("msg").textContent=msg+(body.action==="ship"?(d.mailed?" – mejl skickat":" – inget mejl skickat"):""); }
+    catch(e){ $("msg").textContent="Fel: "+e.message; }
+  }
+
+  function printSheets(list){
+    if(!list.length){alert("Inga nya ordrar att skriva ut.");return;}
+    $("print").innerHTML=list.map(o=>`<div class="sheet">
+      <h1>Packsedel · Order #${o.id}</h1>
+      <div class="meta">${dt(o.created_at)} · Hantverkarkalsongen · I samarbete med SmartCraft</div>
+      <div class="addr">${addr(o)}<br>${esc(o.customer_phone||"")}</div>
+      <table><tr><th>Vara</th><th>Storlek</th><th>Antal</th><th>☐</th></tr>
+      ${(o.items||[]).map(i=>`<tr><td>Hantverkarkalsongen ${COLORS[i.color]||i.color}</td><td>${esc(i.size)}</td><td>${i.qty} st</td><td>☐</td></tr>`).join("")}
+      <tr><td colspan="2"><b>Totalt</b></td><td colspan="2"><b>${o.pairs} par</b>${o.free_pairs?` (varav ${o.free_pairs} på köpet)`:""}</td></tr></table>
+      ${o.note?`<div class="check">Notering: ${esc(o.note)}</div>`:""}
+      <div class="foot">Betalt ${kr(o.total_sek)} via Stripe. 20 kr per par går till prostatacancerforskning – tack!<br>Frågor: joaquim@cxdesign.se · cxdesign.se/smartcraft</div>
+    </div>`).join("");
+    setTimeout(()=>window.print(),100);
+  }
+  $("printOpen").onclick=()=>printSheets(orders.filter(o=>norm(o.status)==="ny"));
+
+  $("csv").onclick=()=>{
+    const h=["ordernr","datum","status","namn","epost","telefon","adress","postnr","ort","varor","par","gratis_par","varor_kr","rabatt_kr","frakt_kr","betalt_kr","fond_kr","sparning","stripe"];
+    const rows=orders.map(o=>[o.id,o.created_at,norm(o.status),o.customer_name,o.customer_email,o.customer_phone,o.shipping?.line1,o.shipping?.postal_code,o.shipping?.city,(o.items||[]).map(i=>`${COLORS[i.color]||i.color} ${i.size}x${i.qty}`).join(" | "),o.pairs,o.free_pairs,o.subtotal_sek,o.discount_sek,o.shipping_sek,o.total_sek,o.fund_sek,o.tracking,o.stripe_session_id]
+      .map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";"));
+    const blob=new Blob(["﻿"+[h.join(";"),...rows].join("\n")],{type:"text/csv;charset=utf-8"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="kalsongordrar.csv";a.click();
+  };
+
+  if(key){ load().then(()=>{$("loginView").style.display="none";$("app").style.display="block";}).catch(()=>{}); }
+})();
+</script>
+</body>
+</html>
