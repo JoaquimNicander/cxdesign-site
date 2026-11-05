@@ -105,6 +105,8 @@
   .tl .empty{color:var(--muted);font-size:.86rem}
   .tl .pinnum{cursor:pointer;color:var(--accent);font-weight:800;font-size:.8rem}
   .tl .pinnum:hover{text-decoration:underline}
+  .pip-hid{background:var(--muted)!important}
+  .hidrev{border-color:var(--accent)!important;color:var(--accent)!important;font-weight:800}
   @media(max-width:620px){.del{flex-wrap:wrap}.del .t{flex:1 1 100%;order:1}.del .th{order:0}.del select,.del .btn{order:2}.hbtn{padding-left:0}.hist{padding-left:0}}
   .msg{font-size:.85rem;color:var(--muted)}
   .msg.err{color:var(--accent)}
@@ -295,7 +297,7 @@ function timelineHTML(delId,pid){
   if(vis.length) ctr+='<button class="btn ghost sm" onclick="hideComments(\''+delId+'\',\''+pid+'\')">Dölj lösta kommentarer</button>';
   if(hid.length){
     const shown=SHOWHID.has(delId);
-    ctr+='<button class="btn ghost sm" onclick="toggleHidden(\''+delId+'\')">'+(shown?'Göm dolda igen':'Visa '+hid.length+' dold'+(hid.length>1?'a':'')+'')+'</button>';
+    ctr+='<button class="btn ghost sm hidrev" onclick="toggleHidden(\''+delId+'\')">'+(shown?'Göm dolda igen':'👁 Visa '+hid.length+' dold'+(hid.length>1?'a':'')+' kommentar'+(hid.length>1?'er':''))+'</button>';
     if(shown) ctr+='<button class="btn ghost sm" onclick="unhideComments(\''+delId+'\',\''+pid+'\')">Återställ alla</button>';
   }
   ctr+='</div>';
@@ -345,6 +347,7 @@ function delsHTML(pid,ds){
   if(!ds.length) return '<div class="msg">Inga delar än. Lägg till planerade delar eller ladda upp ovan.</div>';
   return ds.map(d=>{
     const nc=STATE.comments.filter(c=>c.deliverable_id===d.id && c.hidden!==true).length;
+    const nh=STATE.comments.filter(c=>c.deliverable_id===d.id && c.hidden===true).length;
     const nf=filesFor(d.id).length;
     const neu=newActivity(d.id);
     return '<div class="delrow"><div class="del">'+thumb(d)
@@ -354,8 +357,8 @@ function delsHTML(pid,ds){
     +'</select>'
     +'<button class="btn ghost sm" onclick="delDeliverable(\''+d.id+'\',\''+pid+'\')">Radera</button></div>'
     +filesManagerHTML(d.id)
-    +'<button class="hbtn'+(nc?' open':'')+'" id="hb-'+d.id+'" onclick="toggleHist(\''+d.id+'\')"><span class="chev">›</span> Kommentarer &amp; historik'+(nc?' <span class="pip">'+nc+'</span>':'')+'</button>'
-    +'<div class="hist'+(nc?' open':'')+'" id="hist-'+d.id+'">'+timelineHTML(d.id,pid)+'</div></div>';
+    +'<button class="hbtn'+((nc||nh)?' open':'')+'" id="hb-'+d.id+'" onclick="toggleHist(\''+d.id+'\')"><span class="chev">›</span> Kommentarer &amp; historik'+(nc?' <span class="pip">'+nc+'</span>':'')+(nh?' <span class="pip pip-hid">'+nh+' dolda</span>':'')+'</button>'
+    +'<div class="hist'+((nc||nh)?' open':'')+'" id="hist-'+d.id+'">'+timelineHTML(d.id,pid)+'</div></div>';
   }).join("");
 }
 function toggleHist(id){
