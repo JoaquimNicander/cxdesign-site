@@ -81,13 +81,22 @@
   .thanks .btn{display:inline-block;margin-top:10px;background:var(--orange);color:#fff;font-weight:800;padding:14px 22px;border-radius:8px;cursor:pointer;border:0;font:800 1rem Barlow,sans-serif}
 
   /* JULKLAPP */
-  .gift-badge{position:absolute;top:14px;right:14px;background:var(--orange);color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;padding:8px 14px;border-radius:999px;transform:rotate(4deg);box-shadow:0 6px 16px rgba(255,121,22,.35)}
-  .gift{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;background:var(--navy);color:#fff;border-radius:14px;padding:22px 26px;margin:0 0 56px}
-  .gift .ico{font-size:2.6rem;line-height:1}
-  .gift h3{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(1.4rem,3vw,2rem);line-height:1.05;text-transform:uppercase}
-  .gift p{margin-top:4px;opacity:.85;font-size:.95rem;max-width:62ch}
-  .gift a{background:var(--orange);color:#fff;font-weight:800;padding:12px 18px;border-radius:8px;white-space:nowrap}
-  @media(max-width:700px){.gift{grid-template-columns:1fr}.gift a{text-align:center}}
+  .gift-badge{position:absolute;top:14px;right:14px;background:#c8102e;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;padding:8px 14px;border-radius:999px;transform:rotate(4deg);box-shadow:0 6px 16px rgba(200,16,46,.35)}
+  .gift{position:relative;overflow:hidden;background:linear-gradient(135deg,#a50d26,#c8102e 60%,#e03a3a);color:#fff;border-radius:18px;padding:36px 40px;margin:0 0 60px;display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
+  .gift::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.35) 1.5px,transparent 2px),radial-gradient(circle,rgba(255,255,255,.2) 1px,transparent 1.5px);background-size:46px 46px,23px 23px;background-position:0 0,12px 12px;pointer-events:none}
+  .gift>*{position:relative}
+  .gift .kick{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;font-weight:800;color:#ffd9a8}
+  .gift h3{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2.2rem,5vw,3.6rem);line-height:.95;text-transform:uppercase;margin:8px 0 12px}
+  .gift h3 em{font-style:normal;color:#ffd9a8}
+  .gift p{opacity:.92;font-size:1.02rem;max-width:52ch}
+  .gift .chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 22px}
+  .gift .chips span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600}
+  .gift a.cta{display:inline-block;background:#fff;color:#c8102e;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;text-transform:uppercase;letter-spacing:.03em;padding:14px 24px;border-radius:10px}
+  .gift .art{text-align:center}
+  .gift .art .box{font-size:7rem;line-height:1;filter:drop-shadow(0 14px 24px rgba(0,0,0,.3));display:inline-block;transform:rotate(-6deg)}
+  .gift .art .date{margin-top:14px;background:#0e4067;color:#fff;border-radius:12px;padding:12px 16px;display:inline-block;font-weight:700;line-height:1.2}
+  .gift .art .date b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:900}
+  @media(max-width:800px){.gift{grid-template-columns:1fr;padding:28px 22px}.gift .art{order:-1}.gift .art .box{font-size:5rem}}
 
   /* BESTÄLL */
   .order{padding:0 0 40px}
@@ -189,7 +198,7 @@
     </div>
     <div class="hero-img">
       <img id="heroImg" src="img/svart.webp" alt="Hantverkarkalsongen, svart">
-      <div class="gift-badge">🎁 Julklappstips</div>
+      <div class="gift-badge">❄️ Julklappstips</div>
       <div class="tag" id="heroTag">Svart</div>
       <div class="flip"><button type="button" class="on" data-side="">Framsida</button><button type="button" data-side="-bak">Baksida</button></div>
     </div>
@@ -201,13 +210,18 @@
     <div class="usp"><b>20 kr/par</b><span>till prostatacancerforskning</span></div>
     <div class="usp"><b>2–5 dagar</b><span>leverans med Postnord</span></div>
   </div>
-  <div class="gift">
-    <div class="ico">🎁</div>
+  <div class="gift" id="jul">
     <div>
-      <h3>Julklappen som faktiskt används</h3>
-      <p>Till gänget på bygget, svärfar eller dig själv. 139 kr per par – och köper du 10 får hela firman var sitt plus ett på köpet. Beställ senast <b>17 december</b> så ligger de under granen.</p>
+      <div class="kick">🎄 Årets julklapp till hantverkaren</div>
+      <h3>Lägg ett verktygsbälte<br><em>under granen</em></h3>
+      <p>Hantverkarkalsongen är julklappen som faktiskt används – av gänget på bygget, svärfar eller dig själv. Skönt på jobbet, garanterat skratt på julafton.</p>
+      <div class="chips"><span>139 kr/par</span><span>Köp 10 – betala för 9</span><span>20 kr/par till forskningen</span><span>Fri frakt från 10 par</span></div>
+      <a class="cta" href="#bestall">Beställ julklapparna →</a>
     </div>
-    <a href="#bestall">Beställ julklappar</a>
+    <div class="art">
+      <div class="box">🎁</div>
+      <div class="date">Beställ senast<b>17 december</b>så är de hemma före jul</div>
+    </div>
   </div>
 </div></header>
 
