@@ -82,7 +82,7 @@
 
   /* JULKLAPP */
   .gift-badge{position:absolute;top:14px;right:14px;background:#c8102e;color:#fff;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1rem;letter-spacing:.06em;text-transform:uppercase;padding:8px 14px;border-radius:999px;transform:rotate(4deg);box-shadow:0 6px 16px rgba(200,16,46,.35)}
-  .gift{position:relative;overflow:hidden;background:linear-gradient(135deg,#a50d26,#c8102e 60%,#e03a3a);color:#fff;border-radius:18px;padding:36px 40px;margin:0 0 60px;display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
+  .gift{position:relative;overflow:hidden;background:linear-gradient(135deg,#a50d26,#c8102e 60%,#e03a3a);color:#fff;border-radius:18px;padding:36px 40px 0;margin:0 0 60px;display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center}
   .gift::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.35) 1.5px,transparent 2px),radial-gradient(circle,rgba(255,255,255,.2) 1px,transparent 1.5px);background-size:46px 46px,23px 23px;background-position:0 0,12px 12px;pointer-events:none}
   .gift>*{position:relative}
   .gift .kick{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;font-weight:800;color:#ffd9a8}
@@ -92,11 +92,14 @@
   .gift .chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 22px}
   .gift .chips span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600}
   .gift a.cta{display:inline-block;background:#fff;color:#c8102e;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;text-transform:uppercase;letter-spacing:.03em;padding:14px 24px;border-radius:10px}
-  .gift .art{text-align:center}
-  .gift .art .box{font-size:7rem;line-height:1;filter:drop-shadow(0 14px 24px rgba(0,0,0,.3));display:inline-block;transform:rotate(-6deg)}
-  .gift .art .date{margin-top:14px;background:#0e4067;color:#fff;border-radius:12px;padding:12px 16px;display:inline-block;font-weight:700;line-height:1.2}
+  .gift .left{padding:0 0 36px}
+  .gift .art{display:grid;grid-template-columns:1fr;justify-items:end;align-self:stretch;align-content:space-between;padding-top:0}
+  .gift .art .top{display:flex;align-items:center;gap:14px;justify-content:flex-end;width:100%}
+  .gift .art .boximg{width:auto;max-height:280px;margin-top:10px;filter:drop-shadow(0 18px 28px rgba(0,0,0,.35));align-self:end;justify-self:center}
+  .gift .art .box{font-size:5.4rem;line-height:1;filter:drop-shadow(0 14px 24px rgba(0,0,0,.3));display:inline-block;transform:rotate(-6deg)}
+  .gift .art .date{margin-top:0;background:#0e4067;color:#fff;border-radius:12px;padding:12px 16px;display:inline-block;font-weight:700;line-height:1.2}
   .gift .art .date b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:900}
-  @media(max-width:800px){.gift{grid-template-columns:1fr;padding:28px 22px}.gift .art{order:-1}.gift .art .box{font-size:5rem}}
+  @media(max-width:800px){.gift{grid-template-columns:1fr;padding:28px 22px 0}.gift .left{padding-bottom:24px}.gift .art .top{justify-content:center}.gift .art .boximg{width:min(240px,70%)}}
 
   /* BESTÄLL */
   .order{padding:0 0 40px}
@@ -211,7 +214,7 @@
     <div class="usp"><b>2–5 dagar</b><span>leverans med Postnord</span></div>
   </div>
   <div class="gift" id="jul">
-    <div>
+    <div class="left">
       <div class="kick">🎄 Årets julklapp till hantverkaren</div>
       <h3>Lägg ett verktygsbälte<br><em>under granen</em></h3>
       <p>Hantverkarkalsongen är julklappen som faktiskt används – av gänget på bygget, svärfar eller dig själv. Skönt på jobbet, garanterat skratt på julafton.</p>
@@ -219,8 +222,8 @@
       <a class="cta" href="#bestall">Beställ julklapparna →</a>
     </div>
     <div class="art">
-      <div class="box">🎁</div>
-      <div class="date">Beställ senast<b>15 december</b>så är de hemma före jul</div>
+      <div class="top"><div class="box">🎁</div><div class="date">Beställ senast<b>15 december</b>så är de hemma före jul</div></div>
+      <img class="boximg" src="img/box-cut.png" alt="Hantverkarkalsongen i Bygglet-förpackning">
     </div>
   </div>
 </div></header>
