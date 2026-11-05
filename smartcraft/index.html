@@ -93,13 +93,15 @@
   .gift .chips span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600}
   .gift a.cta{display:inline-block;background:#fff;color:#c8102e;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;text-transform:uppercase;letter-spacing:.03em;padding:14px 24px;border-radius:10px}
   .gift .left{padding:0 0 36px}
-  .gift .art{display:grid;grid-template-columns:1fr;justify-items:end;align-self:stretch;align-content:space-between;padding-top:0}
-  .gift .art .top{display:flex;align-items:center;gap:14px;justify-content:flex-end;width:100%}
-  .gift .art .boximg{width:auto;max-height:280px;margin-top:10px;filter:drop-shadow(0 18px 28px rgba(0,0,0,.35));align-self:end;justify-self:center}
+  .gift .art{display:flex;flex-direction:column;align-items:flex-end;align-self:stretch;justify-content:space-between;gap:10px}
+  .gift .art .top{display:flex;justify-content:flex-end;width:100%}
+  .gift .art .boxwrap{position:relative;align-self:center;margin-top:22px;margin-bottom:-6px}
+  .gift .art .boximg{width:auto;max-height:560px;display:block;filter:drop-shadow(0 22px 34px rgba(0,0,0,.4))}
+  .gift .art .bow{position:absolute;top:-30px;right:-44px;width:120px;height:auto;transform:rotate(14deg);filter:drop-shadow(0 8px 14px rgba(0,0,0,.35))}
   .gift .art .box{font-size:5.4rem;line-height:1;filter:drop-shadow(0 14px 24px rgba(0,0,0,.3));display:inline-block;transform:rotate(-6deg)}
-  .gift .art .date{margin-top:0;background:#0e4067;color:#fff;border-radius:12px;padding:12px 16px;display:inline-block;font-weight:700;line-height:1.2}
-  .gift .art .date b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:900}
-  @media(max-width:800px){.gift{grid-template-columns:1fr;padding:28px 22px 0}.gift .left{padding-bottom:24px}.gift .art .top{justify-content:center}.gift .art .boximg{width:min(240px,70%)}}
+  .gift .art .date{margin-top:0;background:#0e4067;color:#fff;border-radius:12px;padding:14px 18px;display:inline-block;font-weight:700;line-height:1.2;text-align:center}
+  .gift .art .date b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:900}
+  @media(max-width:800px){.gift{grid-template-columns:1fr;padding:28px 22px 0}.gift .left{padding-bottom:24px}.gift .art{align-items:center}.gift .art .top{justify-content:center}.gift .art .boximg{max-height:360px}.gift .art .bow{width:84px;top:-20px;right:-28px}}
 
   /* BESTÄLL */
   .order{padding:0 0 40px}
@@ -222,8 +224,8 @@
       <a class="cta" href="#bestall">Beställ julklapparna →</a>
     </div>
     <div class="art">
-      <div class="top"><div class="box">🎁</div><div class="date">Beställ senast<b>15 december</b>så är de hemma före jul</div></div>
-      <img class="boximg" src="img/box-cut.png" alt="Hantverkarkalsongen i Bygglet-förpackning">
+      <div class="top"><div class="date">Beställ senast<b>15 december</b>så är de hemma före jul</div></div>
+      <div class="boxwrap"><img class="boximg" src="img/box-cut.png" alt="Hantverkarkalsongen i Bygglet-förpackning"><svg class="bow" viewBox="0 0 120 90" aria-hidden="true"><g fill="#c8102e" stroke="#8d0a1f" stroke-width="2.5" stroke-linejoin="round"><path d="M60 45 C40 20 10 12 8 30 C6 46 34 52 60 45Z"/><path d="M60 45 C80 20 110 12 112 30 C114 46 86 52 60 45Z"/><path d="M60 45 C44 60 34 78 42 84 C50 88 58 62 60 45Z"/><path d="M60 45 C76 60 86 78 78 84 C70 88 62 62 60 45Z"/><circle cx="60" cy="45" r="9" fill="#e03a3a"/></g><path d="M22 28 C30 24 44 30 56 42" fill="none" stroke="#ff6b6b" stroke-width="2" opacity=".8"/><path d="M98 28 C90 24 76 30 64 42" fill="none" stroke="#ff6b6b" stroke-width="2" opacity=".8"/></svg></div>
     </div>
   </div>
 </div></header>
