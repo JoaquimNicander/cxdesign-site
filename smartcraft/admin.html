@@ -249,6 +249,8 @@
     const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="kalsongordrar.csv";a.click();
   };
 
+  const qk=new URLSearchParams(location.search).get("key");
+  if(qk){ key=qk; localStorage.setItem("kalsongAdminKey",key); history.replaceState(null,"",location.pathname); }
   if(key){ load().then(()=>{$("loginView").style.display="none";$("app").style.display="block";}).catch(()=>{}); }
 })();
 </script>
