@@ -350,7 +350,7 @@
     // funnel
     const base=Math.max(1,t.pageviews||0);
     const steps=[["Besök",t.pageviews||0],["Lade i varukorg",t.add_to_cart||0],["Till kassan",t.checkout_start||0],["Genomförda köp",t.orders||0]];
-    $("funnel").innerHTML=steps.map(([l,v])=>`<div class="frow"><span class="fl">${l}</span><span class="fbar"><i style="width:${Math.round(v/base*100)}%"></i></span><span class="fv"><b>${v}</b> · ${Math.round(v/base*100)}%</span></div>`).join("");
+    $("funnel").innerHTML=steps.map(([l,v])=>`<div class="frow"><span class="fl">${l}</span><span class="fbar"><i style="width:${Math.min(100,Math.round(v/base*100))}%"></i></span><span class="fv"><b>${v}</b> · ${Math.round(v/base*100)}%</span></div>`).join("");
     // chart
     const days=d.daily||[];
     const maxV=Math.max(1,...days.map(x=>Math.max(x.pageviews,x.orders)));
