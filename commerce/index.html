@@ -84,6 +84,24 @@
     .sheet .check{font-size:18px;margin-top:14px}
   }
   @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.hide-m{display:none}}
+  .seg{display:none}.seg.on{display:block}
+  .kpis.six{grid-template-columns:repeat(6,1fr)}
+  @media(max-width:900px){.kpis.six{grid-template-columns:repeat(2,1fr)}}
+  .kpi.miss b{color:#ff9e6b}
+  .rangebtns button.on{background:var(--yellow);color:var(--yellow-ink);border-color:var(--yellow)}
+  .funnel{display:grid;gap:8px}
+  .frow{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:14px}
+  .frow .fl{min-width:130px;font-weight:700;font-size:.9rem}
+  .frow .fbar{flex:1;height:12px;background:#2b2e31;border-radius:999px;overflow:hidden}
+  .frow .fbar i{display:block;height:100%;background:var(--yellow)}
+  .frow .fv{min-width:120px;text-align:right;font-size:.88rem;color:var(--mute)}
+  .frow .fv b{color:var(--txt);font-size:1.05rem}
+  .chart{display:flex;align-items:flex-end;gap:3px;height:180px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 14px 10px}
+  .chart .col{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:2px;height:100%}
+  .chart .col .bars{flex:1;display:flex;align-items:flex-end;gap:1px;width:100%;justify-content:center}
+  .chart .col .pv{width:46%;background:#3a3f44;border-radius:2px 2px 0 0;min-height:1px}
+  .chart .col .od{width:46%;background:var(--yellow);border-radius:2px 2px 0 0}
+  .chart .col .d{font-size:.52rem;color:var(--mute);white-space:nowrap;transform:rotate(-55deg);transform-origin:center;height:22px}
 </style>
 </head>
 <body>
@@ -101,6 +119,7 @@
 <header>
   <h1>CX <span>Commerce</span> <small style="font:500 .85rem Barlow;color:var(--mute);text-transform:none;margin-left:8px">orderinkorg</small></h1>
   <div class="tools">
+    <button id="statsBtn">📊 Statistik</button>
     <button id="printOpen">🖨 Packsedlar (alla nya)</button>
     <button id="csv">⬇ CSV</button>
     <button id="refresh">↻ Uppdatera</button>
@@ -108,6 +127,7 @@
   </div>
 </header>
 <main>
+ <div id="ordersView" class="seg on">
   <div class="kpis">
     <div class="kpi open"><b id="kOpen">–</b><span>att packa</span></div>
     <div class="kpi"><b id="kOrders">–</b><span>ordrar totalt</span></div>
@@ -127,6 +147,36 @@
     <thead><tr><th>#</th><th>Datum</th><th>Butik</th><th>Kund</th><th class="hide-m">Varor</th><th>Antal</th><th>Betalt</th><th>Status</th></tr></thead>
     <tbody id="rows"><tr><td colspan="8" class="empty">Laddar…</td></tr></tbody>
   </table>
+ </div>
+
+ <div id="statsView" class="seg">
+  <div class="filters rangebtns" style="margin-bottom:14px">
+    <strong class="cond" style="font-size:1.2rem;text-transform:uppercase;margin-right:8px">Statistik</strong>
+    <button data-d="7">7 dagar</button>
+    <button class="on" data-d="30">30 dagar</button>
+    <button data-d="90">90 dagar</button>
+    <span id="statNote" style="color:var(--mute);margin-left:auto;font-size:.85rem"></span>
+  </div>
+  <div class="kpis six">
+    <div class="kpi"><b id="sVisits">–</b><span>besök</span></div>
+    <div class="kpi"><b id="sVisitors">–</b><span>unika besökare</span></div>
+    <div class="kpi"><b id="sCart">–</b><span>lade i varukorg</span></div>
+    <div class="kpi"><b id="sCheckout">–</b><span>till kassan</span></div>
+    <div class="kpi"><b id="sOrders">–</b><span>genomförda köp</span></div>
+    <div class="kpi miss"><b id="sMissed">–</b><span>missade köp</span></div>
+  </div>
+  <div class="kpis" style="grid-template-columns:repeat(3,1fr);margin-top:12px">
+    <div class="kpi"><b id="sConv">–</b><span>konvertering (köp/besökare)</span></div>
+    <div class="kpi"><b id="sRevenue">–</b><span>omsättning</span></div>
+    <div class="kpi"><b id="sErr">–</b><span>kassa-fel</span></div>
+  </div>
+
+  <h4 style="margin:22px 0 8px;color:var(--mute);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase">Tratt</h4>
+  <div class="funnel" id="funnel"></div>
+
+  <h4 style="margin:22px 0 8px;color:var(--mute);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase">Per dag <span style="color:#3a3f44">▍besök</span> <span style="color:var(--yellow)">▍köp</span></h4>
+  <div class="chart" id="chart"></div>
+ </div>
 </main>
 </div>
 
@@ -259,6 +309,56 @@
     const blob=new Blob(["﻿"+[h.join(";"),...rows].join("\n")],{type:"text/csv;charset=utf-8"});
     const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="cx-commerce-ordrar.csv";a.click();
   };
+
+  // ---------- Statistik ----------
+  let statRange=30, statsOn=false;
+  function showStats(on){
+    statsOn=on;
+    $("ordersView").classList.toggle("on",!on);
+    $("statsView").classList.toggle("on",on);
+    $("statsBtn").textContent=on?"📦 Ordrar":"📊 Statistik";
+    ["printOpen","csv"].forEach(i=>$(i).style.display=on?"none":"");
+    if(on) loadStats();
+  }
+  $("statsBtn").onclick=()=>showStats(!statsOn);
+  document.querySelectorAll(".rangebtns button").forEach(b=>b.onclick=()=>{
+    statRange=Number(b.dataset.d);
+    document.querySelectorAll(".rangebtns button").forEach(x=>x.classList.toggle("on",x===b));
+    loadStats();
+  });
+  async function loadStats(){
+    $("statNote").textContent="Laddar…";
+    try{
+      const d=await api({action:"stats",days:statRange,shop:shopF||null});
+      renderStats(d);
+      $("statNote").textContent="Senaste "+d.days+" dagarna"+(shopF?" · "+shopShort(shopF):"");
+    }catch(e){ $("statNote").textContent="Fel: "+e.message; }
+  }
+  function renderStats(d){
+    const t=d.totals||{};
+    const missed=Math.max(0,(t.checkout_start||0)-(t.orders||0));
+    const conv=t.visitors?((t.orders||0)/t.visitors*100):0;
+    $("sVisits").textContent=t.pageviews||0;
+    $("sVisitors").textContent=t.visitors||0;
+    $("sCart").textContent=t.add_to_cart||0;
+    $("sCheckout").textContent=t.checkout_start||0;
+    $("sOrders").textContent=t.orders||0;
+    $("sMissed").textContent=missed;
+    $("sConv").textContent=conv.toFixed(1)+" %";
+    $("sRevenue").textContent=kr(t.revenue||0);
+    $("sErr").textContent=t.checkout_error||0;
+    // funnel
+    const base=Math.max(1,t.pageviews||0);
+    const steps=[["Besök",t.pageviews||0],["Lade i varukorg",t.add_to_cart||0],["Till kassan",t.checkout_start||0],["Genomförda köp",t.orders||0]];
+    $("funnel").innerHTML=steps.map(([l,v])=>`<div class="frow"><span class="fl">${l}</span><span class="fbar"><i style="width:${Math.round(v/base*100)}%"></i></span><span class="fv"><b>${v}</b> · ${Math.round(v/base*100)}%</span></div>`).join("");
+    // chart
+    const days=d.daily||[];
+    const maxV=Math.max(1,...days.map(x=>Math.max(x.pageviews,x.orders)));
+    const every=Math.ceil(days.length/16);
+    $("chart").innerHTML=days.map((x,i)=>`<div class="col" title="${x.day}: ${x.pageviews} besök · ${x.checkout_start} till kassan · ${x.orders} köp">
+      <div class="bars"><div class="pv" style="height:${Math.round(x.pageviews/maxV*120)}px"></div>${x.orders?`<div class="od" style="height:${Math.round(x.orders/maxV*120)}px"></div>`:""}</div>
+      <div class="d">${i%every===0?x.day:""}</div></div>`).join("");
+  }
 
   const qk=new URLSearchParams(location.search).get("key");
   if(qk){ key=qk; localStorage.setItem("cxCommerceKey",key); history.replaceState(null,"",location.pathname); }

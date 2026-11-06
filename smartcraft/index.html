@@ -287,6 +287,23 @@
   const FN = "https://fueggdqtgmvldjbhcdfn.supabase.co/functions/v1/kalsong-checkout";
   const PRICE=139, SHIP=59, FREE_EVERY=10, FREE_SHIP_FROM=10, FUND=20;
   const COLORS={svart:"Svart",bla:"Blå"}, SIZES=["M","L","XL"];
+  // --- Cookieless tracking ---
+  const TRACK="https://fueggdqtgmvldjbhcdfn.supabase.co/functions/v1/track";
+  const REF=new URLSearchParams(location.search).get("ref")||null;
+  const SHOP=REF||"smartcraft";
+  const rid=()=>(crypto.randomUUID?crypto.randomUUID():Date.now()+"-"+Math.random().toString(16).slice(2));
+  let VID=localStorage.getItem("cx_vid"); if(!VID){VID=rid();try{localStorage.setItem("cx_vid",VID);}catch(_){}}
+  let SID=sessionStorage.getItem("cx_sid"); if(!SID){SID=rid();try{sessionStorage.setItem("cx_sid",SID);}catch(_){}}
+  function track(type,extra,beacon){
+    const body=JSON.stringify(Object.assign({type,shop:SHOP,visitor_id:VID,session_id:SID,path:location.pathname,ref:REF},extra||{}));
+    try{
+      if(beacon&&navigator.sendBeacon){navigator.sendBeacon(TRACK,new Blob([body],{type:"text/plain"}));}
+      else{fetch(TRACK,{method:"POST",headers:{"Content-Type":"text/plain"},body,keepalive:true}).catch(()=>{});}
+    }catch(_){}
+  }
+  const totalNow=()=>parseInt((document.getElementById("total").textContent||"").replace(/\D/g,""))||0;
+  track("pageview");
+  let cartTracked=false;
   const qty={}; // "svart-M" -> n
   let color="svart", side="";
   function setHero(){const h=document.getElementById("heroImg"); h.style.opacity=0; setTimeout(()=>{h.src="img/"+(side?"svart-bak":color)+".webp"; h.alt="Hantverkarkalsongen, "+COLORS[color]+(side?" baksida":""); h.style.opacity=1;},180);}
@@ -346,6 +363,7 @@
     const left=pairs?((FREE_EVERY-pairs%FREE_EVERY)%FREE_EVERY):0;
     document.getElementById("nudge").textContent=pairs&&left&&left<=3?`${left} par till så får du ett på köpet + fri frakt`:"";
     document.getElementById("buy").disabled=pairs===0;
+    if(pairs>0 && !cartTracked){ cartTracked=true; track("add_to_cart",{pairs,value:total}); }
   }
 
   document.getElementById("buy").addEventListener("click",async()=>{
@@ -353,11 +371,14 @@
     b.disabled=true; b.textContent="Öppnar kassan…"; err.style.display="none";
     try{
       const ref=new URLSearchParams(location.search).get("ref")||"";
-      const r=await fetch(FN,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:items(),ref})});
+      const its=items(); const pairs=its.reduce((a,i)=>a+i.qty,0);
+      track("checkout_start",{pairs,value:totalNow(),meta:{items:its}},true);
+      const r=await fetch(FN,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({items:its,ref})});
       const d=await r.json();
       if(!r.ok||!d.url) throw new Error(d.error||"Kunde inte öppna kassan");
       location.href=d.url;
     }catch(e){
+      track("checkout_error",{value:totalNow(),meta:{message:String(e.message||e)}});
       err.textContent="Något gick fel: "+e.message+". Försök igen eller mejla joaquim@cxdesign.se.";
       err.style.display="block"; b.disabled=false; b.textContent="Till kassan";
     }
@@ -365,6 +386,8 @@
 
   if(new URLSearchParams(location.search).get("paid")){document.getElementById("thanks").classList.add("on");history.replaceState(null,"",location.pathname);}
   document.getElementById("thanksClose").onclick=()=>document.getElementById("thanks").classList.remove("on");
+  document.querySelectorAll(".navbtn").forEach(el=>el.addEventListener("click",()=>track("click",{label:"nav_bestall"})));
+  document.querySelectorAll(".gift a.cta").forEach(el=>el.addEventListener("click",()=>track("click",{label:"gift_cta"})));
   renderSizes(); update();
 })();
 </script>
