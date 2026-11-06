@@ -71,17 +71,32 @@
   /* packsedel (print) */
   #print{display:none}
   @media print{
+    @page{margin:14mm}
     body *{visibility:hidden}
     #print,#print *{visibility:visible}
-    #print{display:block;position:absolute;left:0;top:0;width:100%;background:#fff;color:#000;padding:24px;font-family:Helvetica,Arial,sans-serif}
-    .sheet{page-break-after:always;padding-bottom:30px}
-    .sheet h1{font-size:26px;margin-bottom:4px}
-    .sheet .meta{color:#555;font-size:13px;margin-bottom:18px}
-    .sheet table{width:100%;border-collapse:collapse;margin:14px 0}
-    .sheet th,.sheet td{border-bottom:1px solid #ddd;padding:8px 6px;text-align:left;font-size:14px;visibility:visible}
-    .sheet .addr{font-size:16px;line-height:1.5;border:2px solid #000;padding:12px;display:inline-block;min-width:260px}
-    .sheet .foot{margin-top:24px;font-size:12px;color:#555}
-    .sheet .check{font-size:18px;margin-top:14px}
+    #print{display:block;position:absolute;left:0;top:0;width:100%;background:#fff;color:#141414;font-family:'Barlow',Helvetica,Arial,sans-serif}
+    .sheet{page-break-after:always}
+    .sheet:last-child{page-break-after:auto}
+    .ps-stripe{height:8px;background:var(--accent,#141414);border-radius:5px}
+    .ps-head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2.5px solid #141414;padding:16px 0 14px;margin-bottom:2px}
+    .ps-head .logo{height:30px;width:auto}
+    .ps-head .r{text-align:right}
+    .ps-head .r .t{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:30px;letter-spacing:.01em;text-transform:uppercase;line-height:.95}
+    .ps-head .r .o{font-size:13px;color:#666;margin-top:3px;font-weight:600}
+    .ps-meta{color:#666;font-size:12.5px;margin:12px 0 18px;letter-spacing:.02em}
+    .ps-addr{border:2px solid #141414;border-radius:10px;padding:14px 18px;font-size:16px;line-height:1.55;display:inline-block;min-width:300px}
+    .ps-addr .lbl{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#888;font-weight:800;margin-bottom:7px}
+    table.ps{width:100%;border-collapse:collapse;margin:24px 0 8px}
+    table.ps th{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#888;text-align:left;border-bottom:2px solid #141414;padding:9px 8px;font-weight:800}
+    table.ps td{border-bottom:1px solid #d5d5d5;padding:11px 8px;font-size:15px;vertical-align:middle}
+    table.ps td.q{font-weight:800}
+    table.ps img.thumb{width:58px;height:58px;object-fit:contain;background:#f4f4f4;border:1px solid #e0e0e0;border-radius:8px;display:block}
+    table.ps span.thumb{width:58px;height:58px;background:#f4f4f4;border:1px solid #e0e0e0;border-radius:8px;display:block}
+    table.ps .chk{width:24px;height:24px;border:2px solid #141414;border-radius:5px;display:inline-block}
+    table.ps tr.tot td{border-bottom:0;padding-top:14px;font-weight:800;font-size:16px}
+    .ps-note{margin-top:14px;border-left:5px solid var(--accent,#141414);background:#f6f6f4;padding:11px 16px;font-size:14px;border-radius:0 8px 8px 0}
+    .ps-foot{margin-top:30px;padding-top:14px;border-top:1px solid #ddd;font-size:11.5px;color:#777;display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+    .ps-foot .brand{font-family:'Barlow Condensed',sans-serif;font-weight:900;color:#141414;font-size:15px;text-transform:uppercase;letter-spacing:.02em}
   }
   @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.hide-m{display:none}}
   .seg{display:none}.seg.on{display:block}
@@ -286,19 +301,49 @@
     catch(e){ $("msg").textContent="Fel: "+e.message; }
   }
 
+  const PRODIMG={svart:"/smartcraft/img/svart.webp",bla:"/smartcraft/img/bla.webp"};
+  const prodImg=i=>(i.color&&PRODIMG[i.color])?PRODIMG[i.color]:null;
   function printSheets(list){
     if(!list.length){alert("Inga nya ordrar att skriva ut.");return;}
-    $("print").innerHTML=list.map(o=>`<div class="sheet">
-      <h1>Packsedel · Order #${o.id}</h1>
-      <div class="meta">${dt(o.created_at)} · ${esc(shopName(o.shop))}</div>
-      <div class="addr">${addr(o)}<br>${esc(o.customer_phone||"")}</div>
-      <table><tr><th>Vara</th><th>Storlek</th><th>Antal</th><th>☐</th></tr>
-      ${(o.items||[]).map(i=>`<tr><td>${esc(i.name||"Hantverkarkalsongen")}</td><td>${esc(i.variant||i.size||"")}</td><td>${i.qty} st</td><td>☐</td></tr>`).join("")}
-      <tr><td colspan="2"><b>Totalt</b></td><td colspan="2"><b>${o.pairs} st</b>${o.free_pairs?` (varav ${o.free_pairs} på köpet)`:""}</td></tr></table>
-      ${o.note?`<div class="check">Notering: ${esc(o.note)}</div>`:""}
-      <div class="foot">Betalt ${kr(o.total_sek)} via Stripe.${Number(o.fund_sek)?` ${kr(o.fund_sek)} går till välgörenhet – tack!`:""}<br>Frågor: joaquim@cxdesign.se · cxdesign.se</div>
-    </div>`).join("");
-    setTimeout(()=>window.print(),100);
+    $("print").innerHTML=list.map(o=>{
+      const sh=shops.find(x=>x.slug===o.shop)||{};
+      const accent=sh.accent||"#141414";
+      const rows=(o.items||[]).map(i=>{
+        const img=prodImg(i);
+        return `<tr>
+          <td>${img?`<img class="thumb" src="${img}" alt="">`:`<span class="thumb"></span>`}</td>
+          <td><b>${esc(i.name||"Hantverkarkalsongen")}</b></td>
+          <td>${esc(i.variant||i.size||"")}</td>
+          <td class="q">${i.qty} st</td>
+          <td><span class="chk"></span></td></tr>`;
+      }).join("");
+      return `<div class="sheet" style="--accent:${esc(accent)}">
+        <div class="ps-stripe"></div>
+        <div class="ps-head">
+          <img class="logo" src="/logo-ink.png" alt="CX Design">
+          <div class="r"><div class="t">Packsedel</div><div class="o">Order #${o.id}</div></div>
+        </div>
+        <div class="ps-meta">${dt(o.created_at)} &nbsp;·&nbsp; ${esc(shopName(o.shop))}</div>
+        <div class="ps-addr"><div class="lbl">Leverans till</div>${addr(o)}${o.customer_phone?`<br>${esc(o.customer_phone)}`:""}</div>
+        <table class="ps">
+          <tr><th style="width:70px"></th><th>Vara</th><th>Storlek</th><th>Antal</th><th style="width:70px">Packad</th></tr>
+          ${rows}
+          <tr class="tot"><td></td><td>Totalt</td><td></td><td class="q">${o.pairs} st${o.free_pairs?` (${o.free_pairs} på köpet)`:""}</td><td></td></tr>
+        </table>
+        ${o.note?`<div class="ps-note"><b>Notering:</b> ${esc(o.note)}</div>`:""}
+        <div class="ps-foot">
+          <span>Betalt ${kr(o.total_sek)} via Stripe.${Number(o.fund_sek)?` ${kr(o.fund_sek)} går till välgörenhet – tack!`:""}<br>Frågor: joaquim@cxdesign.se · cxdesign.se</span>
+          <span class="brand">CX Design</span>
+        </div>
+      </div>`;
+    }).join("");
+    // wait for logo + product images before printing, so nothing is blank
+    const imgs=[...$("print").querySelectorAll("img")];
+    let pending=imgs.filter(im=>!im.complete).length, done=false;
+    const go=()=>{ if(done)return; done=true; window.print(); };
+    if(pending===0){ setTimeout(go,80); return; }
+    imgs.forEach(im=>{ if(im.complete)return; im.onload=im.onerror=()=>{ if(--pending<=0) go(); }; });
+    setTimeout(go,2000);
   }
   $("printOpen").onclick=()=>printSheets(orders.filter(o=>norm(o.status)==="ny"));
 
