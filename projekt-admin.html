@@ -116,7 +116,7 @@
 <body>
 <header><div class="wrap in">
   <img src="logo-ink.png" alt="CX Design">
-  <span class="tag">Projekt · Admin</span>
+  <span class="tag">Projekt · Admin <a href="#" id="logout" style="display:none;margin-left:12px;color:var(--muted);font-weight:600;text-transform:none;letter-spacing:0">Logga ut</a></span>
 </div></header>
 
 <main class="wrap" id="app">
@@ -137,7 +137,7 @@ const FN=SB+"/functions/v1/admin";
 const CLIENT=location.origin+location.pathname.replace(/projekt-admin\.html$/,"projekt.html");
 const STL={review:"Att granska",changes:"Ändring begärd",approved:"Godkänt"};
 const EVL={review:"Satt till Att granska",changes:"Kund begärde ändring",approved:"Kund godkände"};
-let AKEY=sessionStorage.getItem("cxd_akey")||"";
+let AKEY=localStorage.getItem("cxd_akey")||sessionStorage.getItem("cxd_akey")||"";
 const esc=s=>(s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const PUB=SB+"/storage/v1/object/public/proofing/";
 async function api(body){
@@ -150,10 +150,12 @@ document.getElementById("enter").onclick=tryLogin;
 document.getElementById("key").addEventListener("keydown",e=>{if(e.key==="Enter")tryLogin();});
 async function tryLogin(){
   AKEY=document.getElementById("key").value.trim();
-  try{await api({action:"list"});sessionStorage.setItem("cxd_akey",AKEY);dash();}
+  try{await api({action:"list"});localStorage.setItem("cxd_akey",AKEY);dash();}
   catch(e){document.getElementById("gerr").textContent="Fel nyckel.";}
 }
-if(AKEY){api({action:"list"}).then(dash).catch(()=>{});}
+const _lo=document.getElementById("logout");
+if(_lo) _lo.onclick=e=>{e.preventDefault();localStorage.removeItem("cxd_akey");sessionStorage.removeItem("cxd_akey");location.reload();};
+if(AKEY){document.getElementById("logout").style.display="inline";api({action:"list"}).then(dash).catch(()=>{});}
 
 let STATE={projects:[],dels:[],files:[],comments:[],events:[]};
 async function dash(){
