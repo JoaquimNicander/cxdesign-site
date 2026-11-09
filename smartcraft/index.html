@@ -337,7 +337,7 @@
   let cartTracked=false;
   const qty={}; // "svart-M" -> n
   let color="svart", side="";
-  function setHero(){const h=document.getElementById("heroImg"); h.style.opacity=0; setTimeout(()=>{h.src="img/"+(side?"svart-bak":color)+".webp"; h.alt="Hantverkarkalsongen, "+COLORS[color]+(side?" baksida":""); h.style.opacity=1;},180);}
+  function setHero(){const h=document.getElementById("heroImg"); h.style.opacity=0; setTimeout(()=>{h.src="img/"+color+side+".webp"; h.alt="Hantverkarkalsongen, "+COLORS[color]+(side?" baksida":""); h.style.opacity=1;},180);}
   function showSide(sd){side=sd; document.querySelectorAll(".flip button").forEach(x=>x.classList.toggle("on",x.dataset.side===sd)); setHero();}
   let auto=setInterval(()=>showSide(side?"":"-bak"),3500);
   document.querySelectorAll(".flip button").forEach(b=>b.addEventListener("click",()=>{clearInterval(auto); showSide(b.dataset.side);}));
