@@ -103,6 +103,34 @@
   .gift .art .date b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:900}
   @media(max-width:800px){.gift{grid-template-columns:1fr;padding:28px 22px 0}.gift .left{padding-bottom:24px}.gift .art{padding:20px 0 0}.gift .art .boximg{max-height:374px}}
 
+  /* NOVEMBER – Prostatacancerfonden */
+.nov{position:relative;margin:0 0 60px;overflow:hidden;background:linear-gradient(135deg,#0b3458,#1565a3 55%,#2f8fd0);color:#fff;border-radius:18px;padding:28px 40px;display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center;min-height:620px}
+.nov::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.28) 1.5px,transparent 2px),radial-gradient(circle,rgba(255,255,255,.14) 1px,transparent 1.5px);background-size:46px 46px,23px 23px;background-position:0 0,12px 12px;pointer-events:none}
+.nov>*{position:relative;z-index:2}
+.nov .kick{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;letter-spacing:.12em;text-transform:uppercase;font-weight:800;color:#ff9a4a}
+.nov h3{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(2.2rem,5vw,3.6rem);line-height:.95;text-transform:uppercase;margin:8px 0 12px}
+.nov h3 em{font-style:normal;color:#ff9a4a}
+.nov p{opacity:.94;font-size:1.02rem;max-width:52ch;margin:0}
+.nov .chips{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 22px}
+.nov .chips span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 12px;font-size:.85rem;font-weight:600}
+.nov a.cta{display:inline-block;background:#fff;color:#0e4067;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.3rem;text-transform:uppercase;letter-spacing:.03em;padding:14px 24px;border-radius:10px;text-decoration:none}
+.nov .left{padding:0 0 36px}
+.nov .art{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:36px 0}
+.nov .art .top{position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:3;white-space:nowrap}
+.nov .art .date{background:#ff7916;color:#fff;border-radius:12px;padding:14px 22px;display:inline-block;font-weight:700;line-height:1.2;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.35)}
+.nov .art .date b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:900}
+.nov .art .boximg{width:auto;max-height:680px;display:block;filter:drop-shadow(0 22px 34px rgba(0,0,0,.45))}
+
+/* LÖV */
+.leaves{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;perspective:900px}
+.leaf{position:absolute;top:-90px;animation:fall linear infinite, sway ease-in-out infinite alternate;will-change:transform}
+.leaf svg{width:100%;height:100%;display:block;overflow:visible;animation:tumble ease-in-out infinite alternate;transform-origin:50% 45%;filter:drop-shadow(0 6px 6px rgba(0,0,0,.28))}
+@keyframes fall{to{transform:translateY(720px)}}
+@keyframes sway{from{margin-left:-40px}to{margin-left:40px}}
+@keyframes tumble{0%{transform:rotate(-50deg) rotateY(-20deg) rotateX(10deg)}40%{transform:rotate(0deg) rotateY(60deg) rotateX(-20deg)}70%{transform:rotate(25deg) rotateY(10deg) rotateX(30deg)}100%{transform:rotate(60deg) rotateY(-50deg) rotateX(0deg)}}
+@media (prefers-reduced-motion:reduce){.leaf,.leaf svg{animation:none}.leaf{top:auto;bottom:10%}}
+@media(max-width:800px){.nov{grid-template-columns:1fr;padding:28px 22px 0}.nov .left{padding-bottom:24px}.nov .art{padding:20px 0 0}.nov .art .boximg{max-height:374px}}
+
   /* BESTÄLL */
   .order{padding:0 0 40px}
   .order-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
@@ -203,7 +231,7 @@
     </div>
     <div class="hero-img">
       <img id="heroImg" src="img/svart.webp" alt="Hantverkarkalsongen, svart">
-      <div class="gift-badge">❄️ Julklappstips</div>
+      <div class="gift-badge" style="background:#ff7916;box-shadow:0 6px 16px rgba(255,121,22,.35)">🍂 Mustaschmånaden</div>
       <div class="tag" id="heroTag">Svart</div>
       <div class="flip"><button type="button" class="on" data-side="">Framsida</button><button type="button" data-side="-bak">Baksida</button></div>
     </div>
@@ -215,17 +243,18 @@
     <div class="usp"><b>20 kr/par</b><span>till prostatacancerforskning</span></div>
     <div class="usp"><b>2–5 dagar</b><span>leverans med Postnord</span></div>
   </div>
-  <div class="gift" id="jul">
+  <div class="nov" id="november">
+    <div class="leaves" id="leaves"></div>
     <div class="left">
-      <div class="kick">🎄 Årets julklapp till – eller från – snickaren</div>
-      <h3>Lägg ett verktygsbälte<br><em>under granen</em></h3>
-      <p>Hantverkarkalsongen är julklappen som faktiskt används – av gänget på bygget, svärfar eller dig själv. Skönt på jobbet, garanterat skratt på julafton.</p>
-      <div class="chips"><span>139 kr/par</span><span>Köp 10 – betala för 9</span><span>20 kr/par till forskningen</span><span>Fri frakt från 10 par</span></div>
-      <a class="cta" href="#bestall">Beställ julklapparna →</a>
+      <div class="kick">🍂 Mustaschmånaden november</div>
+      <h3>Ett verktygsbälte<br><em>mot prostatacancer</em></h3>
+      <p>Varje år får omkring 10 000 svenska män prostatacancer – många av dem står på byggen som ditt. I november skänker vi 20 kr per sålt par till Prostatacancerfonden. Köp till gänget, till dig själv – eller till honom som aldrig går till doktorn.</p>
+      <div class="chips"><span>139 kr/par</span><span>Köp 10 – betala för 9</span><span>20 kr/par till Prostatacancerfonden</span><span>Fri frakt från 10 par</span></div>
+      <a class="cta" href="#bestall">Köp och bidra →</a>
     </div>
     <div class="art">
-      <div class="top"><div class="date">Beställ senast<b>15 december</b>så är de hemma före jul</div></div>
-      <div class="boxwrap"><img class="boximg" src="img/box-cut.png" alt="Hantverkarkalsongen i Bygglet-förpackning"></div>
+      <div class="top"><div class="date">Hela november<b>20 kr/par</b>till Prostatacancerfonden</div></div>
+      <img class="boximg" src="box-cut.png" alt="Hantverkarkalsongen i Bygglet-förpackning">
     </div>
   </div>
 </div></header>
@@ -390,6 +419,34 @@
   document.querySelectorAll(".gift a.cta").forEach(el=>el.addEventListener("click",()=>track("click",{label:"gift_cta"})));
   renderSizes(); update();
 })();
+</script>
+<script>
+// [ljus, mörk, ådror]
+const cols=[['#f0a04a','#c9541c','#7a2e0c'],['#e8683a','#a8341c','#5e1a0e'],['#f5c153','#d4861f','#8a5410'],['#d6522c','#8e2a16','#4e1409'],['#f2d070','#c99a2a','#7d5c12'],['#ee8b3a','#b8521a','#6a2d0a'],['#cc4a3a','#86241c','#4a110c']];
+const leaves=[
+ {vb:'0 0 100 112',body:'M50 5 C52 14 55 20 58 24 C62 18 67 13 73 11 C71 19 69 26 68 32 C76 29 84 29 90 31 C84 37 79 44 77 49 C85 52 91 57 94 62 C85 63 76 63 70 62 C74 70 77 78 78 86 C70 80 62 74 56 70 L52 98 L48 70 C42 74 34 80 26 86 C27 78 30 70 34 62 C28 63 19 63 10 62 C13 57 19 52 27 49 C25 44 20 37 14 31 C20 29 28 29 36 32 C35 26 33 19 31 11 C37 13 42 18 46 24 C47 20 49 14 50 5 Z',veins:'M50 70 L50 12 M50 66 L70 36 M50 66 L30 36 M50 68 L86 58 M50 68 L14 58 M50 70 L72 82 M50 70 L28 82',stem:'M50 70 L49 110'},
+ {vb:'0 0 100 112',body:'M50 4 C28 20 10 50 24 76 C32 90 44 96 50 100 C56 96 68 90 76 76 C90 50 72 20 50 4 Z',veins:'M50 8 L50 96 M50 28 L32 44 M50 28 L68 44 M50 46 L30 62 M50 46 L70 62 M50 64 L36 78 M50 64 L64 78',stem:'M50 100 L52 112'},
+ {vb:'0 0 100 112',body:'M50 4 C40 8 36 20 42 28 C30 24 22 36 32 44 C18 46 18 62 34 64 C24 72 32 86 46 82 L50 96 L54 82 C68 86 76 72 66 64 C82 62 82 46 68 44 C78 36 70 24 58 28 C64 20 60 8 50 4 Z',veins:'M50 8 L50 92 M50 30 L38 36 M50 30 L62 36 M50 50 L34 56 M50 50 L66 56 M50 70 L40 76 M50 70 L60 76',stem:'M50 96 L50 112'}
+];
+const host=document.getElementById('leaves');
+for(let i=0;i<20;i++){
+  const d=document.createElement('div');d.className='leaf';
+  const layer=i%4; const far=layer===0; const near=layer===3;
+  const s=(far?20:near?48:34)+Math.random()*(far?8:near?18:12);
+  d.style.width=s+'px';d.style.height=(s*1.12)+'px';
+  d.style.left=(Math.random()*100)+'%';
+  const dur=(far?18:near?9:12)+Math.random()*6;
+  d.style.animationDuration=dur+'s, '+(2.5+Math.random()*2.5)+'s';
+  d.style.animationDelay=(-Math.random()*dur)+'s, '+(-Math.random()*3)+'s';
+  d.style.opacity=far?.5:near?.98:.9; if(far)d.style.filter='blur(1px)'; if(near)d.style.zIndex=3;
+  const [lt,dk,vn]=cols[i%cols.length]; const L=leaves[i%3]; const id='g'+i;
+  d.innerHTML='<svg viewBox="'+L.vb+'" style="animation-duration:'+(3.5+Math.random()*3)+'s;animation-delay:'+(-Math.random()*4)+'s">'
+   +'<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="'+lt+'"/><stop offset="1" stop-color="'+dk+'"/></linearGradient></defs>'
+   +'<path d="'+L.body+'" fill="url(#'+id+')" stroke="'+vn+'" stroke-width="1.2" stroke-linejoin="round"/>'
+   +'<path d="'+L.veins+'" fill="none" stroke="'+vn+'" stroke-width="1.4" stroke-linecap="round" opacity=".55"/>'
+   +'<path d="'+L.stem+'" fill="none" stroke="'+vn+'" stroke-width="2.6" stroke-linecap="round"/></svg>';
+  host.appendChild(d);
+}
 </script>
 </body>
 </html>
