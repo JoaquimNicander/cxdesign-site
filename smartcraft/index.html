@@ -119,7 +119,9 @@
 .nov .art .top{position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:3;white-space:nowrap}
 .nov .art .date{background:#ff7916;color:#fff;border-radius:12px;padding:14px 22px;display:inline-block;font-weight:700;line-height:1.2;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.35)}
 .nov .art .date b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:900}
-.nov .art .boximg{width:auto;max-height:680px;display:block;filter:drop-shadow(0 22px 34px rgba(0,0,0,.45))}
+.nov .art .boximg{width:auto;max-height:680px;display:block;filter:drop-shadow(0 22px 34px rgba(0,0,0,.45));animation:hover 6s ease-in-out infinite}
+  @keyframes hover{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-16px) rotate(1deg)}}
+  @media (prefers-reduced-motion:reduce){.nov .art .boximg{animation:none}}
 
 /* LÖV */
 .leaves{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;perspective:900px}
