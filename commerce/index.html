@@ -117,6 +117,36 @@
   .chart .col .pv{width:46%;background:#cfc6b5;border-radius:2px 2px 0 0;min-height:1px}
   .chart .col .od{width:46%;background:var(--yellow);border-radius:2px 2px 0 0}
   .chart .col .d{font-size:.52rem;color:var(--mute);white-space:nowrap;transform:rotate(-55deg);transform-origin:center;height:22px}
+
+  /* --- UX-kärlek --- */
+  button,.btn{display:inline-flex;align-items:center;gap:7px;transition:transform .16s cubic-bezier(.23,1,.32,1),box-shadow .16s,background .16s,border-color .16s;white-space:nowrap}
+  button:hover,.btn:hover{background:#fff;border-color:var(--txt);transform:translateY(-1px);box-shadow:0 5px 16px rgba(20,17,14,.1)}
+  button:active,.btn:active{transform:translateY(0) scale(.97);box-shadow:none}
+  button:disabled:hover{transform:none;box-shadow:none;background:var(--panel);border-color:var(--line)}
+  button:focus-visible,.btn:focus-visible,input:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}
+  button.y:hover{background:#ff3d1c;border-color:#ff3d1c;color:#fff}
+  .btn.stripe{background:#635bff;border-color:#635bff;color:#fff}
+  .btn.stripe:hover{background:#4f46e5;border-color:#4f46e5;color:#fff}
+  .filters input:focus{border-color:var(--txt);background:#fff}
+  .kpi{transition:transform .18s cubic-bezier(.23,1,.32,1),box-shadow .18s;position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--line);transition:background .18s}
+  .kpi:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(20,17,14,.09)}
+  .kpi.open::before{background:var(--yellow)} .kpi.miss::before{background:#ff9e6b}
+  .kpi:hover::before{background:var(--yellow)}
+  tr.row{transition:background .12s}
+  .st{box-shadow:0 1px 3px rgba(20,17,14,.08)}
+
+  /* Butikslänkar */
+  .shopbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:11px 24px;border-bottom:1px solid var(--line);background:linear-gradient(0deg,rgba(255,77,46,.04),transparent)}
+  .shopbar .lbl{font:600 .68rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-right:2px}
+  .shopgrp{display:inline-flex;align-items:center;gap:2px}
+  .shoplink{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:999px 4px 4px 999px;padding:7px 12px 7px 14px;font:600 .86rem 'Inter Tight',sans-serif;text-decoration:none;color:var(--txt);transition:transform .16s cubic-bezier(.23,1,.32,1),box-shadow .16s,background .16s,border-color .16s}
+  .shoplink:hover{background:#fff;border-color:var(--txt);transform:translateY(-1px);box-shadow:0 5px 16px rgba(20,17,14,.1)}
+  .shoplink .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(31,122,58,.14)}
+  .shoplink .dot.off{background:var(--mute);box-shadow:0 0 0 3px rgba(107,100,90,.14)}
+  .shoplink .ext{color:var(--mute);font-weight:800}
+  .cpbtn{border:1px solid var(--line);border-left:0;background:var(--panel);cursor:pointer;color:var(--mute);padding:7px 10px;border-radius:4px 999px 999px 4px;font-size:.9rem;transition:all .16s}
+  .cpbtn:hover{background:#fff;color:var(--txt);border-color:var(--txt);transform:translateY(-1px)}
 </style>
 </head>
 <body>
@@ -134,7 +164,7 @@
 <header>
   <h1>CX <span>Commerce</span> <small style="font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-left:10px">orderinkorg</small></h1>
   <div class="tools">
-    <a class="btn" href="https://dashboard.stripe.com/payouts" target="_blank" rel="noopener" style="text-decoration:none">💳 Stripe · utbetalningar</a>
+    <a class="btn stripe" href="https://dashboard.stripe.com/payouts" target="_blank" rel="noopener" style="text-decoration:none">💳 Stripe · utbetalningar</a>
     <button id="statsBtn">📊 Statistik</button>
     <button id="printOpen">🖨 Packsedlar (alla nya)</button>
     <button id="csv">⬇ CSV</button>
@@ -142,6 +172,7 @@
     <button id="logout">Logga ut</button>
   </div>
 </header>
+<div class="shopbar" id="shopbar"></div>
 <main>
  <div id="ordersView" class="seg on">
   <div class="kpis">
@@ -232,7 +263,23 @@
     const d=await api({action:"list"}); orders=d.orders; shops=d.shops;
     $("shops").innerHTML=`<button class="${shopF===""?"on":""}" data-s="">Alla butiker</button>`+shops.map(s=>`<button class="${shopF===s.slug?"on":""}" data-s="${s.slug}">${esc(shopShort(s.slug))}${d.sum[s.slug]?.open?` <span style="background:var(--yellow);color:var(--yellow-ink);border-radius:999px;padding:0 7px;font-size:.75rem;margin-left:4px">${d.sum[s.slug].open}</span>`:""}</button>`).join("");
     $("shops").querySelectorAll("button").forEach(b=>b.onclick=()=>{shopF=b.dataset.s;$("shops").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));kpis();render();});
+    renderShopbar();
     kpis(); render();
+  }
+  function renderShopbar(){
+    const withUrl=shops.filter(s=>s.site_url);
+    $("shopbar").innerHTML='<span class="lbl">Butiker</span>'+(
+      withUrl.length ? withUrl.map(s=>{
+        const nm=esc(shopShort(s.slug)), url=esc(s.site_url), on=s.active!==false;
+        return `<span class="shopgrp">`
+          +`<a class="shoplink" href="${url}" target="_blank" rel="noopener" title="Öppna ${nm} i ny flik"><span class="dot ${on?"":"off"}"></span>${nm}<span class="ext">↗</span></a>`
+          +`<button class="cpbtn" data-url="${url}" title="Kopiera butikslänk">⧉</button></span>`;
+      }).join("")
+      : '<span style="color:var(--mute);font-size:.88rem">Inga butikslänkar ännu</span>'
+    );
+    $("shopbar").querySelectorAll(".cpbtn").forEach(b=>b.onclick=()=>{
+      navigator.clipboard?.writeText(b.dataset.url).then(()=>{const t=b.textContent;b.textContent="✓";setTimeout(()=>b.textContent=t,1200);},()=>{});
+    });
   }
   function kpis(){
     const v=orders.filter(o=>!shopF||o.shop===shopF);
