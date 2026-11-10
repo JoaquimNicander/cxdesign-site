@@ -6,67 +6,67 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex,nofollow">
 <title>CX Commerce — ordrar</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=Barlow+Condensed:wght@800;900&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#121314;--panel:#1b1d1f;--line:#2b2e31;--txt:#f2f0ea;--mute:#9a9893;--yellow:#ffd23f;--yellow-ink:#1a1500;--green:#5cd68a;--blue:#6aa3ff}
+  :root{--bg:#efe9dd;--panel:#f7f3ea;--line:#d9d2c4;--txt:#14110e;--mute:#6b645a;--yellow:#ff4d2e;--yellow-ink:#fff;--green:#1f7a3a;--blue:#1c5fa8;--mono:"IBM Plex Mono",ui-monospace,monospace}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Barlow',system-ui,sans-serif;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;line-height:1.45}
+  body{font-family:'Inter Tight',system-ui,sans-serif;background:var(--bg);color:var(--txt);-webkit-font-smoothing:antialiased;line-height:1.45}
   a{color:inherit}
-  .cond{font-family:'Barlow Condensed',sans-serif}
-  .stripe{height:8px;background:repeating-linear-gradient(135deg,var(--yellow) 0 22px,#111 22px 44px)}
+  .cond{font-family:'Inter Tight',sans-serif;font-weight:800;letter-spacing:-.02em}
+  .stripe{height:6px;background:var(--yellow)}
   header{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:1px solid var(--line);gap:12px;flex-wrap:wrap}
-  header h1{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.7rem;text-transform:uppercase}
-  header h1 span{color:var(--yellow)}
+  header h1{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:-.03em}
+  header h1 span{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--yellow);letter-spacing:0;font-size:1.7rem}
   .tools{display:flex;gap:8px;flex-wrap:wrap}
-  button,.btn{background:#26292c;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:9px 14px;font:600 .9rem Barlow,sans-serif;cursor:pointer}
-  button:hover{background:#2f3337}
+  button,.btn{background:var(--panel);color:var(--txt);border:1px solid var(--line);border-radius:999px;padding:9px 16px;font:600 .88rem 'Inter Tight',sans-serif;cursor:pointer}
+  button:hover{background:#fff;border-color:var(--txt)}
   button.y{background:var(--yellow);color:var(--yellow-ink);border-color:var(--yellow)}
-  button.g{background:#1f3b2a;border-color:#2c5c3d;color:var(--green)}
+  button.g{background:#e3f1e6;border-color:#b9dcc2;color:var(--green)}
   button:disabled{opacity:.4;cursor:not-allowed}
   main{padding:20px 24px;max-width:1400px;margin:0 auto}
   .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
   .kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
-  .kpi b{display:block;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:900;line-height:1}
-  .kpi span{font-size:.82rem;color:var(--mute)}
+  .kpi b{display:block;font-family:'Inter Tight',sans-serif;font-size:2rem;font-weight:800;letter-spacing:-.03em;line-height:1}
+  .kpi span{font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
   .kpi.open b{color:var(--yellow)}
   .filters{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
   .filters button.on{background:var(--yellow);color:var(--yellow-ink);border-color:var(--yellow)}
-  .filters input{margin-left:auto;background:var(--panel);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:9px 12px;min-width:220px;font:500 .9rem Barlow,sans-serif}
+  .filters input{margin-left:auto;background:#fff;border:1px solid var(--line);color:var(--txt);border-radius:999px;padding:9px 14px;min-width:220px;font:500 .9rem 'Inter Tight',sans-serif}
   table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-  th{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}
+  th{font:500 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}
   td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:.93rem}
   tr.row{cursor:pointer}
-  tr.row:hover td{background:#202326}
+  tr.row:hover td{background:#fff}
   .st{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
   .st.ny,.st.paid{background:var(--yellow);color:var(--yellow-ink)}
-  .st.packad{background:#2a3a55;color:var(--blue)}
-  .st.skickad{background:#1f3b2a;color:var(--green)}
+  .st.packad{background:#dde8f6;color:var(--blue)}
+  .st.skickad{background:#e3f1e6;color:var(--green)}
   .items{color:var(--mute);font-size:.86rem}
   .empty{padding:40px;text-align:center;color:var(--mute)}
 
   /* detalj-panel */
   .drawer{position:fixed;top:0;right:0;bottom:0;width:min(560px,100vw);background:var(--panel);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .25s;z-index:20;overflow:auto;padding:24px}
   .drawer.open{transform:none}
-  .drawer h2{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2rem;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center}
+  .drawer h2{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:1.8rem;letter-spacing:-.03em;display:flex;justify-content:space-between;align-items:center}
   .drawer .x{background:transparent;border:0;color:var(--mute);font-size:1.6rem;cursor:pointer}
   .block{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
-  .block h4{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+  .block h4{font:500 .7rem var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
   .block .big{font-size:1.05rem;font-weight:600}
   .line{display:flex;justify-content:space-between;padding:4px 0}
   .line.m{color:var(--mute)}
   .line.t{border-top:1px solid var(--line);margin-top:6px;padding-top:8px;font-weight:700}
   .actions{display:grid;gap:8px;margin-top:10px}
   .actions .row2{display:flex;gap:8px}
-  .actions input,.actions textarea{flex:1;background:#121314;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:9px 12px;font:500 .9rem Barlow,sans-serif}
+  .actions input,.actions textarea{flex:1;background:#fff;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:9px 12px;font:500 .9rem 'Inter Tight',sans-serif}
   .actions textarea{width:100%;min-height:60px;resize:vertical}
   label.chk{display:flex;gap:8px;align-items:center;font-size:.9rem;color:var(--mute)}
   .ok{color:var(--green);font-size:.88rem;min-height:1.2em}
-  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10;display:none}
+  .overlay{position:fixed;inset:0;background:rgba(20,17,14,.35);z-index:10;display:none}
   .overlay.on{display:block}
 
   /* login */
   .login{max-width:380px;margin:80px auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px}
-  .login input{width:100%;background:#121314;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:11px 12px;font:500 1rem Barlow,sans-serif;margin:14px 0}
+  .login input{width:100%;background:#fff;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:11px 12px;font:500 1rem 'Inter Tight',sans-serif;margin:14px 0}
 
   /* packsedel (print) */
   #print{display:none}
@@ -107,14 +107,14 @@
   .funnel{display:grid;gap:8px}
   .frow{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 14px;display:flex;align-items:center;gap:14px}
   .frow .fl{min-width:130px;font-weight:700;font-size:.9rem}
-  .frow .fbar{flex:1;height:12px;background:#2b2e31;border-radius:999px;overflow:hidden}
+  .frow .fbar{flex:1;height:12px;background:#e4ddcf;border-radius:999px;overflow:hidden}
   .frow .fbar i{display:block;height:100%;background:var(--yellow)}
   .frow .fv{min-width:120px;text-align:right;font-size:.88rem;color:var(--mute)}
   .frow .fv b{color:var(--txt);font-size:1.05rem}
   .chart{display:flex;align-items:flex-end;gap:3px;height:180px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 14px 10px}
   .chart .col{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:2px;height:100%}
   .chart .col .bars{flex:1;display:flex;align-items:flex-end;gap:1px;width:100%;justify-content:center}
-  .chart .col .pv{width:46%;background:#3a3f44;border-radius:2px 2px 0 0;min-height:1px}
+  .chart .col .pv{width:46%;background:#cfc6b5;border-radius:2px 2px 0 0;min-height:1px}
   .chart .col .od{width:46%;background:var(--yellow);border-radius:2px 2px 0 0}
   .chart .col .d{font-size:.52rem;color:var(--mute);white-space:nowrap;transform:rotate(-55deg);transform-origin:center;height:22px}
 </style>
@@ -123,16 +123,16 @@
 <div class="stripe"></div>
 
 <div id="loginView" class="login">
-  <h1 class="cond" style="font-size:1.8rem;font-weight:900;text-transform:uppercase">CX <span style="color:var(--yellow)">Commerce</span></h1>
+  <h1 class="cond" style="font-size:1.9rem">CX <span style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:var(--yellow);letter-spacing:0;font-size:2.1rem">Commerce</span></h1>
   <p style="color:var(--mute);margin-top:4px">Alla ordrar från alla butiker</p>
-  <input id="key" type="password" placeholder="Adminnyckel" autocomplete="current-password">
+  <input id="key" type="password" placeholder="Lösenord" autocomplete="current-password">
   <button class="y" id="loginBtn" style="width:100%">Logga in</button>
-  <p id="loginErr" style="color:#ff7a6b;margin-top:10px;font-size:.9rem"></p>
+  <p id="loginErr" style="color:var(--yellow);margin-top:10px;font-size:.9rem"></p>
 </div>
 
 <div id="app" style="display:none">
 <header>
-  <h1>CX <span>Commerce</span> <small style="font:500 .85rem Barlow;color:var(--mute);text-transform:none;margin-left:8px">orderinkorg</small></h1>
+  <h1>CX <span>Commerce</span> <small style="font:500 .72rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-left:10px">orderinkorg</small></h1>
   <div class="tools">
     <button id="statsBtn">📊 Statistik</button>
     <button id="printOpen">🖨 Packsedlar (alla nya)</button>
